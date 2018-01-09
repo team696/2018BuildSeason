@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team696.robot.commands.ExampleCommand;
+import org.usfirst.frc.team696.robot.subsystems.DriveTrainSubsystem;
 import org.usfirst.frc.team696.robot.subsystems.ExampleSubsystem;
 
 /**
@@ -23,12 +24,17 @@ import org.usfirst.frc.team696.robot.subsystems.ExampleSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
-	public static final ExampleSubsystem kExampleSubsystem
-			= new ExampleSubsystem();
+	public static final ExampleSubsystem kExampleSubsystem = new ExampleSubsystem();
+	public static final DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem(RobotMap.leftRear, RobotMap.leftMid, RobotMap.leftFront,
+                                                                                          RobotMap.rightRear, RobotMap.rightMid, RobotMap.rightFront);
 	public static OI m_oi;
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
+	double speed;
+	double wheel;
+	double leftDrive;
+	double rightDrive;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -110,6 +116,19 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+
+
+		/*
+		Tank Drive Usage
+		 */
+
+		speed = OI.joy.getRawAxis(1);
+		wheel = OI.joy.getRawAxis(4);
+		leftDrive = speed + wheel;
+		rightDrive = speed - wheel;
+
+		driveTrainSubsystem.tankDrive(leftDrive, rightDrive);
+
 	}
 
 	/**
