@@ -35,14 +35,25 @@ public class Robot extends TimedRobot {
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 
+<<<<<<< HEAD
 	public static IMU navX;
 	SerialPort port;
 
 
+=======
+	/*
+	Drive variables
+	 */
+
+	double commandedTurn;
+	double commandedDrive;
+>>>>>>> 36ec6fceb9e68c8ac412b9a5573d494724e0780d
 	double speed;
 	double wheel;
 	double leftDrive;
 	double rightDrive;
+	final double rampSpeed = 0.015;
+
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -135,12 +146,13 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 
 
-		/*
-		Tank Drive Usage
-		 */
+		commandedTurn = OI.joy.getRawAxis(4);
+		commandedDrive = OI.joy.getRawAxis(1);
 
-		speed = OI.joy.getRawAxis(1);
-		wheel = OI.joy.getRawAxis(4);
+
+
+
+
 		leftDrive = speed + wheel;
 		rightDrive = speed - wheel;
 
