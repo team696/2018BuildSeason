@@ -4,7 +4,7 @@
     <varelement var="jar://$wpilib$!/" value="wpilib" />
     <varelement var="jar://$wpilib.sources$!/" kind="src:" value="wpilib.sources" />
     <varelement var="jar://$networktables$!/" value="networktables" />
-    <varelement var="file://$ntcore.sources$" kind="src:" value="ntcore.sources" />
+    <varelement var="file://$networktables.sources$" kind="src:" value="ntcore.sources" />
     <varelement var="jar://$opencv$!/" value="opencv" />
     <varelement var="jar://$opencv.sources$!/" kind="src:" value="opencv.sources" />
     <varelement var="jar://$cscore$!/" value="cscore" />
@@ -29,17 +29,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library name="wpilib">
-        <CLASSES>
-          <root url="jar://$wpilib$!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$wpilib.sources$!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="WPILib User Lib Directory" level="project" />
     <orderEntry type="module-library">
       <library name="networktables">
         <CLASSES>
@@ -47,7 +37,7 @@
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="file://$ntcore.sources$" />
+          <root url="file://$networktables.sources$" />
         </SOURCES>
       </library>
     </orderEntry>
@@ -101,6 +91,17 @@
         </CLASSES>
         <JAVADOC />
         <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wpilib">
+        <CLASSES>
+          <root url="jar://$wpilib$!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$wpilib.sources$!/" />
+        </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">

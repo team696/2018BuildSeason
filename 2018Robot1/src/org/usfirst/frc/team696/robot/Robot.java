@@ -7,6 +7,9 @@
 
 package org.usfirst.frc.team696.robot;
 
+import com.kauailabs.nav6.frc.IMU;
+import com.kauailabs.nav6.frc.IMUAdvanced;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -31,6 +34,11 @@ public class Robot extends TimedRobot {
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+	public static IMU navX;
+	SerialPort port;
+
+
 	double speed;
 	double wheel;
 	double leftDrive;
@@ -46,6 +54,15 @@ public class Robot extends TimedRobot {
 		m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
+
+		/*
+		 * initialize navX
+		 */
+		try {
+			byte UpdateRateHz = 50;
+			port = new SerialPort(57600, SerialPort.Port.kMXP);
+			navX = new IMUAdvanced(port, UpdateRateHz);
+		} catch(Exception ex){System.out.println("NavX not working");}
 	}
 
 	/**
