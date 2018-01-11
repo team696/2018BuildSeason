@@ -119,5 +119,21 @@
         <jarDirectory url="file://$USER_HOME$/wpilib/user/java/lib" recursive="true" type="SOURCES" />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library name="WPILib Libraries">
+        <CLASSES>
+          <root url="file://$USERLIBS_DIR$" />
+        </CLASSES>
+        <JAVADOC>
+          <root url="file://$USERLIBS_DIR$" />
+        </JAVADOC>
+        <SOURCES>
+          <root url="file://$USERLIBS_DIR$" />
+        </SOURCES>
+        <jarDirectory url="file://$USERLIBS_DIR$" recursive="true" />
+        <jarDirectory url="file://$USERLIBS_DIR$" recursive="true" type="JAVADOC" />
+        <jarDirectory url="file://$USERLIBS_DIR$" recursive="true" type="SOURCES" />
+      </library>
+    </orderEntry>
   </component>
 </module>
