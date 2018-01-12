@@ -9,6 +9,7 @@ package org.usfirst.frc.team696.robot;
 
 import com.kauailabs.nav6.frc.IMU;
 import com.kauailabs.nav6.frc.IMUAdvanced;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -35,24 +36,25 @@ public class Robot extends TimedRobot {
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-<<<<<<< HEAD
 	public static IMU navX;
 	SerialPort port;
 
 
-=======
 	/*
-	Drive variables
+	Drive variables and Objects
 	 */
+
+	public static Encoder leftDriveEncoder = new Encoder(1, 1);
+	public static Encoder rightDriveEncoder = new Encoder(2, 2);
 
 	double commandedTurn;
 	double commandedDrive;
->>>>>>> 36ec6fceb9e68c8ac412b9a5573d494724e0780d
 	double speed;
 	double wheel;
 	double leftDrive;
 	double rightDrive;
-	final double rampSpeed = 0.015;
+	public static double targetDirection;
+	double rampSpeed = 0.015;
 
 
 	/**
@@ -74,6 +76,9 @@ public class Robot extends TimedRobot {
 			port = new SerialPort(57600, SerialPort.Port.kMXP);
 			navX = new IMUAdvanced(port, UpdateRateHz);
 		} catch(Exception ex){System.out.println("NavX not working");}
+
+		targetDirection = navX.getYaw();
+
 	}
 
 	/**

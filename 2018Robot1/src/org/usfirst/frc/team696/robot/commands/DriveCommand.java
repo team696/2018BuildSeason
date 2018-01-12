@@ -1,57 +1,59 @@
 package org.usfirst.frc.team696.robot.commands;
 
 import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PID;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc.team696.robot.Robot;
 import org.usfirst.frc.team696.robot.utilities.PID;
 
 
 public class DriveCommand extends Command {
 
+    double targetDistance = 0;
+    double errorDistance = 0;
+    double currentDistance = 0;
+    double errorDirection = 0;
+    double tempTargetDirection = 0;
+    double maxSpeed = 0;
+    double rampSpeed = 0;
 
 
-    public DriveCommand() {
+    double speed = 0;
+    double turn = 0;
+    double leftValue = 0;
+    double rightValue = 0;
+    Timer isFinished = new Timer();
 
-        double targetDistance = 0;
-        double errorDistance = 0;
-        double currentDistance = 0;
-        double errorDirection = 0;
-        double tempTargetDirection = 0;
-
-
-        double speed = 0;
-        double turn = 0;
-        double leftValue = 0;
-        double rightValue = 0;
-        Timer isFinished = new Timer();
-
-        /*
-        distance PID
-         */
-        double kPa = 0;
-        double kIa = 0;
-        double kDa = 0;
-        double kFa = 0;
+    /*
+    distance PID
+     */
+    double kPa = 0;
+    double kIa = 0;
+    double kDa = 0;
+    double kFa = 0;
 
         /*
         direction PID
          */
 
-        double kPb = 0;
-        double kIb = 0;
-        double kDb = 0;
-        double kFa = 0;
+    double kPb = 0;
+    double kIb = 0;
+    double kDb = 0;
+    double kFb = 0;
 
-        PID distancePID = new PID(kPa, kIa, kDa, kFa);
-        PID directionPID = new PID(kPb , kIb , kDb, kFa);
+    PID distancePID = new PID(kPa, kIa, kDa, kFa);
+    PID directionPID = new PID(kPb , kIb , kDb, kFa);
 
-        public Drive(double distance, double direction, double maxSpeed, double rampSpeed){
 
-        }
+    public DriveCommand(double distance, double direction, double maxSpeed, double rampSpeed) {
 
+        this.targetDistance = distance;
+        this.tempTargetDirection = direction;
+        this.maxSpeed = maxSpeed;
+        this.rampSpeed = rampSpeed;
 
     }
+
 
 
     /**
@@ -60,6 +62,10 @@ public class DriveCommand extends Command {
      */
     @Override
     protected void initialize() {
+        Robot.leftDriveEncoder.reset();
+        Robot.rightDriveEncoder.reset();
+        tempTargetDirection = Robot.targetDirection +  Robot.navX.getYaw();
+
 
     }
 
