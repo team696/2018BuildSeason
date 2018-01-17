@@ -23,7 +23,7 @@ public class CenterPosition extends CommandGroup {
             addSequential(new DriveCommand( 30, 0, 0.75, 0.05), 4);
             addSequential(new DriveCommand( 90, 0, 0.75, 0.05), 4);
             addSequential(new DriveCommand( 250, 0 , 0.75, 0.1), 4 );
-            addSequential(new DriveCommand( 20, 0, 20), 4);
+
 
 
 
