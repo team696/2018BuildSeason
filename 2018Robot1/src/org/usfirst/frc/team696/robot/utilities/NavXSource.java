@@ -13,13 +13,11 @@ public class NavXSource implements PIDSource {
 //	public IMU navX;
 	
 	public NavXSource() {
-		// TODO Auto-generated constructor stub
 //		this.navX = navX;
 	}
 	
 	@Override
 	public void setPIDSourceType(PIDSourceType pidSource) {
-		// TODO Auto-generated method stub
 	}
 	
 	public void setSetPoint(double setPoint) {
@@ -28,13 +26,11 @@ public class NavXSource implements PIDSource {
 
 	@Override
 	public PIDSourceType getPIDSourceType() {
-		// TODO Auto-generated method stub
 		return PIDSourceType.kDisplacement;
 	}
 
 	@Override
 	public double pidGet() {
-		// TODO Auto-generated method stub
 		currentAngle = Robot.navX.getYaw();
 		error = setPoint - currentAngle;
 		if(error > 180)currentAngle = currentAngle + 360;

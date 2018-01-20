@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import org.usfirst.frc.team696.robot.OI;
 import org.usfirst.frc.team696.robot.utilities.PID;
 
 
@@ -13,8 +14,8 @@ public class ElevatorSubsystem extends Subsystem {
     /*
     Motor Controllers
      */
-    TalonSRX leftElevator;
-    TalonSRX rightElevator;
+    public static TalonSRX leftElevator;
+    public static TalonSRX rightElevator;
 
     /*
     PID Values
@@ -30,7 +31,7 @@ public class ElevatorSubsystem extends Subsystem {
     Preset
      */
 
-    public static String movePos;
+//    public static String movePos;
 
     public static double groundTarget = 0;
 //    public static boolean groundMove = false;
@@ -46,8 +47,10 @@ public class ElevatorSubsystem extends Subsystem {
 //    public static boolean climbMove = false;
 
     /*
-
+    Manual Override Boolean
      */
+
+    public static boolean manual = false;
 
 
     public ElevatorSubsystem(int leftElevator, int rightElevator){
@@ -68,7 +71,7 @@ public class ElevatorSubsystem extends Subsystem {
 
     }
 
-    public void moveToPos() {
+    public void moveToPos(String movePos) {
 
 //        while(groundMove){
 //            switchMove = false;
@@ -98,7 +101,7 @@ public class ElevatorSubsystem extends Subsystem {
 
                 if(leftElevator.getClosedLoopError(pidIdx) < 2 && leftElevator.getClosedLoopError(pidIdx) > -2){
                     break;
-            }
+                }
 
             case "ground":
                 leftElevator.set(ControlMode.Position, groundTarget);
@@ -124,11 +127,32 @@ public class ElevatorSubsystem extends Subsystem {
                     break;
                 }
 
+            case "manual":
+                manualOverride();
+                break;
+
             default:
                 leftElevator.set(ControlMode.Disabled, 0);
                 rightElevator.set(ControlMode.Disabled, 0);
                 break;
         }
+
+    }
+
+    public void manualOverride(){
+
+        leftElevator.set(ControlMode.PercentOutput, OI.joy.getRawAxis(2));
+        rightElevator.set(ControlMode.Follower, leftElevator.getDeviceID());
+
+    }
+
+    public double checkError() {
+
+        double leftElevatorError = leftElevator.getClosedLoopError(pidIdx);
+        double rightElevatorError = rightElevator.getClosedLoopError(pidIdx);
+        double error = (leftElevatorError + rightElevatorError) / 2;
+
+        return error;
 
     }
 

@@ -1,59 +1,18 @@
 package org.usfirst.frc.team696.robot.commands;
 
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team696.robot.Robot;
-import org.usfirst.frc.team696.robot.utilities.PID;
+import org.usfirst.frc.team696.robot.subsystems.IntakeSubsystem;
 
+public class Intake extends Command {
 
-public class DriveCommand extends Command {
+    double speed = 0.5;
 
-    double targetDistance = 0;
-    double errorDistance = 0;
-    double currentDistance = 0;
-    double errorDirection = 0;
-    double tempTargetDirection = 0;
-    double maxSpeed = 0;
-    double rampSpeed = 0;
-
-
-    double speed = 0;
-    double turn = 0;
-    double leftValue = 0;
-    double rightValue = 0;
-    Timer isFinished = new Timer();
-
-    /*
-    distance PID
-     */
-    double kPa = 0;
-    double kIa = 0;
-    double kDa = 0;
-    double kFa = 0;
-
-        /*
-        direction PID
-         */
-
-    double kPb = 0;
-    double kIb = 0;
-    double kDb = 0;
-    double kFb = 0;
-
-    PID distancePID = new PID(kPa, kIa, kDa, kFa);
-    PID directionPID = new PID(kPb , kIb , kDb, kFa);
-
-
-    public DriveCommand(double distance, double direction, double maxSpeed, double rampSpeed) {
-
-        this.targetDistance = distance;
-        this.tempTargetDirection = direction;
-        this.maxSpeed = maxSpeed;
-        this.rampSpeed = rampSpeed;
-
+    public Intake() {
+        requires(Robot.intakeSubsystem);
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
     }
-
 
 
     /**
@@ -62,13 +21,8 @@ public class DriveCommand extends Command {
      */
     @Override
     protected void initialize() {
-        Robot.leftDriveEncoder.reset();
-        Robot.rightDriveEncoder.reset();
-        tempTargetDirection = Robot.targetDirection +  Robot.navX.getYaw();
-
 
     }
-
 
     /**
      * The execute method is called repeatedly when this Command is
@@ -77,12 +31,31 @@ public class DriveCommand extends Command {
     @Override
     protected void execute() {
 
+        Robot.intakeSubsystem.run(speed);
+
     }
 
 
+    /**
+     * <p>
+     * Returns whether this command is finished. If it is, then the command will be removed and
+     * {@link #end()} will be called.
+     * </p><p>
+     * It may be useful for a team to reference the {@link #isTimedOut()}
+     * method for time-sensitive commands.
+     * </p><p>
+     * Returning false will result in the command never ending automatically. It may still be
+     * cancelled manually or interrupted by another command. Returning true will result in the
+     * command executing once and finishing immediately. It is recommended to use
+     * {@link edu.wpi.first.wpilibj.command.InstantCommand} (added in 2017) for this.
+     * </p>
+     *
+     * @return whether this command is finished.
+     * @see Command#isTimedOut() isTimedOut()
+     */
     @Override
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
 

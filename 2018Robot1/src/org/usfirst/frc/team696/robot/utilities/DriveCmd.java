@@ -23,8 +23,7 @@ public class DriveCmd extends Subsystem{
 	
 	@Override
 	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
-		
+
 	}
 	
 	public void tankDrive(double leftValue, double rightValue){

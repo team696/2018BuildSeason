@@ -17,24 +17,24 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team696.robot.autonomousCommands.CenterPosition;
+import org.usfirst.frc.team696.robot.subsystems.ClimberSubsystem;
+import org.usfirst.frc.team696.robot.subsystems.ElevatorSubsystem;
 import org.usfirst.frc.team696.robot.subsystems.IntakeSubsystem;
 import org.usfirst.frc.team696.robot.subsystems.DriveTrainSubsystem;
 
 /**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the TimedRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.properties file in the
- * project.
+ * @Authors Ismail Hasan, Justin Gonzales
  */
 public class Robot extends TimedRobot {
 
 	public static final DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem(RobotMap.leftRear, RobotMap.leftMid, RobotMap.leftFront,
                                                                                           RobotMap.rightRear, RobotMap.rightMid, RobotMap.rightFront);
 	public static final IntakeSubsystem intakeSubsystem = new IntakeSubsystem(RobotMap.leftIntake, RobotMap.rightIntake);
+	public static final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(RobotMap.leftElevator, RobotMap.rightElevator);
+	public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem(RobotMap.leftClimber, RobotMap.rightClimber);
 
 
-	public static OI m_oi;
+	public static OI oi;
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -43,7 +43,7 @@ public class Robot extends TimedRobot {
 	SerialPort port;
 
 
-	/*
+	/**
 	Drive variables and Objects
 	 */
 
@@ -73,10 +73,11 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		m_oi = new OI();
+		oi = new OI();
 		m_chooser.addDefault("CenterPos", new CenterPosition());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
+
 
 		/*
 		 * initialize navX
@@ -159,11 +160,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-
-
-
-
-
 
 
 

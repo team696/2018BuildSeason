@@ -23,7 +23,6 @@ public class JoystickAnalogButton extends Button {
 //	}
 
 	public boolean get() {
-		// TODO Auto-generated method stub
 		return (minVal < joystick.getRawAxis(axisNum) && joystick.getRawAxis(axisNum) < maxVal);
 
 	}
