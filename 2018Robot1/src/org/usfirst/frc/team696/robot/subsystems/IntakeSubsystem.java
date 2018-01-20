@@ -24,14 +24,14 @@ public class IntakeSubsystem extends Subsystem {
 
     }
 
-    public void executeIntake(){
+    public void executeIntake(double speed){
 
-        intake.set(intakeSpeed);
+        intake.set(speed);
 
     }
-    public void executeOuttake(){
+    public void executeOuttake(double speed){
 
-        intake.set(outtakeSpeed);
+        intake.set(speed);
 
 }
 

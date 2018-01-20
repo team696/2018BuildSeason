@@ -59,6 +59,13 @@ public class Robot extends TimedRobot {
 	public static double targetDirection;
 	double rampSpeed = 0.015;
 
+	/**
+	 * Constants
+	 */
+
+	double intakeSpeed = 0;
+
+
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -153,11 +160,7 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 
-        if(OI.joy.getRawButton(1)){
 
-            intakeSubsystem.executeIntake();
-        }
-        
 
 
 
