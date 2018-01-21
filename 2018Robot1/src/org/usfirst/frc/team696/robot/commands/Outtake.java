@@ -3,11 +3,11 @@ package org.usfirst.frc.team696.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team696.robot.Robot;
 
-public class Outtake extends Command {
+public class outtake extends Command {
 
     double speed = 0.5;
 
-    public Outtake() {
+    public outtake() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }

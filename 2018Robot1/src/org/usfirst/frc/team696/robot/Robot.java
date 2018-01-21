@@ -17,10 +17,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team696.robot.autonomousCommands.CenterPosition;
-import org.usfirst.frc.team696.robot.subsystems.ClimberSubsystem;
-import org.usfirst.frc.team696.robot.subsystems.ElevatorSubsystem;
-import org.usfirst.frc.team696.robot.subsystems.IntakeSubsystem;
-import org.usfirst.frc.team696.robot.subsystems.DriveTrainSubsystem;
+import org.usfirst.frc.team696.robot.subsystems.*;
 
 /**
  * @Authors Ismail Hasan, Justin Gonzales
@@ -32,6 +29,7 @@ public class Robot extends TimedRobot {
 	public static final IntakeSubsystem intakeSubsystem = new IntakeSubsystem(RobotMap.leftIntake, RobotMap.rightIntake);
 	public static final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(RobotMap.leftElevator, RobotMap.rightElevator);
 	public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem(RobotMap.leftClimber, RobotMap.rightClimber);
+	public static final ClimberSubsystemPID climberSubsystemPID = new ClimberSubsystemPID(RobotMap.leftClimber, RobotMap.rightClimber);
 
 
 	public static OI oi;
@@ -57,13 +55,14 @@ public class Robot extends TimedRobot {
 	double leftDrive;
 	double rightDrive;
 	public static double targetDirection;
-	double rampSpeed = 0.015;
+//	double rampSpeed = 0.015;
 
 	/**
 	 * Constants
 	 */
 
 	double intakeSpeed = 0;
+
 
 
 
@@ -168,9 +167,14 @@ public class Robot extends TimedRobot {
 
 
 
+
+
+
+
 		/*
 		Drive
 		 */
+
 		commandedTurn = OI.joy.getRawAxis(4);
 		commandedDrive = OI.joy.getRawAxis(1);
 

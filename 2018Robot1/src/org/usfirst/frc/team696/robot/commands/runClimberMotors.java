@@ -3,12 +3,12 @@ package org.usfirst.frc.team696.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team696.robot.Robot;
 
-public class runClimber extends Command {
+public class runClimberMotors extends Command {
 
     double speed = 0.5;
 
 
-    public runClimber() {
+    public runClimberMotors() {
         requires(Robot.climberSubsystem);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
