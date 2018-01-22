@@ -9,11 +9,11 @@ import org.usfirst.frc.team696.robot.utilities.PID;
 
 public class DriveCommand extends Command {
 
-    double targetDistance = 0;
+    public static double targetDistance = 0;
     double errorDistance = 0;
     double currentDistance = 0;
     double errorDirection = 0;
-    double tempTargetDirection = 0;
+    public static double tempTargetDirection = 0;
     double maxSpeed = 0;
     double rampSpeed = 0;
 
@@ -27,19 +27,19 @@ public class DriveCommand extends Command {
     /*
     distance PID
      */
-    double kPa = 0;
-    double kIa = 0;
-    double kDa = 0;
-    double kFa = 0;
+    public static double kPa = 0;
+    public static double kIa = 0;
+    public static double kDa = 0;
+    public static double kFa = 0;
 
         /*
         direction PID
          */
 
-    double kPb = 0;
-    double kIb = 0;
-    double kDb = 0;
-    double kFb = 0;
+    public static double kPb = 0;
+    public static double kIb = 0;
+    public static double kDb = 0;
+    public static double kFb = 0;
 
     PID distancePID = new PID(kPa, kIa, kDa, kFa);
     PID directionPID = new PID(kPb , kIb , kDb, kFa);

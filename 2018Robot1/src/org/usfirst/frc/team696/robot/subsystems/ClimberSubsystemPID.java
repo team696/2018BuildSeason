@@ -34,7 +34,7 @@ public class ClimberSubsystemPID extends Subsystem {
        this.slave.set(ControlMode.Follower, 0);
 
        this.master.config_kP(0, kP, 20);
-       this.master.config_kI(0, kI, 20);        //i, d, f probably not necessary
+       this.master.config_kI(0, kI, 20);        /**i, d, f probably not necessary */
        this.master.config_kD(0, kD, 20);
        this.master.config_kF(0,kF,20);
 
