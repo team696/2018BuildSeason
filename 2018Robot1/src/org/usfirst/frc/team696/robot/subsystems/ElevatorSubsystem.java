@@ -26,6 +26,8 @@ public class ElevatorSubsystem extends Subsystem {
     public static double kF = 0;
 
     public static int pidIdx = 0;
+    public static int cruiseVelocity = 0;
+    public static int acceleration = 0;
 
     /*
     Preset
@@ -96,7 +98,9 @@ public class ElevatorSubsystem extends Subsystem {
         switch(movePos){
 
             case "switch":
-                leftElevator.set(ControlMode.Position, switchTarget);
+                leftElevator.set(ControlMode.MotionMagic, switchTarget);
+                leftElevator.configMotionCruiseVelocity(cruiseVelocity,20);
+                leftElevator.configMotionAcceleration(acceleration, 20);
                 rightElevator.set(ControlMode.Follower, leftElevator.getDeviceID());
 
                 if(leftElevator.getClosedLoopError(pidIdx) < 2 && leftElevator.getClosedLoopError(pidIdx) > -2){
@@ -104,7 +108,9 @@ public class ElevatorSubsystem extends Subsystem {
                 }
 
             case "ground":
-                leftElevator.set(ControlMode.Position, groundTarget);
+                leftElevator.set(ControlMode.MotionMagic, groundTarget);
+                leftElevator.configMotionCruiseVelocity(cruiseVelocity,20);
+                leftElevator.configMotionAcceleration(acceleration, 20);
                 rightElevator.set(ControlMode.Follower, leftElevator.getDeviceID());
 
                 if(leftElevator.getClosedLoopError(pidIdx) < 2 && leftElevator.getClosedLoopError(pidIdx) > -2){
@@ -112,7 +118,9 @@ public class ElevatorSubsystem extends Subsystem {
                 }
 
             case "scale":
-                leftElevator.set(ControlMode.Position, scaleTarget);
+                leftElevator.set(ControlMode.MotionMagic, scaleTarget);
+                leftElevator.configMotionCruiseVelocity(cruiseVelocity,20);
+                leftElevator.configMotionAcceleration(acceleration, 20);
                 rightElevator.set(ControlMode.Follower, leftElevator.getDeviceID());
 
                 if(leftElevator.getClosedLoopError(pidIdx) < 2 && leftElevator.getClosedLoopError(pidIdx) > -2){
@@ -120,7 +128,9 @@ public class ElevatorSubsystem extends Subsystem {
                 }
 
             case "climb":
-                leftElevator.set(ControlMode.Position, climbTarget);
+                leftElevator.set(ControlMode.MotionMagic, climbTarget);
+                leftElevator.configMotionCruiseVelocity(cruiseVelocity,20);
+                leftElevator.configMotionAcceleration(acceleration, 20);
                 rightElevator.set(ControlMode.Follower, leftElevator.getDeviceID());
 
                 if(leftElevator.getClosedLoopError(pidIdx) < 2 && leftElevator.getClosedLoopError(pidIdx) > -2){

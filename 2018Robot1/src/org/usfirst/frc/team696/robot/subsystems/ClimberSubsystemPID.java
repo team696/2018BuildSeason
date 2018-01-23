@@ -19,9 +19,6 @@ public class ClimberSubsystemPID extends Subsystem {
    double kF = 0;
 
 
-
-
-
    public ClimberSubsystemPID(int motor1, int motor2){
 
        this.master = new TalonSRX(motor1);
