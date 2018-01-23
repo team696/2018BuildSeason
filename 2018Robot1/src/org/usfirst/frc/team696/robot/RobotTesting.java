@@ -85,6 +85,7 @@ public class RobotTesting extends TimedRobot {
                             num++;
                             time.stop();
                             time.reset();
+                            num = 1;
                             break;
                         } else if (time.get() > 3 && !(Math.abs(driveTrainSubsystem.leftRear.get()) > 0)) {
                             System.out.println("Left Rear Drive Motor " + driveTrainSubsystem.leftRear.getDeviceID() + " is not functioning properly. ");
@@ -92,6 +93,7 @@ public class RobotTesting extends TimedRobot {
                             time.stop();
                             time.reset();
                             testDriveMotors = false;
+                            num = 1;
                             break;
                         }
                     } else if (time.get() > 3 && !(Math.abs(driveTrainSubsystem.leftRear.get()) > 0)) {
@@ -100,6 +102,7 @@ public class RobotTesting extends TimedRobot {
                         time.stop();
                         time.reset();
                         testDriveMotors = false;
+                        num = 1;
                         break;
                     }
 
@@ -122,6 +125,7 @@ public class RobotTesting extends TimedRobot {
                             num++;
                             time.stop();
                             time.reset();
+                            num = 1;
                             break;
                         } else if (time.get() > 3 && !(Math.abs(driveTrainSubsystem.leftRear.get()) > 0)) {
                             System.out.println("Left Mid Drive Motor " + driveTrainSubsystem.leftMid.getDeviceID() + " is not functioning properly. ");
@@ -129,6 +133,7 @@ public class RobotTesting extends TimedRobot {
                             time.stop();
                             time.reset();
                             testDriveMotors = false;
+                            num = 1;
                             break;
                         }
                     } else if (time.get() > 3 && !(Math.abs(driveTrainSubsystem.leftRear.get()) > 0)) {
@@ -137,6 +142,7 @@ public class RobotTesting extends TimedRobot {
                         time.stop();
                         time.reset();
                         testDriveMotors = false;
+                        num = 1;
                         break;
                     }
 
@@ -291,6 +297,9 @@ public class RobotTesting extends TimedRobot {
 
                 default:
                     System.out.println("All drive motors functional.");
+                    num = 1;
+                    time.stop();
+                    time.reset();
                     testDriveMotors = false;
                     break;
             }
@@ -300,7 +309,91 @@ public class RobotTesting extends TimedRobot {
 
         if(testElevator){
 
+            switch(num){
+
+                case 1:
+
+                    time.start();
+                    elevatorSubsystem.moveToPos("switch");
+                    if(elevatorSubsystem.checkError() < 2 && time.get() > 5){
+                        time.stop();
+                        time.reset();
+                        time.start();
+                        num++;
+                        break;
+                    }else if(!(elevatorSubsystem.checkError() < 2) && time.get() > 10){
+                        System.out.println("Move to Switch movement not functioning properly.");
+                        time.stop();
+                        time.reset();
+                        num = 1;
+                        testElevator = false;
+                        break;
+                    }
+
+                case 2:
+                    elevatorSubsystem.moveToPos("ground");
+                    if(elevatorSubsystem.checkError() < 2 && time.get() > 5){
+                        time.stop();
+                        time.reset();
+                        time.start();
+                        num++;
+                        break;
+                    }else if(!(elevatorSubsystem.checkError() < 2) && time.get() > 5){
+                        System.out.println("Move to Ground movement not functioning properly.");
+                        time.stop();
+                        time.reset();
+                        num = 1;
+                        testElevator = false;
+                        break;
+                    }
+
+                case 3:
+                    elevatorSubsystem.moveToPos("scale");
+                    if(elevatorSubsystem.checkError() < 2 && time.get() > 5){
+                        time.stop();
+                        time.reset();
+                        time.start();
+                        break;
+                    }else if(!(elevatorSubsystem.checkError() < 2) && time.get() > 10){
+                        System.out.println("Move to Scale movement not functioning properly.");
+                        time.stop();
+                        time.reset();
+                        num = 1;
+                        testElevator = false;
+                        break;
+                    }
+
+                case 4:
+                    elevatorSubsystem.moveToPos("climb");
+                    if(elevatorSubsystem.checkError() < 2 && time.get() > 5){
+                        time.stop();
+                        time.reset();
+                        time.start();
+                        num++;
+                        break;
+                    }else if(!(elevatorSubsystem.checkError() < 2) && time.get() > 10){
+                        System.out.println("Move to Climb movement not functioning properly");
+                        time.stop();
+                        time.reset();
+                        num = 1;
+                        testElevator = false;
+                        break;
+                    }
+
+                default:
+                    System.out.println("Elevator motion and control good to go!");
+                    time.stop();
+                    time.reset();
+                    num = 1;
+                    testElevator = false;
+
+            }
+
         }
+
+        // Intake Motors
+
+
 
     }
 
