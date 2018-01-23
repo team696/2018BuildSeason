@@ -25,6 +25,13 @@ public class RobotMap {
     public static int rightMid;
     public static int rightRear;
 
+    public static int leftRearCurrent;
+    public static int leftMidCurrent;
+    public static int leftFrontCurrent;
+    public static int rightRearCurrent;
+    public static int rightMidCurrent;
+    public static int rightFrontCurrent;
+
     /*
     Elevator
      */

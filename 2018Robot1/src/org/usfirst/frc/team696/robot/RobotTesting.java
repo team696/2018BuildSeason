@@ -20,6 +20,20 @@ public class RobotTesting extends TimedRobot {
     boolean testDriveMotors = false;
     boolean testElevator = false;
 
+    int leftRearCurrent = RobotMap.leftRearCurrent;
+    int leftMidCurrent = RobotMap.leftMidCurrent;
+    int leftFrontCurrent = RobotMap.leftFrontCurrent;
+    int rightRearCurrent = RobotMap.rightRearCurrent;
+    int rightMidCurrent = RobotMap.rightMidCurrent;
+    int rightFrontCurrent = RobotMap.rightFrontCurrent;
+
+    int num = 1;
+    Timer time = new Timer();
+
+    double minCurrent = 50;
+    double halfSpeed = 0.5;
+    double noSpeed = 0;
+
     @Override
     public void testPeriodic() {
 
@@ -61,71 +75,65 @@ public class RobotTesting extends TimedRobot {
 
         //Drive Talons
 
-        int num = 1;
-        Timer time = new Timer();
+
+        // TODO Implement current checking of each motor
 
         if(testDriveMotors){
             switch (num) {
                 case 1:
-                    driveTrainSubsystem.leftRear.set(0.5);
+                    driveTrainSubsystem.leftRear.set(halfSpeed);
                     time.start();
-                    if (time.get() > 3 && Math.abs(driveTrainSubsystem.leftRear.get()) > 0) {
-                        driveTrainSubsystem.leftRear.set(0);
-                        time.stop();
-                        time.reset();
-                        time.start();
+                    if (time.get() > 3 && Math.abs(driveTrainSubsystem.leftRear.get()) > 0 && getCurrent(leftRearCurrent) > minCurrent) {
+                        driveTrainSubsystem.leftRear.set(noSpeed);
+                        restartTimer();
                         if (time.get() > 1) {
                             time.stop();
                             time.reset();
-                            driveTrainSubsystem.leftRear.set(-0.5);
+                            driveTrainSubsystem.leftRear.set(-halfSpeed);
                             time.start();
                         }
-                        if (time.get() > 3 && driveTrainSubsystem.leftRear.get() > 0) {
-                            driveTrainSubsystem.leftRear.set(0);
+                        if (time.get() > 3 && driveTrainSubsystem.leftRear.get() > 0 && getCurrent(leftRearCurrent) > minCurrent) {
+                            driveTrainSubsystem.leftRear.set(noSpeed);
                             num++;
                             time.stop();
                             time.reset();
-                            num = 1;
                             break;
-                        } else if (time.get() > 3 && !(Math.abs(driveTrainSubsystem.leftRear.get()) > 0)) {
+                        } else if (time.get() > 3 && !(Math.abs(driveTrainSubsystem.leftRear.get()) > 0) || time.get() > 3 && !(getCurrent(leftRearCurrent) > minCurrent)) {
                             System.out.println("Left Rear Drive Motor " + driveTrainSubsystem.leftRear.getDeviceID() + " is not functioning properly. ");
-                            driveTrainSubsystem.leftRear.set(0);
+                            driveTrainSubsystem.leftRear.set(noSpeed);
                             time.stop();
                             time.reset();
                             testDriveMotors = false;
-                            num = 1;
+                            resetNum();
                             break;
                         }
-                    } else if (time.get() > 3 && !(Math.abs(driveTrainSubsystem.leftRear.get()) > 0)) {
+                    } else if (time.get() > 3 && !(Math.abs(driveTrainSubsystem.leftRear.get()) > 0) || time.get() > 3 && !(getCurrent(leftRearCurrent) > minCurrent)) {
                         System.out.println("Left Rear Drive Motor " + driveTrainSubsystem.leftRear.getDeviceID() + " is not functioning properly.");
-                        driveTrainSubsystem.leftRear.set(0);
+                        driveTrainSubsystem.leftRear.set(noSpeed);
                         time.stop();
                         time.reset();
                         testDriveMotors = false;
-                        num = 1;
+                        resetNum();
                         break;
                     }
 
                 case 2:
-                    driveTrainSubsystem.leftMid.set(0.5);
+                    driveTrainSubsystem.leftMid.set(halfSpeed);
                     time.start();
-                    if (time.get() > 3 && Math.abs(driveTrainSubsystem.leftRear.get()) > 0) {
-                        driveTrainSubsystem.leftMid.set(0);
-                        time.stop();
-                        time.reset();
-                        time.start();
+                    if (time.get() > 3 && Math.abs(driveTrainSubsystem.leftRear.get()) > 0 && getCurrent(leftMidCurrent) > minCurrent) {
+                        driveTrainSubsystem.leftMid.set(noSpeed);
+                        restartTimer();
                         if (time.get() > 1) {
                             time.stop();
                             time.reset();
-                            driveTrainSubsystem.leftMid.set(-0.5);
+                            driveTrainSubsystem.leftMid.set(-halfSpeed);
                             time.start();
                         }
-                        if (time.get() > 3 && Math.abs(driveTrainSubsystem.leftRear.get()) > 0) {
-                            driveTrainSubsystem.leftMid.set(0);
+                        if (time.get() > 3 && Math.abs(driveTrainSubsystem.leftRear.get()) > 0 && getCurrent(leftMidCurrent) > minCurrent) {
+                            driveTrainSubsystem.leftMid.set(noSpeed);
                             num++;
                             time.stop();
                             time.reset();
-                            num = 1;
                             break;
                         } else if (time.get() > 3 && !(Math.abs(driveTrainSubsystem.leftRear.get()) > 0)) {
                             System.out.println("Left Mid Drive Motor " + driveTrainSubsystem.leftMid.getDeviceID() + " is not functioning properly. ");
@@ -133,7 +141,7 @@ public class RobotTesting extends TimedRobot {
                             time.stop();
                             time.reset();
                             testDriveMotors = false;
-                            num = 1;
+                            resetNum();
                             break;
                         }
                     } else if (time.get() > 3 && !(Math.abs(driveTrainSubsystem.leftRear.get()) > 0)) {
@@ -142,7 +150,7 @@ public class RobotTesting extends TimedRobot {
                         time.stop();
                         time.reset();
                         testDriveMotors = false;
-                        num = 1;
+                        resetNum();
                         break;
                     }
 
@@ -151,9 +159,7 @@ public class RobotTesting extends TimedRobot {
                     time.start();
                     if (time.get() > 3 && driveTrainSubsystem.leftFront.get() > 0) {
                         driveTrainSubsystem.leftFront.set(0);
-                        time.stop();
-                        time.reset();
-                        time.start();
+                        restartTimer();
                         if (time.get() > 1) {
                             time.stop();
                             time.reset();
@@ -172,6 +178,7 @@ public class RobotTesting extends TimedRobot {
                             time.stop();
                             time.reset();
                             testDriveMotors = false;
+                            resetNum();
                             break;
                         }
                     } else if (time.get() > 3 && !(driveTrainSubsystem.leftFront.get() > 0)) {
@@ -180,6 +187,7 @@ public class RobotTesting extends TimedRobot {
                         time.stop();
                         time.reset();
                         testDriveMotors = false;
+                        resetNum();
                         break;
                     }
 
@@ -188,9 +196,7 @@ public class RobotTesting extends TimedRobot {
                     time.start();
                     if (time.get() > 3 && driveTrainSubsystem.rightRear.get() > 0) {
                         driveTrainSubsystem.rightRear.set(0);
-                        time.stop();
-                        time.reset();
-                        time.start();
+                        restartTimer();
                         if (time.get() > 1) {
                             time.stop();
                             time.reset();
@@ -209,6 +215,7 @@ public class RobotTesting extends TimedRobot {
                             time.stop();
                             time.reset();
                             testDriveMotors = false;
+                            resetNum();
                             break;
                         }
                     } else if (time.get() > 3 && !(driveTrainSubsystem.rightRear.get() > 0)) {
@@ -217,6 +224,7 @@ public class RobotTesting extends TimedRobot {
                         time.stop();
                         time.reset();
                         testDriveMotors = false;
+                        resetNum();
                         break;
                     }
 
@@ -225,9 +233,7 @@ public class RobotTesting extends TimedRobot {
                     time.start();
                     if (time.get() > 3 && driveTrainSubsystem.rightMid.get() > 0) {
                         driveTrainSubsystem.rightMid.set(0);
-                        time.stop();
-                        time.reset();
-                        time.start();
+                        restartTimer();
                         if (time.get() > 1) {
                             time.stop();
                             time.reset();
@@ -246,6 +252,7 @@ public class RobotTesting extends TimedRobot {
                             time.stop();
                             time.reset();
                             testDriveMotors = false;
+                            resetNum();
                             break;
                         }
                     } else if (time.get() > 3 && !(driveTrainSubsystem.rightMid.get() > 0)) {
@@ -254,6 +261,7 @@ public class RobotTesting extends TimedRobot {
                         time.stop();
                         time.reset();
                         testDriveMotors = false;
+                        resetNum();
                         break;
                     }
 
@@ -263,9 +271,7 @@ public class RobotTesting extends TimedRobot {
                     time.start();
                     if (time.get() > 3 && driveTrainSubsystem.rightFront.get() > 0) {
                         driveTrainSubsystem.rightFront.set(0);
-                        time.stop();
-                        time.reset();
-                        time.start();
+                        restartTimer();
                         if (time.get() > 1) {
                             time.stop();
                             time.reset();
@@ -284,6 +290,7 @@ public class RobotTesting extends TimedRobot {
                             time.stop();
                             time.reset();
                             testDriveMotors = false;
+                            resetNum();
                             break;
                         }
                     } else if (time.get() > 3 && !(driveTrainSubsystem.rightFront.get() > 0)) {
@@ -292,12 +299,13 @@ public class RobotTesting extends TimedRobot {
                         time.stop();
                         time.reset();
                         testDriveMotors = false;
+                        resetNum();
                         break;
                     }
 
                 default:
                     System.out.println("All drive motors functional.");
-                    num = 1;
+                    resetNum();
                     time.stop();
                     time.reset();
                     testDriveMotors = false;
@@ -395,6 +403,20 @@ public class RobotTesting extends TimedRobot {
 
 
 
+    }
+
+    public double getCurrent(int currentPort){
+        return Robot.PDP.getCurrent(currentPort);
+    }
+
+    public void resetNum() {
+        num = 1;
+    }
+
+    public void restartTimer() {
+        time.stop();
+        time.reset();
+        time.start();
     }
 
 }

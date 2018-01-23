@@ -24,8 +24,10 @@ public class ElevatorSubsystem extends Subsystem {
     public static double kI = 0;
     public static double kD = 0;
     public static double kF = 0;
+    public static int kTimeout = 20;
 
     public static int pidIdx = 0;
+    public static int slotIdx = 0;
     public static int cruiseVelocity = 0;
     public static int acceleration = 0;
 
@@ -60,16 +62,19 @@ public class ElevatorSubsystem extends Subsystem {
         this.leftElevator = new TalonSRX(leftElevator);
         this.rightElevator = new TalonSRX(rightElevator);
 
-        this.leftElevator.set(ControlMode.Position, 0);
+        this.leftElevator.configMotionAcceleration(acceleration, kTimeout);
+        this.leftElevator.configMotionCruiseVelocity(cruiseVelocity, kTimeout);
+
+        this.leftElevator.set(ControlMode.MotionMagic, 0);
         this.rightElevator.set(ControlMode.Follower, 0);
 
-        this.leftElevator.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, pidIdx, 20);
-        this.rightElevator.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, pidIdx, 20);
+        this.leftElevator.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, pidIdx, kTimeout);
+        this.rightElevator.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, pidIdx, kTimeout);
 
-        this.leftElevator.config_kP(0, kP, 20);
-        this.leftElevator.config_kI(0, kI, 20);
-        this.leftElevator.config_kD(0, kD, 20);
-        this.leftElevator.config_kF(0, kF, 20);
+        this.leftElevator.config_kP(slotIdx, kP, kTimeout);
+        this.leftElevator.config_kI(slotIdx, kI, kTimeout);
+        this.leftElevator.config_kD(slotIdx, kD, kTimeout);
+        this.leftElevator.config_kF(slotIdx, kF, kTimeout);
 
     }
 
@@ -99,8 +104,8 @@ public class ElevatorSubsystem extends Subsystem {
 
             case "switch":
                 leftElevator.set(ControlMode.MotionMagic, switchTarget);
-                leftElevator.configMotionCruiseVelocity(cruiseVelocity,20);
-                leftElevator.configMotionAcceleration(acceleration, 20);
+                leftElevator.configMotionCruiseVelocity(cruiseVelocity,kTimeout);
+                leftElevator.configMotionAcceleration(acceleration, kTimeout);
                 rightElevator.set(ControlMode.Follower, leftElevator.getDeviceID());
 
                 if(leftElevator.getClosedLoopError(pidIdx) < 2 && leftElevator.getClosedLoopError(pidIdx) > -2){
@@ -109,8 +114,8 @@ public class ElevatorSubsystem extends Subsystem {
 
             case "ground":
                 leftElevator.set(ControlMode.MotionMagic, groundTarget);
-                leftElevator.configMotionCruiseVelocity(cruiseVelocity,20);
-                leftElevator.configMotionAcceleration(acceleration, 20);
+                leftElevator.configMotionCruiseVelocity(cruiseVelocity,kTimeout);
+                leftElevator.configMotionAcceleration(acceleration, kTimeout);
                 rightElevator.set(ControlMode.Follower, leftElevator.getDeviceID());
 
                 if(leftElevator.getClosedLoopError(pidIdx) < 2 && leftElevator.getClosedLoopError(pidIdx) > -2){
@@ -119,8 +124,8 @@ public class ElevatorSubsystem extends Subsystem {
 
             case "scale":
                 leftElevator.set(ControlMode.MotionMagic, scaleTarget);
-                leftElevator.configMotionCruiseVelocity(cruiseVelocity,20);
-                leftElevator.configMotionAcceleration(acceleration, 20);
+                leftElevator.configMotionCruiseVelocity(cruiseVelocity,kTimeout);
+                leftElevator.configMotionAcceleration(acceleration, kTimeout);
                 rightElevator.set(ControlMode.Follower, leftElevator.getDeviceID());
 
                 if(leftElevator.getClosedLoopError(pidIdx) < 2 && leftElevator.getClosedLoopError(pidIdx) > -2){
@@ -129,8 +134,8 @@ public class ElevatorSubsystem extends Subsystem {
 
             case "climb":
                 leftElevator.set(ControlMode.MotionMagic, climbTarget);
-                leftElevator.configMotionCruiseVelocity(cruiseVelocity,20);
-                leftElevator.configMotionAcceleration(acceleration, 20);
+                leftElevator.configMotionCruiseVelocity(cruiseVelocity,kTimeout);
+                leftElevator.configMotionAcceleration(acceleration, kTimeout);
                 rightElevator.set(ControlMode.Follower, leftElevator.getDeviceID());
 
                 if(leftElevator.getClosedLoopError(pidIdx) < 2 && leftElevator.getClosedLoopError(pidIdx) > -2){
