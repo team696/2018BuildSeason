@@ -41,6 +41,9 @@ public class RobotMap {
     public static int leftElevator = 3;
     public static int rightElevator = 4;
 
+    public static int leftIntakeCurrent = 1;
+    public static int rightIntakeCurrent = 2;
+
     /*
     Climber
      */

@@ -9,16 +9,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team696.robot.commands.DriveCommand;
 import org.usfirst.frc.team696.robot.subsystems.DriveTrainSubsystem;
 import org.usfirst.frc.team696.robot.subsystems.ElevatorSubsystem;
+import org.usfirst.frc.team696.robot.subsystems.IntakeSubsystem;
+
+import javax.lang.model.util.ElementKindVisitor6;
 
 public class RobotTesting extends TimedRobot {
 
     DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem(RobotMap.leftRear, RobotMap.leftMid, RobotMap.leftFront,
                                                                     RobotMap.rightRear, RobotMap.rightMid, RobotMap.rightFront);
     ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(RobotMap.leftElevator, RobotMap.rightElevator);
+    IntakeSubsystem intakeSubsystem = new IntakeSubsystem(RobotMap.leftIntake, RobotMap.rightIntake);
 
 
     boolean testDriveMotors = false;
     boolean testElevator = false;
+    boolean testIntakeMotors = false;
 
     int leftRearCurrent = RobotMap.leftRearCurrent;
     int leftMidCurrent = RobotMap.leftMidCurrent;
@@ -26,6 +31,8 @@ public class RobotTesting extends TimedRobot {
     int rightRearCurrent = RobotMap.rightRearCurrent;
     int rightMidCurrent = RobotMap.rightMidCurrent;
     int rightFrontCurrent = RobotMap.rightFrontCurrent;
+    int leftIntakeCurrent = RobotMap.leftIntakeCurrent;
+    int rightIntakeCurrent = RobotMap.rightIntakeCurrent;
 
     int num = 1;
     Timer time = new Timer();
@@ -72,11 +79,12 @@ public class RobotTesting extends TimedRobot {
 
         SmartDashboard.putBoolean("Test Drive Motors", testDriveMotors);
         SmartDashboard.putBoolean("Test Elevator", testElevator);
+        SmartDashboard.putBoolean("Test Intake Motors", testIntakeMotors);
 
         //Drive Talons
 
 
-        // TODO Implement current checking of each motor
+        // TODO Implement Automatic Test Intake Motors function
 
         if(testDriveMotors){
             switch (num) {
@@ -157,7 +165,7 @@ public class RobotTesting extends TimedRobot {
                 case 3:
                     driveTrainSubsystem.leftFront.set(0.5);
                     time.start();
-                    if (time.get() > 3 && driveTrainSubsystem.leftFront.get() > 0) {
+                    if (time.get() > 3 && driveTrainSubsystem.leftFront.get() > 0 && getCurrent(leftFrontCurrent) > minCurrent) {
                         driveTrainSubsystem.leftFront.set(0);
                         restartTimer();
                         if (time.get() > 1) {
@@ -166,13 +174,13 @@ public class RobotTesting extends TimedRobot {
                             driveTrainSubsystem.leftFront.set(-0.5);
                             time.start();
                         }
-                        if (time.get() > 3 && driveTrainSubsystem.leftFront.get() > 0) {
+                        if (time.get() > 3 && driveTrainSubsystem.leftFront.get() > 0 && getCurrent(leftFrontCurrent) > minCurrent) {
                             driveTrainSubsystem.leftFront.set(0);
                             num++;
                             time.stop();
                             time.reset();
                             break;
-                        } else if (time.get() > 3 && !(driveTrainSubsystem.leftFront.get() > 0)) {
+                        } else if (time.get() > 3 && !(driveTrainSubsystem.leftFront.get() > 0) || time.get() > 3 && !(getCurrent(leftFrontCurrent) > minCurrent)) {
                             System.out.println("Left Front Drive Motor " + driveTrainSubsystem.leftFront.getDeviceID() + " is not functioning properly. ");
                             driveTrainSubsystem.leftMid.set(0);
                             time.stop();
@@ -181,7 +189,7 @@ public class RobotTesting extends TimedRobot {
                             resetNum();
                             break;
                         }
-                    } else if (time.get() > 3 && !(driveTrainSubsystem.leftFront.get() > 0)) {
+                    } else if (time.get() > 3 && !(driveTrainSubsystem.leftFront.get() > 0) || time.get() > 3 && !(getCurrent(leftFrontCurrent) > minCurrent)) {
                         System.out.println("Left Front Drive Motor " + driveTrainSubsystem.leftFront.getDeviceID() + " is not functioning properly.");
                         driveTrainSubsystem.leftFront.set(0);
                         time.stop();
@@ -194,7 +202,7 @@ public class RobotTesting extends TimedRobot {
                 case 4:
                     driveTrainSubsystem.rightRear.set(0.5);
                     time.start();
-                    if (time.get() > 3 && driveTrainSubsystem.rightRear.get() > 0) {
+                    if (time.get() > 3 && driveTrainSubsystem.rightRear.get() > 0 &&  getCurrent(rightRearCurrent) > minCurrent) {
                         driveTrainSubsystem.rightRear.set(0);
                         restartTimer();
                         if (time.get() > 1) {
@@ -203,13 +211,13 @@ public class RobotTesting extends TimedRobot {
                             driveTrainSubsystem.rightRear.set(-0.5);
                             time.start();
                         }
-                        if (time.get() > 3 && driveTrainSubsystem.rightRear.get() > 0) {
+                        if (time.get() > 3 && driveTrainSubsystem.rightRear.get() > 0 && getCurrent(rightRearCurrent) > minCurrent) {
                             driveTrainSubsystem.rightRear.set(0);
                             num++;
                             time.stop();
                             time.reset();
                             break;
-                        } else if (time.get() > 3 && !(driveTrainSubsystem.rightRear.get() > 0)) {
+                        } else if (time.get() > 3 && !(driveTrainSubsystem.rightRear.get() > 0) || time.get() > 3 && getCurrent(rightRearCurrent) > minCurrent) {
                             System.out.println("Right Rear Drive Motor " + driveTrainSubsystem.rightRear.getDeviceID() + " is not functioning properly. ");
                             driveTrainSubsystem.rightRear.set(0);
                             time.stop();
@@ -218,7 +226,7 @@ public class RobotTesting extends TimedRobot {
                             resetNum();
                             break;
                         }
-                    } else if (time.get() > 3 && !(driveTrainSubsystem.rightRear.get() > 0)) {
+                    } else if (time.get() > 3 && !(driveTrainSubsystem.rightRear.get() > 0) || time.get() > 3 && getCurrent(rightRearCurrent) > minCurrent) {
                         System.out.println("Right Rear Drive Motor " + driveTrainSubsystem.leftMid.getDeviceID() + " is not functioning properly.");
                         driveTrainSubsystem.rightRear.set(0);
                         time.stop();
@@ -231,7 +239,7 @@ public class RobotTesting extends TimedRobot {
                 case 5:
                     driveTrainSubsystem.rightMid.set(0.5);
                     time.start();
-                    if (time.get() > 3 && driveTrainSubsystem.rightMid.get() > 0) {
+                    if (time.get() > 3 && driveTrainSubsystem.rightMid.get() > 0 && getCurrent(rightMidCurrent) > minCurrent) {
                         driveTrainSubsystem.rightMid.set(0);
                         restartTimer();
                         if (time.get() > 1) {
@@ -240,13 +248,13 @@ public class RobotTesting extends TimedRobot {
                             driveTrainSubsystem.rightMid.set(-0.5);
                             time.start();
                         }
-                        if (time.get() > 3 && driveTrainSubsystem.rightMid.get() > 0) {
+                        if (time.get() > 3 && driveTrainSubsystem.rightMid.get() > 0 && getCurrent(rightMidCurrent) > minCurrent) {
                             driveTrainSubsystem.rightMid.set(0);
                             num++;
                             time.stop();
                             time.reset();
                             break;
-                        } else if (time.get() > 3 && !(driveTrainSubsystem.rightMid.get() > 0)) {
+                        } else if (time.get() > 3 && !(driveTrainSubsystem.rightMid.get() > 0)  || time.get() > 3 && getCurrent(rightMidCurrent) > minCurrent) {
                             System.out.println("Right Mid Drive Motor " + driveTrainSubsystem.leftMid.getDeviceID() + " is not functioning properly. ");
                             driveTrainSubsystem.rightMid.set(0);
                             time.stop();
@@ -255,7 +263,7 @@ public class RobotTesting extends TimedRobot {
                             resetNum();
                             break;
                         }
-                    } else if (time.get() > 3 && !(driveTrainSubsystem.rightMid.get() > 0)) {
+                    } else if (time.get() > 3 && !(driveTrainSubsystem.rightMid.get() > 0) || time.get() > 3 && getCurrent(rightMidCurrent) > minCurrent) {
                         System.out.println("Right Mid Drive Motor " + driveTrainSubsystem.rightMid.getDeviceID() + " is not functioning properly.");
                         driveTrainSubsystem.rightMid.set(0);
                         time.stop();
@@ -269,7 +277,7 @@ public class RobotTesting extends TimedRobot {
                     time.start();
                     driveTrainSubsystem.rightFront.set(0.5);
                     time.start();
-                    if (time.get() > 3 && driveTrainSubsystem.rightFront.get() > 0) {
+                    if (time.get() > 3 && driveTrainSubsystem.rightFront.get() > 0 && getCurrent(rightFrontCurrent) > minCurrent) {
                         driveTrainSubsystem.rightFront.set(0);
                         restartTimer();
                         if (time.get() > 1) {
@@ -278,13 +286,13 @@ public class RobotTesting extends TimedRobot {
                             driveTrainSubsystem.rightFront.set(-0.5);
                             time.start();
                         }
-                        if (time.get() > 3 && driveTrainSubsystem.rightFront.get() > 0) {
+                        if (time.get() > 3 && driveTrainSubsystem.rightFront.get() > 0 && getCurrent(rightFrontCurrent) > minCurrent) {
                             driveTrainSubsystem.rightMid.set(0);
                             num++;
                             time.stop();
                             time.reset();
                             break;
-                        } else if (time.get() > 3 && !(driveTrainSubsystem.rightFront.get() > 0)) {
+                        } else if (time.get() > 3 && !(driveTrainSubsystem.rightFront.get() > 0) || time.get() > 3 && getCurrent(rightFrontCurrent) > minCurrent) {
                             System.out.println("Right Front Drive Motor " + driveTrainSubsystem.rightFront.getDeviceID() + " is not functioning properly. ");
                             driveTrainSubsystem.rightFront.set(0);
                             time.stop();
@@ -293,7 +301,7 @@ public class RobotTesting extends TimedRobot {
                             resetNum();
                             break;
                         }
-                    } else if (time.get() > 3 && !(driveTrainSubsystem.rightFront.get() > 0)) {
+                    } else if (time.get() > 3 && !(driveTrainSubsystem.rightFront.get() > 0) || time.get() > 3 && getCurrent(rightFrontCurrent) > minCurrent) {
                         System.out.println("Right Front Drive Motor " + driveTrainSubsystem.rightFront.getDeviceID() + " is not functioning properly.");
                         driveTrainSubsystem.rightFront.set(0);
                         time.stop();
@@ -401,19 +409,37 @@ public class RobotTesting extends TimedRobot {
 
         // Intake Motors
 
+        if(testIntakeMotors){
 
+            switch(num){
+
+                case 1:
+                    time.start();
+                    intakeSubsystem.runLeftIntake(0.5);
+                    if(time.get() > 3 && getCurrent(leftIntakeCurrent) > 50){
+                        intakeSubsystem.runLeftIntake(0);
+                        restartTimer();
+                        if(time.get() > 2){
+                            intakeSubsystem.runLeftIntake(-0.5);
+                            restartTimer();
+                        }
+                    }else if(time.get() > 5 && !(getCurrent(leftIntakeCurrent) > 50)){
+                    }
+
+            }
+        }
 
     }
 
-    public double getCurrent(int currentPort){
+    private double getCurrent(int currentPort){
         return Robot.PDP.getCurrent(currentPort);
     }
 
-    public void resetNum() {
+    private void resetNum() {
         num = 1;
     }
 
-    public void restartTimer() {
+    private void restartTimer() {
         time.stop();
         time.reset();
         time.start();
