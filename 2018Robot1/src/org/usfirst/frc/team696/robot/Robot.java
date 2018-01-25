@@ -21,7 +21,7 @@ import org.usfirst.frc.team696.robot.autonomousCommands.CenterPosition;
 import org.usfirst.frc.team696.robot.subsystems.*;
 
 /**
- * @Authors Ismail Hasan, Justin Gonzales
+ * @Authors Ismail Hasan, Justin Gonzales, Ruben Erkanian
  */
 public class Robot extends TimedRobot {
 
@@ -31,7 +31,7 @@ public class Robot extends TimedRobot {
 	public static final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(RobotMap.leftElevator, RobotMap.rightElevator);
 	public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem(RobotMap.leftClimber, RobotMap.rightClimber);
 	public static final ClimberSubsystemPID climberSubsystemPID = new ClimberSubsystemPID(RobotMap.leftClimber, RobotMap.rightClimber, RobotMap.hookDeploy);
-
+	public static final GreenLEDClimber greenLEDClimber = new GreenLEDClimber(RobotMap.greenLED);
 
 
 	public static OI oi;

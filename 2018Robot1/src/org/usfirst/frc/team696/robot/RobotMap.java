@@ -51,6 +51,7 @@ public class RobotMap {
     public static int leftClimber = 1;
     public static int rightClimber = 3;
     public static int hookDeploy = 2;
+    public static int greenLED = 0;
 
 
 }
