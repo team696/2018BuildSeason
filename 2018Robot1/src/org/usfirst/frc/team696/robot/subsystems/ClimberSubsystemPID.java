@@ -54,6 +54,16 @@ public class ClimberSubsystemPID extends Subsystem {
 
    }
 
+   public void setClimberOff(){
+
+       master.set(ControlMode.Disabled, 0);
+
+       Robot.isClimbing = false;
+
+       }
+
+
+
     public void setPID(double p, double i, double d, double f){
 
         master.config_kP(0, p, 20);

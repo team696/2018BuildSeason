@@ -30,7 +30,7 @@ public class Robot extends TimedRobot {
 	public static final IntakeSubsystem intakeSubsystem = new IntakeSubsystem(RobotMap.leftIntake, RobotMap.rightIntake);
 	public static final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(RobotMap.leftElevator, RobotMap.rightElevator);
 	public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem(RobotMap.leftClimber, RobotMap.rightClimber);
-	public static final ClimberSubsystemPID climberSubsystemPID = new ClimberSubsystemPID(RobotMap.leftClimber, RobotMap.rightClimber);
+	public static final ClimberSubsystemPID climberSubsystemPID = new ClimberSubsystemPID(RobotMap.leftClimber, RobotMap.rightClimber, RobotMap.hookDeploy);
 
 
 
@@ -47,14 +47,11 @@ public class Robot extends TimedRobot {
 
 
 	/**
-	 * BOOOleans
+	 * BOOO-leans
 	 */
 
 	public static boolean isClimbing;
 	public static boolean isDeployed;
-
-
-
 
 
 
@@ -78,7 +75,8 @@ public class Robot extends TimedRobot {
 	 * Constants
 	 */
 
-	double intakeSpeed = 0;
+	public double GripperIntakeSpeed = 0;
+	public double climberSpeed = 0;
 
 
 
@@ -179,7 +177,11 @@ public class Robot extends TimedRobot {
 
 
 
-
+		if(OI.joy.getRawButtonPressed(4)) {
+			climberSubsystemPID.setClimberSpeed(0.0);
+		}else{
+			climberSubsystemPID.setClimberOff();
+		}
 
 
 
