@@ -45,6 +45,19 @@ public class Robot extends TimedRobot {
 
 	public static PowerDistributionPanel PDP = new PowerDistributionPanel();
 
+
+	/**
+	 * BOOOleans
+	 */
+
+	public static boolean isClimbing;
+	public static boolean isDeployed;
+
+
+
+
+
+
 	/**
 	Drive variables and Objects
 	 */
