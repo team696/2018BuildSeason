@@ -9,10 +9,7 @@ package org.usfirst.frc.team696.robot;
 
 import com.kauailabs.nav6.frc.IMU;
 import com.kauailabs.nav6.frc.IMUAdvanced;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.wpilibj.SerialPort;
-import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -45,6 +42,7 @@ public class Robot extends TimedRobot {
 
 	public static IMU navX;
 	SerialPort port;
+	I2C rgbSensor;
 
 
 	public static PowerDistributionPanel PDP = new PowerDistributionPanel();
@@ -102,6 +100,7 @@ public class Robot extends TimedRobot {
 		} catch(Exception ex){System.out.println("NavX not working");}
 
 		targetDirection = navX.getYaw();
+		rgbSensor = new I2C(I2C.Port.kOnboard, 0x29);
 
 	}
 
