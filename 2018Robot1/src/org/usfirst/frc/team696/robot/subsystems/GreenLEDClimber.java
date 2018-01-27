@@ -21,7 +21,11 @@ GreenLEDClimber extends Subsystem {
         // TODO: Set the default command, if any, for a subsystem here. Example:
         //    setDefaultCommand(new MySpecialCommand());
     }
-    public void set(boolean state) { greenLED.set(state);}
+    public void set(boolean state) {
+        greenLED.set(state);
+
+
+        }
 
     public boolean get() { return greenLED.get(); }
 }

@@ -6,6 +6,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team696.robot.Robot;
+import org.usfirst.frc.team696.robot.RobotMap;
+import org.usfirst.frc.team696.robot.utilities.Constants;
 
 
 public class ClimberSubsystemPID extends Subsystem {
@@ -50,7 +52,7 @@ public class ClimberSubsystemPID extends Subsystem {
        master.set(ControlMode.Velocity, targetSpeed);
        slave.set(ControlMode.Follower, master.getDeviceID());
 
-       Robot.isClimbing = true;
+       Constants.isClimbing = true;
 
    }
 
@@ -58,7 +60,7 @@ public class ClimberSubsystemPID extends Subsystem {
 
        master.set(ControlMode.Disabled, 0);
 
-       Robot.isClimbing = false;
+       Constants.isClimbing = false;
 
        }
 
@@ -75,7 +77,7 @@ public class ClimberSubsystemPID extends Subsystem {
 
     public void autoClimb(){
 
-       if(!Robot.isDeployed){
+       if(!Constants.isDeployed){
            hookDeploy();
        }
        setClimberSpeed(speed);
@@ -85,8 +87,7 @@ public class ClimberSubsystemPID extends Subsystem {
 
     public void hookDeploy(){
        hookDeploy.set(true);
-       Robot.isDeployed = true;
-
+       Constants.isDeployed = true;
 
     }
 

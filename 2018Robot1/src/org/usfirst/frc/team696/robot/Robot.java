@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team696.robot.autonomousCommands.CenterPosition;
 import org.usfirst.frc.team696.robot.subsystems.*;
+import org.usfirst.frc.team696.robot.utilities.Constants;
 
 /**
  * @Authors Ismail Hasan, Justin Gonzales, Ruben Erkanian
@@ -32,6 +33,9 @@ public class Robot extends TimedRobot {
 	public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem(RobotMap.leftClimber, RobotMap.rightClimber);
 	public static final ClimberSubsystemPID climberSubsystemPID = new ClimberSubsystemPID(RobotMap.leftClimber, RobotMap.rightClimber, RobotMap.hookDeploy);
 	public static final GreenLEDClimber greenLEDClimber = new GreenLEDClimber(RobotMap.greenLED);
+	public static final Constants constants = new Constants();
+
+
 
 
 	public static OI oi;
@@ -46,12 +50,7 @@ public class Robot extends TimedRobot {
 	public static PowerDistributionPanel PDP = new PowerDistributionPanel();
 
 
-	/**
-	 * BOOO-leans
-	 */
 
-	public static boolean isClimbing;
-	public static boolean isDeployed;
 
 
 
@@ -176,9 +175,23 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 
 
+//		/**
+//		 * Hook Release LED indicator
+//		 */
+//
+//		if(isDeployed == true){
+//			greenLEDClimber.set(true);
+//		}else{
+//			greenLEDClimber.set(false);
+//		}
 
-		if(OI.joy.getRawButtonPressed(4)) {
-			climberSubsystemPID.setClimberSpeed(0.0);
+
+		/*
+		Climber
+		 */
+
+		if(OI.joy.getRawButtonPressed(constants.buttonA)) {
+			climberSubsystemPID.setClimberSpeed(constants.intakeSpeed);
 		}else{
 			climberSubsystemPID.setClimberOff();
 		}
@@ -194,8 +207,8 @@ public class Robot extends TimedRobot {
 		Drive
 		 */
 
-		commandedTurn = OI.joy.getRawAxis(4);
-		commandedDrive = OI.joy.getRawAxis(1);
+		commandedTurn = OI.joy.getRawAxis(constants.rightXAxis);
+		commandedDrive = OI.joy.getRawAxis(constants.leftYAxis);
 
 		leftDrive = speed + wheel;
 		rightDrive = speed - wheel;
