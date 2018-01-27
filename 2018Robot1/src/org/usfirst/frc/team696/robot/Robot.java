@@ -18,7 +18,7 @@ import org.usfirst.frc.team696.robot.autonomousCommands.CenterPosition;
 import org.usfirst.frc.team696.robot.subsystems.*;
 
 /**
- * @Authors Ismail Hasan, Justin Gonzales
+ * @Authors Ismail Hasan, Justin Gonzales, Ruben Erkanian
  */
 public class Robot extends TimedRobot {
 
@@ -27,8 +27,8 @@ public class Robot extends TimedRobot {
 	public static final IntakeSubsystem intakeSubsystem = new IntakeSubsystem(RobotMap.leftIntake, RobotMap.rightIntake);
 	public static final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(RobotMap.leftElevator, RobotMap.rightElevator);
 	public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem(RobotMap.leftClimber, RobotMap.rightClimber);
-	public static final ClimberSubsystemPID climberSubsystemPID = new ClimberSubsystemPID(RobotMap.leftClimber, RobotMap.rightClimber);
-
+	public static final ClimberSubsystemPID climberSubsystemPID = new ClimberSubsystemPID(RobotMap.leftClimber, RobotMap.rightClimber, RobotMap.hookDeploy);
+	public static final GreenLEDClimber greenLEDClimber = new GreenLEDClimber(RobotMap.greenLED);
 
 
 	public static OI oi;
@@ -42,6 +42,16 @@ public class Robot extends TimedRobot {
 
 
 	public static PowerDistributionPanel PDP = new PowerDistributionPanel();
+
+
+	/**
+	 * BOOO-leans
+	 */
+
+	public static boolean isClimbing;
+	public static boolean isDeployed;
+
+
 
 	/**
 	Drive variables and Objects
@@ -63,7 +73,8 @@ public class Robot extends TimedRobot {
 	 * Constants
 	 */
 
-	double intakeSpeed = 0;
+	public double GripperIntakeSpeed = 0;
+	public double climberSpeed = 0;
 
 
 
@@ -165,7 +176,11 @@ public class Robot extends TimedRobot {
 
 
 
-
+		if(OI.joy.getRawButtonPressed(4)) {
+			climberSubsystemPID.setClimberSpeed(0.0);
+		}else{
+			climberSubsystemPID.setClimberOff();
+		}
 
 
 

@@ -3,13 +3,16 @@ package org.usfirst.frc.team696.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import org.usfirst.frc.team696.robot.Robot;
 
 
 public class ClimberSubsystemPID extends Subsystem {
 
     TalonSRX master;
     TalonSRX slave;
+    Solenoid hookDeploy;
     int pidIdx = 0;
 
 
@@ -18,11 +21,15 @@ public class ClimberSubsystemPID extends Subsystem {
    double kD = 0;
    double kF = 0;
 
+   double speed = 0;
 
-   public ClimberSubsystemPID(int motor1, int motor2){
+
+   public ClimberSubsystemPID(int motor1, int motor2, int hookDeploy){
 
        this.master = new TalonSRX(motor1);
        this.slave = new TalonSRX(motor2);
+       this.hookDeploy = new Solenoid(hookDeploy);
+
 
        this.master.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, pidIdx, 20);
        this.slave.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, pidIdx, 20);
@@ -43,7 +50,19 @@ public class ClimberSubsystemPID extends Subsystem {
        master.set(ControlMode.Velocity, targetSpeed);
        slave.set(ControlMode.Follower, master.getDeviceID());
 
+       Robot.isClimbing = true;
+
    }
+
+   public void setClimberOff(){
+
+       master.set(ControlMode.Disabled, 0);
+
+       Robot.isClimbing = false;
+
+       }
+
+
 
     public void setPID(double p, double i, double d, double f){
 
@@ -51,6 +70,24 @@ public class ClimberSubsystemPID extends Subsystem {
         master.config_kI(0, i, 20);
         master.config_kD(0, d, 20);
         master.config_kF(0, f, 20);
+    }
+
+
+    public void autoClimb(){
+
+       if(!Robot.isDeployed){
+           hookDeploy();
+       }
+       setClimberSpeed(speed);
+
+    }
+
+
+    public void hookDeploy(){
+       hookDeploy.set(true);
+       Robot.isDeployed = true;
+
+
     }
 
     public void initDefaultCommand() {
