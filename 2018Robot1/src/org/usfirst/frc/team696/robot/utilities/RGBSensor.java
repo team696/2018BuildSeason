@@ -13,10 +13,10 @@ public class RGBSensor {
     byte sensorEnable_PON = 0x01;
     byte sensorEnable_AEN = 0x02;
     byte sensorCommand_Bit = (byte) 0x80;
-    byte sensorClearL = 0x14;
-    byte sensorRedL = 0x16;
-    byte sensorGreenL = 0x18;
-    byte sensorBlueL = 0x1A;
+    public byte sensorClearL = 0x14;
+    public byte sensorRedL = 0x16;
+    public byte sensorGreenL = 0x18;
+    public byte sensorBlueL = 0x1A;
     byte[] buffer1 = new byte[1];
     byte[] buffer2 = new byte[2];
     int[] RGBC = new int[4];
@@ -45,7 +45,7 @@ public class RGBSensor {
         return reg;
     }
 
-    public int read16(byte reg){
+    public int read16(int reg){
 
         int t;
         int x;
