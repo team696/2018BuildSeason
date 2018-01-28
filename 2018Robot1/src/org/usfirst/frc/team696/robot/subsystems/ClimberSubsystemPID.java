@@ -9,6 +9,8 @@ import org.usfirst.frc.team696.robot.Robot;
 import org.usfirst.frc.team696.robot.RobotMap;
 import org.usfirst.frc.team696.robot.utilities.Constants;
 
+import java.sql.Time;
+
 
 public class ClimberSubsystemPID extends Subsystem {
 
@@ -25,8 +27,15 @@ public class ClimberSubsystemPID extends Subsystem {
 
    double speed = 0;
 
+    public static edu.wpi.first.wpilibj.Timer time = new edu.wpi.first.wpilibj.Timer();
+
 
    public ClimberSubsystemPID(int motor1, int motor2, int hookDeploy){
+
+
+
+       this.time = new  edu.wpi.first.wpilibj.Timer();
+
 
        this.master = new TalonSRX(motor1);
        this.slave = new TalonSRX(motor2);
@@ -75,12 +84,21 @@ public class ClimberSubsystemPID extends Subsystem {
     }
 
 
-    public void autoClimb(){
+    public void autoClimb(double climberSpeed){
+
+        if (time.get() == 0) {
+            time.start();
+        }
 
        if(!Constants.isDeployed){
            hookDeploy();
        }
-       setClimberSpeed(speed);
+
+       if(time.get() > 1 && Constants.isDeployed ){    //delay 1 second
+           setClimberSpeed(speed);
+
+       }
+
 
     }
 

@@ -2,7 +2,7 @@ package org.usfirst.frc.team696.robot.utilities;
 
 import edu.wpi.first.wpilibj.I2C;
 
-public class RGBSensor {
+public class   RGBSensor {
 
     static double seconds;
     public static Timer timer = new Timer(seconds);
