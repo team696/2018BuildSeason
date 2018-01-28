@@ -105,7 +105,7 @@ public class RobotTesting extends TimedRobot {
                             num++;
                             time.stop();
                             time.reset();
-                            break;
+//                            break;
                         } else if (time.get() > 3 && !(Math.abs(driveTrainSubsystem.leftRear.get()) > 0) || time.get() > 3 && !(getCurrent(leftRearCurrent) > minCurrent)) {
                             System.out.println("Left Rear Drive Motor " + driveTrainSubsystem.leftRear.getDeviceID() + " is not functioning properly. ");
                             driveTrainSubsystem.leftRear.set(noSpeed);
@@ -142,7 +142,7 @@ public class RobotTesting extends TimedRobot {
                             num++;
                             time.stop();
                             time.reset();
-                            break;
+//                            break;
                         } else if (time.get() > 3 && !(Math.abs(driveTrainSubsystem.leftRear.get()) > 0)) {
                             System.out.println("Left Mid Drive Motor " + driveTrainSubsystem.leftMid.getDeviceID() + " is not functioning properly. ");
                             driveTrainSubsystem.leftMid.set(0);
@@ -179,7 +179,7 @@ public class RobotTesting extends TimedRobot {
                             num++;
                             time.stop();
                             time.reset();
-                            break;
+//                            break;
                         } else if (time.get() > 3 && !(driveTrainSubsystem.leftFront.get() > 0) || time.get() > 3 && !(getCurrent(leftFrontCurrent) > minCurrent)) {
                             System.out.println("Left Front Drive Motor " + driveTrainSubsystem.leftFront.getDeviceID() + " is not functioning properly. ");
                             driveTrainSubsystem.leftMid.set(0);
@@ -216,7 +216,7 @@ public class RobotTesting extends TimedRobot {
                             num++;
                             time.stop();
                             time.reset();
-                            break;
+//                            break;
                         } else if (time.get() > 3 && !(driveTrainSubsystem.rightRear.get() > 0) || time.get() > 3 && getCurrent(rightRearCurrent) > minCurrent) {
                             System.out.println("Right Rear Drive Motor " + driveTrainSubsystem.rightRear.getDeviceID() + " is not functioning properly. ");
                             driveTrainSubsystem.rightRear.set(0);
@@ -253,7 +253,7 @@ public class RobotTesting extends TimedRobot {
                             num++;
                             time.stop();
                             time.reset();
-                            break;
+//                            break;
                         } else if (time.get() > 3 && !(driveTrainSubsystem.rightMid.get() > 0)  || time.get() > 3 && getCurrent(rightMidCurrent) > minCurrent) {
                             System.out.println("Right Mid Drive Motor " + driveTrainSubsystem.leftMid.getDeviceID() + " is not functioning properly. ");
                             driveTrainSubsystem.rightMid.set(0);
@@ -291,7 +291,7 @@ public class RobotTesting extends TimedRobot {
                             num++;
                             time.stop();
                             time.reset();
-                            break;
+//                            break;
                         } else if (time.get() > 3 && !(driveTrainSubsystem.rightFront.get() > 0) || time.get() > 3 && getCurrent(rightFrontCurrent) > minCurrent) {
                             System.out.println("Right Front Drive Motor " + driveTrainSubsystem.rightFront.getDeviceID() + " is not functioning properly. ");
                             driveTrainSubsystem.rightFront.set(0);

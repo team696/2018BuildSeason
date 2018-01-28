@@ -16,12 +16,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team696.robot.autonomousCommands.CenterPosition;
 import org.usfirst.frc.team696.robot.subsystems.*;
+import org.usfirst.frc.team696.robot.utilities.RGBSensor;
 import org.usfirst.frc.team696.robot.utilities.Constants;
 
 /**
  * @Authors Ismail Hasan, Justin Gonzales, Ruben Erkanian
  */
 public class Robot extends TimedRobot {
+
+	public static I2C rgbSensor;
 
 	public static final DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem(RobotMap.leftRear, RobotMap.leftMid, RobotMap.leftFront,
                                                                                           RobotMap.rightRear, RobotMap.rightMid, RobotMap.rightFront);
@@ -30,6 +33,7 @@ public class Robot extends TimedRobot {
 	public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem(RobotMap.leftClimber, RobotMap.rightClimber);
 	public static final ClimberSubsystemPID climberSubsystemPID = new ClimberSubsystemPID(RobotMap.leftClimber, RobotMap.rightClimber, RobotMap.hookDeploy);
 	public static final GreenLEDClimber greenLEDClimber = new GreenLEDClimber(RobotMap.greenLED);
+	public static final RGBSensor rgbSensorUtility = new RGBSensor(rgbSensor);
 	public static final Constants constants = new Constants();
 
 
@@ -42,7 +46,6 @@ public class Robot extends TimedRobot {
 
 	public static IMU navX;
 	SerialPort port;
-	I2C rgbSensor;
 
 
 	public static PowerDistributionPanel PDP = new PowerDistributionPanel();
@@ -219,7 +222,12 @@ public class Robot extends TimedRobot {
 		leftDrive = speed + wheel;
 		rightDrive = speed - wheel;
 
+		System.out.println(rgbSensorUtility.read16(0x18));
+
+
 		driveTrainSubsystem.tankDrive(leftDrive, rightDrive);
+
+
 
 	}
 
