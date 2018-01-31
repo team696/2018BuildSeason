@@ -15,7 +15,7 @@ public class Constants {
     public int buttonY = 4;
     public int leftXAxis = 0;
     public int leftYAxis = 1;
-    public int rightXAxis = 4;
+    public int rightXAxis = 2;
     public int rightYAxis = 5;
     public int leftBumper = 5;
     public int rightBumper = 6;

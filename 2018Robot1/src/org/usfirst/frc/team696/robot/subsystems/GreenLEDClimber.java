@@ -10,10 +10,10 @@ GreenLEDClimber extends Subsystem {
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    DigitalOutput greenLED;
+//    DigitalOutput greenLED;
 
     public GreenLEDClimber(int greenLED) {
-        this.greenLED = new DigitalOutput(greenLED);
+//        this.greenLED = new DigitalOutput(greenLED);
     }
 
 
@@ -22,11 +22,14 @@ GreenLEDClimber extends Subsystem {
         //    setDefaultCommand(new MySpecialCommand());
     }
     public void set(boolean state) {
-        greenLED.set(state);
+//        greenLED.set(state);
 
 
         }
 
-    public boolean get() { return greenLED.get(); }
+    public boolean get() {
+//        return greenLED.get();
+        return true;
+    }
 }
 

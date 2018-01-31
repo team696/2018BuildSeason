@@ -18,40 +18,40 @@ public class RobotMap {
     /*
     Drive Base
      */
-    public static int leftFront;
-    public static int leftMid;
-    public static int leftRear;
-    public static int rightFront;
-    public static int rightMid;
-    public static int rightRear;
+    public static int leftFront = 14;
+    public static int leftMid = 15;
+    public static int leftRear = 16;
+    public static int rightFront = 3;
+    public static int rightMid = 2;
+    public static int rightRear = 1;
 
-    public static int leftRearCurrent;
-    public static int leftMidCurrent;
-    public static int leftFrontCurrent;
-    public static int rightRearCurrent;
-    public static int rightMidCurrent;
-    public static int rightFrontCurrent;
+    public static int leftRearCurrent = 13;
+    public static int leftMidCurrent = 14;
+    public static int leftFrontCurrent = 15;
+    public static int rightRearCurrent = 0;
+    public static int rightMidCurrent = 1;
+    public static int rightFrontCurrent = 2;
 
     /*
     Elevator
      */
 
-    public static int leftIntake = 1;
-    public static int rightIntake = 2;
-    public static int leftElevator = 3;
-    public static int rightElevator = 4;
+    public static int leftIntake = 4;
+    public static int rightIntake = 5;
+    public static int leftElevator = 6;
+    public static int rightElevator = 8;
 
-    public static int leftIntakeCurrent = 1;
-    public static int rightIntakeCurrent = 2;
+    public static int leftIntakeCurrent = 3;
+    public static int rightIntakeCurrent = 4;
 
     /*
     Climber
      */
 
-    public static int leftClimber = 1;
-    public static int rightClimber = 3;
-    public static int hookDeploy = 2;
-    public static int greenLED = 0;
+    public static int leftClimber = 9;
+    public static int rightClimber = 10;
+    public static int hookDeploy = 1;
+    public static int greenLED = 12;
 
 
 }

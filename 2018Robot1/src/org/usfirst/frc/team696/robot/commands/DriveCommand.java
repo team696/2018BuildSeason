@@ -62,8 +62,8 @@ public class DriveCommand extends Command {
      */
     @Override
     protected void initialize() {
-        Robot.leftDriveEncoder.reset();
-        Robot.rightDriveEncoder.reset();
+//        Robot.leftDriveEncoder.reset();
+//        Robot.rightDriveEncoder.reset();
         tempTargetDirection = Robot.targetDirection +  Robot.navX.getYaw();
 
 
