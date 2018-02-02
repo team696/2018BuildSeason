@@ -20,16 +20,16 @@ public class DriveTrainSubsystem extends Subsystem {
 
     WPI_TalonSRX leftRear;
     WPI_TalonSRX leftMid;
-    WPI_TalonSRX leftFront;
+    public WPI_TalonSRX leftFront;
     SpeedControllerGroup leftSide;
 
     /*
     Right Side of Robot Set Up
      */
 
-    WPI_TalonSRX rightRear;
-    WPI_TalonSRX rightMid;
-    WPI_TalonSRX rightFront;
+    public WPI_TalonSRX rightRear;
+    public WPI_TalonSRX rightMid;
+    public WPI_TalonSRX rightFront;
     SpeedControllerGroup rightSide;
 
     /*

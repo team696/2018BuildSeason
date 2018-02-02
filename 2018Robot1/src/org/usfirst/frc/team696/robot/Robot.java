@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team696.robot;
 
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -35,7 +36,6 @@ public class Robot extends TimedRobot {
 	double wheel;
 	double leftDrive;
 	double rightDrive;
-
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -46,6 +46,8 @@ public class Robot extends TimedRobot {
 		m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
+
+		System.out.println("Anything but true");
 	}
 
 	/**
@@ -123,10 +125,15 @@ public class Robot extends TimedRobot {
 		 */
 
 		speed = OI.joy.getRawAxis(1);
-		wheel = OI.joy.getRawAxis(4);
+		wheel = OI.joy.getRawAxis(2);
 		leftDrive = speed + wheel;
 		rightDrive = speed - wheel;
 
+//		System.out.println(speed + "           " + wheel);
+		System.out.println(driveTrainSubsystem.rightFront.get());
+//		driveTrainSubsystem.rightFront.set(-0.5);
+//		driveTrainSubsystem.rightRear.set(-0.5);
+//		driveTrainSubsystem.rightMid.set(-0.5);
 		driveTrainSubsystem.tankDrive(leftDrive, rightDrive);
 
 	}
@@ -136,5 +143,6 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void testPeriodic() {
+
 	}
 }
