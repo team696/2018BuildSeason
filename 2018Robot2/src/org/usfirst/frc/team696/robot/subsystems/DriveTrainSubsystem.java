@@ -10,18 +10,11 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import org.usfirst.frc.team696.robot.OI;
-import org.usfirst.frc.team696.robot.Robot;
-import org.usfirst.frc.team696.robot.utilities.PID;
 
 public class DriveTrainSubsystem extends Subsystem {
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-
-    public PID driveStraight;
-    public double targetDirection = 0;
-    public double distanceError = 0;
 
     /*
     Left Side of Robot set up
@@ -80,12 +73,6 @@ public class DriveTrainSubsystem extends Subsystem {
         this.rightFront.set(ControlMode.Follower, this.rightRear.getDeviceID());
 
         this.rightSide = new SpeedControllerGroup(this.rightRear, this.rightMid, this.rightFront);
-
-        // PID Controller
-
-//        driveStraight = new PID(0.03, 0, 0.001, 0);
-
-        driveStraight = new PID(0.015, 0, 0., 0.001 );
 
         // Drive Object Declared and Initialized
 

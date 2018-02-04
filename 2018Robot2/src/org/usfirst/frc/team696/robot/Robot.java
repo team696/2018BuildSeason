@@ -12,7 +12,6 @@ import com.kauailabs.nav6.frc.IMUAdvanced;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -20,7 +19,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team696.robot.commands.ExampleCommand;
 import org.usfirst.frc.team696.robot.subsystems.DriveTrainSubsystem;
 import org.usfirst.frc.team696.robot.subsystems.ExampleSubsystem;
-import org.usfirst.frc.team696.robot.utilities.Util;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -46,17 +44,8 @@ public class Robot extends TimedRobot {
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 	double speed;
 	double wheel;
-	double speedTurnScale;
 	double leftDrive;
 	double rightDrive;
-	boolean intoDeadZone;
-	int loopNumber = 0;
-
-
-	Timer time = new Timer();
-
-	PowerDistributionPanel PDP = new PowerDistributionPanel(0);
-
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -149,72 +138,20 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-        System.out.println(navX.getYaw() + "          " + loopNumber + "            " + wheel + "                 " + driveTrainSubsystem.distanceError);
 
-		speed = -OI.Psoc.getRawAxis(0);
-		wheel = OI.wheel.getRawAxis(0) * 0.75;
-
-
-		/*
-		Wheel Deadzone
-		 */
-
-		if(OI.wheel.getRawAxis(0) > -0.1 && OI.wheel.getRawAxis(0) < 0.1){
-		    loopNumber++;
-		    if(loopNumber >= 1 && loopNumber <= 8){
-		        driveTrainSubsystem.targetDirection = navX.getYaw();
-            }
-//            while(intoDeadZone){
-//                int num = 0;
-//                switch(num){
-//                    case 0:
-//                        time.start();
-//                        navX.zeroYaw();
-//                        if(time.get() > 1){
-//                            time.stop();
-//                            time.reset();
-//                            intoDeadZone = false;
-//                            break;
-//                    }
-//                }
-//                break;
-//            }
-
-
-
-//			driveTrainSubsystem.targetDistance = navX.getYaw();
-			driveTrainSubsystem.distanceError = driveTrainSubsystem.targetDirection - navX.getYaw();
-
-			driveTrainSubsystem.driveStraight.setError(driveTrainSubsystem.distanceError);
-
-			wheel = driveTrainSubsystem.driveStraight.getValue();
-
-//            wheel = 0;
-		}else{
-		    loopNumber = 0;
-//		    wheel = OI.Psoc.getRawAxis(0);
-
-        }
 
 		/*
 		Tank Drive Usage
 		 */
 
-//        speed = -OI.Psoc.getRawAxis(0);
-//        wheel = OI.wheel.getRawAxis(0);
-//        speed = Util.smoothDeadZone(speed, -0.1, 0.1, -1, 1, 0);
-//        speed = Util.deadZone(speed, -0.1, 0.1, 0);
-//        speedTurnScale = 1/(Math.abs(speed)*1.2 + 1.5);
-//        wheel = Util.smoothDeadZone(wheel, -0.15, 0.15, -1, 1, 0) * Math.abs(speedTurnScale);
-
-
-        leftDrive = speed + wheel;
+		speed = -OI.Psoc.getRawAxis(0);
+		wheel = OI.wheel.getRawAxis(0);
+		leftDrive = speed + wheel;
 		rightDrive = speed - wheel;
 
 //		System.out.println(speed + "           " + wheel);
 //		System.out.println(driveTrainSubsystem.rightFront.get());
-//		System.out.println(PDP.getTemperature());
-//        System.out.println(PDP.getCurrent(15) + "               " + PDP.getCurrent(0));
+		System.out.println(-driveTrainSubsystem.leftFront.getSelectedSensorVelocity(0) + "             " + navX.getYaw());
 //		driveTrainSubsystem.rightFront.set(-0.5);
 //		driveTrainSubsystem.rightRear.set(-0.5);
 //		driveTrainSubsystem.rightMid.set(-0.5);
