@@ -65,7 +65,7 @@ public class RobotTesting extends TimedRobot {
         Timer time = new Timer();
 
         if(testDriveMotors){
-            switch (num) {
+            switch(num) {
                 case 1:
                     driveTrainSubsystem.leftRear.set(0.5);
                     time.start();

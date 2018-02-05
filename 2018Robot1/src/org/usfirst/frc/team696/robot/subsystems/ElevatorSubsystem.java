@@ -130,6 +130,7 @@ public class ElevatorSubsystem extends Subsystem {
             case "manual":
                 manualOverride();
                 break;
+
             default:
                 leftElevator.set(ControlMode.Disabled, 0);
                 rightElevator.set(ControlMode.Disabled, 0);
