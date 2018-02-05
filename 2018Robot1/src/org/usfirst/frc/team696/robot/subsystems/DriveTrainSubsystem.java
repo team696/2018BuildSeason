@@ -3,6 +3,7 @@ package org.usfirst.frc.team696.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.GroupMotorControllers;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -14,6 +15,8 @@ public class DriveTrainSubsystem extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
+
+
     /*
     Left Side of Robot set up
      */
@@ -22,6 +25,9 @@ public class DriveTrainSubsystem extends Subsystem {
     public WPI_TalonSRX leftMid;
     public WPI_TalonSRX leftFront;
     public SpeedControllerGroup leftSide;
+//    public PowerDistributionPanel leftRearCurrent;
+//    public PowerDistributionPanel leftMidCurrent;
+//    public PowerDistributionPanel leftFrontCurrent;
 
     /*
     Right Side of Robot Set Up
@@ -30,7 +36,10 @@ public class DriveTrainSubsystem extends Subsystem {
     public WPI_TalonSRX rightRear;
     public WPI_TalonSRX rightMid;
     public WPI_TalonSRX rightFront;
-    SpeedControllerGroup rightSide;
+    public SpeedControllerGroup rightSide;
+//    public PowerDistributionPanel rightRearCurrent;
+//    public PowerDistributionPanel rightMidCurrent;
+//    public PowerDistributionPanel rightFrontCurrent;
 
     /*
     Final Drive Setup
@@ -48,6 +57,9 @@ public class DriveTrainSubsystem extends Subsystem {
         this.leftRear = new WPI_TalonSRX(leftRear);
         this.leftMid = new WPI_TalonSRX(leftMid);
         this.leftFront = new WPI_TalonSRX(leftFront);
+//        leftRearCurrent = new PowerDistributionPanel(1);
+//        leftMidCurrent = new PowerDistributionPanel(2);
+//        leftFrontCurrent = new PowerDistributionPanel(3);
         this.leftSide = new SpeedControllerGroup(this.leftRear, this.leftMid, this.leftFront);
 
         /*
@@ -57,6 +69,9 @@ public class DriveTrainSubsystem extends Subsystem {
         this.rightRear = new WPI_TalonSRX(rightRear);
         this.rightMid = new WPI_TalonSRX(rightMid);
         this.rightFront = new WPI_TalonSRX(rightFront);
+//        rightRearCurrent = new PowerDistributionPanel(1);
+//        rightMidCurrent = new PowerDistributionPanel(2);
+//        rightFrontCurrent = new PowerDistributionPanel(3);
         this.rightSide = new SpeedControllerGroup(this.rightRear, this.rightMid, this.rightFront);
 
         // Drive Object Declared and Initialized

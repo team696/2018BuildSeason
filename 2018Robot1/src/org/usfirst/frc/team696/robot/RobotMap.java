@@ -25,6 +25,13 @@ public class RobotMap {
     public static int rightMid;
     public static int rightRear;
 
+    public static int leftRearCurrent;
+    public static int leftMidCurrent;
+    public static int leftFrontCurrent;
+    public static int rightRearCurrent;
+    public static int rightMidCurrent;
+    public static int rightFrontCurrent;
+
     /*
     Elevator
      */
@@ -34,11 +41,17 @@ public class RobotMap {
     public static int leftElevator = 3;
     public static int rightElevator = 4;
 
+    public static int leftIntakeCurrent = 1;
+    public static int rightIntakeCurrent = 2;
+
     /*
     Climber
      */
 
     public static int leftClimber = 1;
     public static int rightClimber = 3;
+    public static int hookDeploy = 2;
+    public static int greenLED = 0;
+
 
 }

@@ -11,8 +11,8 @@ public class IntakeSubsystem extends Subsystem {
     WPI_TalonSRX leftIntake;
     WPI_TalonSRX rightIntake;
     SpeedControllerGroup intake;
-    double intakeSpeed = 0;
-    double outtakeSpeed = 0;
+//    double intakeSpeed = 0;
+//    double outtakeSpeed = 0;
 
 
 
@@ -25,9 +25,15 @@ public class IntakeSubsystem extends Subsystem {
     }
 
     public void run(double speed){
-
         intake.set(speed);
+    }
 
+    public void runLeftIntake(double speed){
+        leftIntake.set(speed);
+    }
+
+    public void runRightIntake(double speed){
+        rightIntake.set(speed);
     }
 
 
