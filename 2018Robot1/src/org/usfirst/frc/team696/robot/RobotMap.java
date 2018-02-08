@@ -15,6 +15,7 @@ package org.usfirst.frc.team696.robot;
  */
 public class RobotMap {
 
+<<<<<<< HEAD
     public static int leftFront = 16;
     public static int leftMid = 15;
     public static int leftRear = 14;
@@ -31,3 +32,45 @@ public class RobotMap {
 	// public static int rangefinderPort = 1;
 	// public static int rangefinderModule = 1;
 }
+=======
+    /*
+    Drive Base
+     */
+    public static int leftFront;
+    public static int leftMid;
+    public static int leftRear;
+    public static int rightFront;
+    public static int rightMid;
+    public static int rightRear;
+
+    public static int leftRearCurrent;
+    public static int leftMidCurrent;
+    public static int leftFrontCurrent;
+    public static int rightRearCurrent;
+    public static int rightMidCurrent;
+    public static int rightFrontCurrent;
+
+    /*
+    Elevator
+     */
+
+    public static int leftIntake = 1;
+    public static int rightIntake = 2;
+    public static int leftElevator = 3;
+    public static int rightElevator = 4;
+
+    public static int leftIntakeCurrent = 1;
+    public static int rightIntakeCurrent = 2;
+
+    /*
+    Climber
+     */
+
+    public static int leftClimber = 1;
+    public static int rightClimber = 3;
+    public static int hookDeploy = 2;
+    public static int greenLED = 0;
+
+
+}
+>>>>>>> 303724418a6d61f39cd163bb002c7a8b6e25305d

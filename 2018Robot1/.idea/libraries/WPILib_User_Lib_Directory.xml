@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="WPILib User Lib Directory">
+    <CLASSES>
+      <root url="file://$USER_HOME$/wpilib/user/java/lib" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="file://$USER_HOME$/wpilib/user/java/lib" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="file://$USER_HOME$/wpilib/user/java/lib" />
+    </SOURCES>
+    <jarDirectory url="file://$USER_HOME$/wpilib/user/java/lib" recursive="false" />
+    <jarDirectory url="file://$USER_HOME$/wpilib/user/java/lib" recursive="false" type="JAVADOC" />
+    <jarDirectory url="file://$USER_HOME$/wpilib/user/java/lib" recursive="false" type="SOURCES" />
+  </library>
+</component>

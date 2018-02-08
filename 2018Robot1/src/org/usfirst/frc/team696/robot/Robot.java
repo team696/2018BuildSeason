@@ -9,31 +9,51 @@ package org.usfirst.frc.team696.robot;
 
 import com.kauailabs.nav6.frc.IMU;
 import com.kauailabs.nav6.frc.IMUAdvanced;
+<<<<<<< HEAD
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+=======
+import edu.wpi.first.wpilibj.*;
+>>>>>>> 303724418a6d61f39cd163bb002c7a8b6e25305d
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+<<<<<<< HEAD
 import org.usfirst.frc.team696.robot.commands.ExampleCommand;
 import org.usfirst.frc.team696.robot.subsystems.DriveTrainSubsystem;
 import org.usfirst.frc.team696.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team696.robot.utilities.Util;
+=======
+import org.usfirst.frc.team696.robot.autonomousCommands.CenterPosition;
+import org.usfirst.frc.team696.robot.subsystems.*;
+import org.usfirst.frc.team696.robot.utilities.RGBSensor;
+import org.usfirst.frc.team696.robot.utilities.Constants;
+>>>>>>> 303724418a6d61f39cd163bb002c7a8b6e25305d
 
 /**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the TimedRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.properties file in the
- * project.
+ * @Authors Ismail Hasan, Justin Gonzales, Ruben Erkanian
  */
 public class Robot extends TimedRobot {
-	public static final ExampleSubsystem kExampleSubsystem = new ExampleSubsystem();
+
+	public static I2C rgbSensor;
+
 	public static final DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem(RobotMap.leftRear, RobotMap.leftMid, RobotMap.leftFront,
                                                                                           RobotMap.rightRear, RobotMap.rightMid, RobotMap.rightFront);
-	public static OI m_oi;
+	public static final IntakeSubsystem intakeSubsystem = new IntakeSubsystem(RobotMap.leftIntake, RobotMap.rightIntake);
+	public static final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(RobotMap.leftElevator, RobotMap.rightElevator);
+	public static final ClimberSubsystem climberSubsystem = new ClimberSubsystem(RobotMap.leftClimber, RobotMap.rightClimber);
+	public static final ClimberSubsystemPID climberSubsystemPID = new ClimberSubsystemPID(RobotMap.leftClimber, RobotMap.rightClimber, RobotMap.hookDeploy);
+	public static final GreenLEDClimber greenLEDClimber = new GreenLEDClimber(RobotMap.greenLED);
+	public static final RGBSensor rgbSensorUtility = new RGBSensor(rgbSensor);
+	public static final Constants constants = new Constants();
+
+
+
+
+	public static OI oi;
 
 	/*
 	 * set up navX
@@ -44,11 +64,33 @@ public class Robot extends TimedRobot {
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+	public static IMU navX;
+	SerialPort port;
+
+
+	public static PowerDistributionPanel PDP = new PowerDistributionPanel();
+
+
+
+
+
+
+	/**
+	Drive variables and Objects
+	 */
+
+	public static Encoder leftDriveEncoder = new Encoder(1, 1);
+	public static Encoder rightDriveEncoder = new Encoder(2, 2);
+
+	double commandedTurn;
+	double commandedDrive;
 	double speed;
 	double wheel;
 	double speedTurnScale;
 	double leftDrive;
 	double rightDrive;
+<<<<<<< HEAD
 	boolean intoDeadZone;
 	int loopNumber = 0;
 
@@ -56,6 +98,20 @@ public class Robot extends TimedRobot {
 	Timer time = new Timer();
 
 	PowerDistributionPanel PDP = new PowerDistributionPanel(0);
+=======
+	public static double targetDirection;
+//	double rampSpeed = 0.015;
+
+	/**
+	 * Constants
+	 */
+
+	public double GripperIntakeSpeed = 0;
+	public double climberSpeed = 0;
+
+
+
+>>>>>>> 303724418a6d61f39cd163bb002c7a8b6e25305d
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -63,11 +119,15 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		m_oi = new OI();
-		m_chooser.addDefault("Default Auto", new ExampleCommand());
+		oi = new OI();
+		m_chooser.addDefault("CenterPos", new CenterPosition());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 303724418a6d61f39cd163bb002c7a8b6e25305d
 		/*
 		 * initialize navX
 		 */
@@ -77,6 +137,12 @@ public class Robot extends TimedRobot {
 			navX = new IMUAdvanced(port, UpdateRateHz);
 		} catch(Exception ex){System.out.println("NavX not working");}
 
+<<<<<<< HEAD
+=======
+		targetDirection = navX.getYaw();
+		rgbSensor = new I2C(I2C.Port.kOnboard, 0x29);
+
+>>>>>>> 303724418a6d61f39cd163bb002c7a8b6e25305d
 	}
 
 	/**
@@ -196,10 +262,46 @@ public class Robot extends TimedRobot {
 
         }
 
+		if(OI.joy.getRawButton(2)){
+
+		}else{
+
+		}
+
+
+//		/**
+//		 * Hook Release LED indicator
+//		 */
+//
+//		if(isDeployed == true){
+//			greenLEDClimber.set(true);
+//		}else{
+//			greenLEDClimber.set(false);
+//		}
+
+
 		/*
-		Tank Drive Usage
+		Climber
 		 */
 
+		if(OI.joy.getRawButtonPressed(constants.buttonA)) {
+			climberSubsystemPID.setClimberSpeed(constants.intakeSpeed);
+		}else{
+			climberSubsystemPID.setClimberOff();
+		}
+
+
+
+
+
+
+
+
+		/*
+		Drive
+		 */
+
+<<<<<<< HEAD
 //        speed = -OI.Psoc.getRawAxis(0);
 //        wheel = OI.wheel.getRawAxis(0);
 //        speed = Util.smoothDeadZone(speed, -0.1, 0.1, -1, 1, 0);
@@ -218,7 +320,20 @@ public class Robot extends TimedRobot {
 //		driveTrainSubsystem.rightFront.set(-0.5);
 //		driveTrainSubsystem.rightRear.set(-0.5);
 //		driveTrainSubsystem.rightMid.set(-0.5);
+=======
+		commandedTurn = OI.joy.getRawAxis(constants.rightXAxis);
+		commandedDrive = OI.joy.getRawAxis(constants.leftYAxis);
+
+		leftDrive = speed + wheel;
+		rightDrive = speed - wheel;
+
+		System.out.println(rgbSensorUtility.read16(0x18));
+
+
+>>>>>>> 303724418a6d61f39cd163bb002c7a8b6e25305d
 		driveTrainSubsystem.tankDrive(leftDrive, rightDrive);
+
+
 
 	}
 
