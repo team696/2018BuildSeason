@@ -8,6 +8,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class JustinElevator extends Subsystem {
 
+    /**
+     * @Author: Justin Gonzales
+     */
+
     public static TalonSRX elevatorMotor;
 
     /* Motion Magic */

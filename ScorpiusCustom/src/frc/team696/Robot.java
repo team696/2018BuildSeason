@@ -31,6 +31,7 @@ import frc.team696.subsystems.RGBSensorSubsystem;
  * while also making the most of my current abilities. I'm going next level.
  *
  * Time and date of writing this comment: 4:48 AM, 2/5/2018
+ *
  */
 
 public class Robot extends TimedRobot {
@@ -39,7 +40,7 @@ public class Robot extends TimedRobot {
         Creation of Class Objects
      */
 
-    // TODO Make class objects for the IntakeSubsystem, ElevatorSubsystem,
+    // TODO Make class object(s) for the ElevatorSubsystem, finish DriveStraight code
 
     public static DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem(RobotMap.leftRear, RobotMap.leftMid, RobotMap.leftFront,
                                                                                     RobotMap.rightRear, RobotMap.rightMid, RobotMap.rightFront);
@@ -159,19 +160,6 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
 
-        /** Elevator **/
-
-//        System.out.println(justinElevator.elevatorMotor.getSelectedSensorPosition(0));
-
-
-
-
-
-
-
-
-
-
         /*
             Run Intake (Forward/Backward)
          */
@@ -197,7 +185,7 @@ public class Robot extends TimedRobot {
          */
 
         // Drive Straight Code / Deadzone
-        // VERY WIP, DOESN'T FULLY FUNCTION CURRENTLY
+        /** VERY WIP, DOESN'T FULLY FUNCTION CURRENTLY */
 
         if(wheel > deadZoneMin && wheel < deadZoneMax){
 
