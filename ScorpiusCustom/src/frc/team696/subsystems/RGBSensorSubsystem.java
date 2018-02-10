@@ -7,9 +7,22 @@ import frc.team696.RobotMap;
 
 public class RGBSensorSubsystem extends Subsystem {
 
+    public int loopNumber = 0;
+    public boolean prevValueSet = false;
+    double prevValue;
+    double nowValue;
+    double nullNowPlus = nowValue + 1;
+    double nullNowMinus = nowValue - 1;
+
+
+
+
     public I2C rgbSensor;
     public Timer time = new Timer();
+    public Timer time1 = new Timer();
 
+
+    /*
     /*
         Buffers
      */
@@ -17,7 +30,7 @@ public class RGBSensorSubsystem extends Subsystem {
     public byte[] buffer1 = new byte[10];
     public int[] buffer2 = new int[10];
 
-    public RGBSensorSubsystem(byte enableAddress){
+    public RGBSensorSubsystem(byte enableAddress) {
 
         this.rgbSensor = new I2C(I2C.Port.kOnboard, enableAddress);
 
@@ -28,7 +41,7 @@ public class RGBSensorSubsystem extends Subsystem {
 
         time.start();
         rgbSensor.write(RobotMap.enableAddress, RobotMap.enable_PON);
-        if(time.get() > 3){
+        if (time.get() > 3) {
             time.stop();
             time.reset();
             rgbSensor.write(RobotMap.enableAddress, RobotMap.enable_PON | RobotMap.enable_AEN);
@@ -42,7 +55,7 @@ public class RGBSensorSubsystem extends Subsystem {
         return reg;
     }
 
-    public int read16(byte reg){
+    public int read16(byte reg) {
 
         int t;
         int x;
@@ -54,7 +67,7 @@ public class RGBSensorSubsystem extends Subsystem {
         t = buffer1[0];
         x = buffer1[1];
 
-        x <<=8;
+        x <<= 8;
         x |= t;
 
         return x;
@@ -81,12 +94,12 @@ public class RGBSensorSubsystem extends Subsystem {
     public void ismailIsALoser() {
 
         rgbSensor.write(0x80, (byte) 0x03);
-        rgbSensor.write(0x81, (byte)0xEB);
-        rgbSensor.write(0x83, (byte)0xFF);
-        rgbSensor.write(0x8F, (byte)0x00);
-        try{
-            Thread.sleep(50);
-        }catch(InterruptedException e){
+        rgbSensor.write(0x81, (byte) 0xC0);
+        rgbSensor.write(0x83, (byte) 0xFF);
+        rgbSensor.write(0x8F, (byte) 0x00);
+        try {
+            Thread.sleep((long) 154);
+        } catch (InterruptedException e) {
 
         }
 
@@ -99,30 +112,75 @@ public class RGBSensorSubsystem extends Subsystem {
 
         double luminance = (-0.32466 * red) + (1.57837 * green) + (-0.73191 * blue);
 
-        System.out.printf("Red Color Luminance   : %d lux %n", red);
-        System.out.printf("Green Color Luminance : %d lux %n", green);
-        System.out.printf("Blue Color Luminance  : %d lux %n", blue);
-        System.out.printf("IR Luminance          : %d lux %n", cData);
+//        System.out.printf("Red Color Luminance   : %d lux %n", red); // no u
+//        System.out.printf("Green Color Luminance : %d lux %n", green);
+//        System.out.printf("Blue Color Luminance  : %d lux %n", blue);
+//        System.out.printf("IR Luminance          : %d lux %n", cData);
 //        System.out.printf("Ambient Light Luminance : %d lux %n", luminance);
 
-//        System.out.println(red);
+        double gbAverage = ((blue + green) / 3);
+        double redNoLuminance = (red / luminance);
+        double blueNoLuminance = (blue / luminance);
+        double greenNoLuminance = (green / luminance);
 
-        /* experimental */
+        double difference = (red - gbAverage);
 
-        double greenBlueAverage = ((green+blue) / 2);
-        System.out.println("greenBlue" + greenBlueAverage);
-        System.out.println("red" + red);
+        System.out.println("redNoLuminance " + redNoLuminance);
+        System.out.println("greenNoLuminance" + greenNoLuminance);
+        System.out.println("blueNoLuminance" + blueNoLuminance);
 
-        /**/
-        if(red > greenBlueAverage){ //50
-            System.out.println("YOU DID IT!");
+//        if(redNoLuminance > ((greenNoLuminance+blueNoLuminance)/2)){
+//            System.out.println("That's red!");
+//        }
+
+
+                    System.out.println(prevValueSet);
+
+
+
+
+        if(time1.get() == 0){
+            time1.start();
+        }
+
+        System.out.println(time1.get());
+
+        if(time1.get() >= 0.5 && !prevValueSet){
+            prevValueSet = true;
+            prevValue = redNoLuminance;
+
+
+            }
+        if(time1.get() >= 4.0){
+            nowValue = redNoLuminance;
+//            System.out.println("nowValue: " + nowValue);
 
         }
 
-    }
+        if(time1.get() >= 10.0){
+            prevValueSet = false;
+            time1.reset();
+        }
 
-    public void initDefaultCommand() {
 
-    }
 
-}
+        System.out.println("prevValue : " + prevValue);
+        System.out.println("nowValue: " + nowValue);
+
+
+        if(prevValue >= nullNowMinus && prevValue <= nullNowPlus){
+            System.out.println("in Nullzone" );
+            nowValue = prevValue;
+        }
+        if(prevValue != nowValue && nowValue != 0 && prevValue != 0){
+            System.out.println("WWWOOOOOAAAAHHHHH!!! ITS A CHANGE!!!!!");
+        }
+        }
+
+
+            public void initDefaultCommand () {
+
+
+            }
+        }
+

@@ -46,5 +46,16 @@ public class RobotMap {
     public static byte blueDataL = 0x1A;
     public static byte blueDataH = 0x1B;
 
+    /*
+        Elevator
+     */
+    public static int Elevator;
 
+    /*
+    Intake
+     */
+
+    public static int intakeA = 8;
+    public static int intakeB = 9;
 }
+

@@ -20,10 +20,12 @@ import frc.team696.autonomousCommands.CenterPos;
 import frc.team696.autonomousCommands.LeftPos;
 import frc.team696.autonomousCommands.RightPos;
 import frc.team696.subsystems.DriveTrainSubsystem;
+import frc.team696.subsystems.IntakeSubsystem;
+import frc.team696.subsystems.JustinElevator;
 import frc.team696.subsystems.RGBSensorSubsystem;
 
 /**
- * @Author: Ismail Hasan
+ * @Author: Ismail Hasan && Justin Gonzales
  *
  * Semi-fully custom-made code, this is where I'm doing things I've never done before,
  * while also making the most of my current abilities. I'm going next level.
@@ -43,6 +45,12 @@ public class Robot extends TimedRobot {
                                                                                     RobotMap.rightRear, RobotMap.rightMid, RobotMap.rightFront);
     public static Constants constants = new Constants();
     public static RGBSensorSubsystem rgbSensorSubsystem = new RGBSensorSubsystem(RobotMap.deviceAddress);
+//    public static final JustinElevator justinElevator = new JustinElevator(RobotMap.Elevator);
+    public static final IntakeSubsystem intakeSubsystem = new IntakeSubsystem(RobotMap.intakeA, RobotMap.intakeB);
+
+
+
+
 
     /*
         Object and Variable Declaration
@@ -151,6 +159,19 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+
+        /** Elevator **/
+
+//        System.out.println(justinElevator.elevatorMotor.getSelectedSensorPosition(0));
+
+
+
+
+
+
+
+
+
 
         /*
             Drive Functionality
