@@ -46,5 +46,11 @@ public class RobotMap {
     public static byte blueDataL = 0x1A;
     public static byte blueDataH = 0x1B;
 
+    /*
+        Intake Ports
+     */
+
+    public static int intakeA = 8;
+    public static int intakeB = 9;
 
 }
