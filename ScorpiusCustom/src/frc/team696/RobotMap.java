@@ -21,7 +21,7 @@ public class RobotMap {
 
     // Right Side
 
-    public static int rightRear = 4;
+    public static int rightRear = 3;
     public static int rightMid = 2;
     public static int rightFront = 1;
 

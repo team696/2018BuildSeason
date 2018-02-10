@@ -31,10 +31,10 @@ public class DriveTrainSubsystem extends Subsystem {
 
     public PIDController driveStraightPID;
 
-    public double kP = 0;
+    public double kP = 0.03;
     public double kI = 0;
     public double kD = 0;
-    public double kAlpha = 0;
+    public double kAlpha = 0.02;
 
     public DriveTrainSubsystem(int leftRear, int leftMid, int leftFront,
                                int rightRear, int rightMid, int rightFront) {
@@ -57,6 +57,8 @@ public class DriveTrainSubsystem extends Subsystem {
             Left Side Configuration
          */
 
+        this.leftRear.configPeakOutputForward(1, timeoutMs);
+        this.leftRear.configPeakOutputReverse(-1, timeoutMs);
         this.leftRear.set(ControlMode.PercentOutput, 0);
         this.leftMid.set(ControlMode.Follower, this.leftRear.getDeviceID());
         this.leftFront.set(ControlMode.Follower, this.leftRear.getDeviceID());
@@ -67,6 +69,8 @@ public class DriveTrainSubsystem extends Subsystem {
             Right Side Configuration
          */
 
+        this.leftRear.configPeakOutputReverse(-1, timeoutMs);
+        this.leftRear.configPeakOutputForward(1, timeoutMs);
         this.rightRear.set(ControlMode.PercentOutput, 0);
         this.rightMid.set(ControlMode.Follower, this.rightRear.getDeviceID());
         this.rightFront.set(ControlMode.Follower, this.rightRear.getDeviceID());

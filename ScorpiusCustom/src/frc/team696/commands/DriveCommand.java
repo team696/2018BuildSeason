@@ -43,20 +43,22 @@ public class DriveCommand extends Command {
 
     // Distance PID Values
 
-    private double kPA = 0;
-    private double kIA = 0;
+    private double kPA = 0.07;
+    private double kIA = 0.0001;
     private double kDA = 0;
-    private double kAlphaA = 0;
+    private double kAlphaA = 0.5;
+
+    // Working tests
 
     // Direction PID Values
 
-    private double kPB = 0;
+    private double kPB = 0.025;
     private double kIB = 0;
     private double kDB = 0;
-    private double kAlphaB = 0;
+    private double kAlphaB = 0.5;
 
-    PIDController distancePID = new PIDController(kPA, kIA, kDA, kAlphaA);
-    PIDController directionPID = new PIDController(kPB, kIB, kDB, kAlphaB);
+    PIDController distancePID;
+    PIDController directionPID;
 
     /*
         Constructor
@@ -72,9 +74,12 @@ public class DriveCommand extends Command {
     @Override
     protected void initialize() {
 
-        /**
-         * As of right now, no initialization required. Subject to change.
+        /*
+            Set PID Values for Direction and Distance
          */
+
+        distancePID = new PIDController(kPA, kIA, kDA, kAlphaA);
+        directionPID = new PIDController(kPB, kIB, kDB, kAlphaB);
 
     }
 
@@ -101,17 +106,24 @@ public class DriveCommand extends Command {
         currentDirection = Robot.navX.getYaw();
         directionError = targetDirection - currentDirection;
 
+//        /*
+//            Accounting for Gyro reaching it's limits at -180 and 180
+//         */
+//
+//        if(directionError > 180){
+//            directionError = directionError - 360;
+//        }
+//
+//        if(directionError < 180) {
+//            directionError = directionError + 360;
+//        }
+
         /*
-            Accounting for Gyro reaching it's limits at -180 and 180
+            Setting errors to the PID Controllers
          */
 
-        if(currentDirection > 180){
-            currentDirection = currentDirection - 360;
-        }
-
-        if(currentDirection < 180) {
-            currentDirection = currentDirection + 360;
-        }
+        distancePID.setError(distanceError);
+        directionPID.setError(directionError);
 
         /*
             Getting PID Values for both Distance and Direction
@@ -141,6 +153,14 @@ public class DriveCommand extends Command {
         }
 
         /*
+            Account for if error is too big and PID Values are too small
+         */
+
+        if(speed < 0.1){
+            speed = speed * 4;
+        }
+
+        /*
             Setting up the drive functionality
          */
 
@@ -148,6 +168,12 @@ public class DriveCommand extends Command {
         rightDrive = speed - wheel;
 
         Robot.driveTrainSubsystem.tankDrive(leftDrive, rightDrive);
+
+        /*
+            Output to DriverStation
+         */
+
+        System.out.println(directionError + "             " + currentDistance);
 
     }
 

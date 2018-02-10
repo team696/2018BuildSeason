@@ -79,9 +79,12 @@ public class Robot extends TimedRobot {
 
     // Speed Turn Scale Variables
 
-    double a = 0.286095;
-    double h = -0.243151;
-    double k = -0.130137;
+    double a = 0.170641; // 0.286095
+    double h = -0.258475; // -0.243151
+    double k = 0.364407; // -0.130137
+
+    // Nora's currently preferred values for turn scale
+
     double speedTurnScale;
 
     /*
@@ -145,12 +148,21 @@ public class Robot extends TimedRobot {
 
         rgbSensorSubsystem.rgbSensor.write(0xC0, 1); // set Integration Time
         rgbSensorSubsystem.rgbSensor.write(0x02, 1); // set Gain
-        rgbSensorSubsystem.enable();
     }
 
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+
+
+
+        /*
+            Speed Turn Scale Stuff
+         */
+
+        speedTurnScale = a*(1/((speed*speed)-h))+k;
+        speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
+        wheel = OI.wheel.getRawAxis(constants.wheelDriveAxis) * speedTurnScale;
 
         /*
             Drive Functionality
@@ -161,26 +173,19 @@ public class Robot extends TimedRobot {
 
         if(wheel > deadZoneMin && wheel < deadZoneMax){
 
-            loopNumber++;
-            currentDirection = navX.getYaw();
-            if(loopNumber == 1){
-                targetDirection = navX.getYaw();
-            }
-            directionError = targetDirection - currentDirection;
-            driveTrainSubsystem.driveStraightPID.setError(directionError);
-            wheel = driveTrainSubsystem.driveStraightPID.getValue();
+//            loopNumber++;
+//            currentDirection = navX.getYaw();
+//            if(loopNumber == 1){
+//                targetDirection = navX.getYaw();
+//            }
+//            directionError = targetDirection - currentDirection;
+//            driveTrainSubsystem.driveStraightPID.setError(directionError);
+//            wheel = driveTrainSubsystem.driveStraightPID.getValue();
+            wheel = 0;
 
         }else{
             loopNumber = 0;
         }
-
-        /*
-            Speed Turn Scale Stuff
-         */
-
-        speedTurnScale = a*(1/((speed*speed)-h))+k;
-        speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
-        wheel = OI.wheel.getRawAxis(constants.wheelDriveAxis) * speedTurnScale;
 
         leftDrive = speed + wheel;
         rightDrive = speed - wheel;
@@ -190,7 +195,8 @@ public class Robot extends TimedRobot {
 //        rgbSensorSubsystem.getRawData();
 
 //        System.out.println(wheel);
-        rgbSensorSubsystem.ismailIsALoser();
+//        rgbSensorSubsystem.rgbGetLux();
+        System.out.println(wheel);
 
         driveTrainSubsystem.tankDrive(leftDrive, rightDrive);
 
