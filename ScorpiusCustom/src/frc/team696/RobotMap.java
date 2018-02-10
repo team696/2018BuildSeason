@@ -21,7 +21,7 @@ public class RobotMap {
 
     // Right Side
 
-    public static int rightRear = 4;
+    public static int rightRear = 3;
     public static int rightMid = 2;
     public static int rightFront = 1;
 
@@ -47,12 +47,7 @@ public class RobotMap {
     public static byte blueDataH = 0x1B;
 
     /*
-        Elevator
-     */
-    public static int Elevator;
-
-    /*
-    Intake
+        Intake Ports
      */
 
     public static int intakeA = 8;

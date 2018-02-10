@@ -14,103 +14,94 @@ public class RGBSensorSubsystem extends Subsystem {
     double nullNowPlus = nowValue + 1;
     double nullNowMinus = nowValue - 1;
 
-
-
-
     public I2C rgbSensor;
-    public Timer time = new Timer();
     public Timer time1 = new Timer();
 
-
     /*
-    /*
-        Buffers
+        Buffer
      */
 
-    public byte[] buffer1 = new byte[10];
-    public int[] buffer2 = new int[10];
+    byte[] data = new byte[8];
 
-    public RGBSensorSubsystem(byte enableAddress) {
+    /*
+        Channels Declaration
+     */
+
+    int cData;
+    int red;
+    int green;
+    int blue;
+
+    double luminance;
+
+    /*
+        Addresses
+     */
+
+    byte commandBit =  (byte) 0x80;
+    byte sensorWaitTime = 0x03;
+    byte aTimeAddress = (byte) 0x81;
+    byte integrationTime_50ms = (byte)0xEB;
+
+    public RGBSensorSubsystem(byte enableAddress){
 
         this.rgbSensor = new I2C(I2C.Port.kOnboard, enableAddress);
 
 
     }
 
-    public void enable() {
+    public void rgbGetLux() {
 
-        time.start();
-        rgbSensor.write(RobotMap.enableAddress, RobotMap.enable_PON);
-        if (time.get() > 3) {
-            time.stop();
-            time.reset();
-            rgbSensor.write(RobotMap.enableAddress, RobotMap.enable_PON | RobotMap.enable_AEN);
-        }
+        // Select enable register
+        // Power ON, RGBC enable, wait time disable
+        rgbSensor.write(commandBit, sensorWaitTime);
+        // Select ALS time register
+        // Atime = 700 ms
+        rgbSensor.write(aTimeAddress, integrationTime_50ms);
+        // Select Wait Time register
+        // WTIME : 50ms
+        rgbSensor.write(0x83, integrationTime_50ms);
+        // Select control register
+        // AGAIN = 1x
+        rgbSensor.write(0x8F, (byte)0x00);
 
-    }
-
-    public byte read8(byte reg) {
-//        rgbSensor.write(sensorCommand_Bit, reg);
-        rgbSensor.read(RobotMap.commandBit | reg, 1, buffer1);
-        return reg;
-    }
-
-    public int read16(byte reg) {
-
-        int t;
-        int x;
-
-//        rgbSensor.write(sensorCommand_Bit | reg, 2);
-//        timer.runTimer(3);
-        rgbSensor.read(RobotMap.commandBit | reg, 2, buffer1);
-
-        t = buffer1[0];
-        x = buffer1[1];
-
-        x <<= 8;
-        x |= t;
-
-        return x;
-
-
-    }
-
-    public void getRawData() {
-
-        buffer2[0] = read16(RobotMap.redDataL);
-        buffer2[1] = read16(RobotMap.greenDataL);
-        buffer2[2] = read16(RobotMap.blueDataL);
-        buffer2[3] = read16(RobotMap.clearDataL);
-        try {
-            Thread.sleep(154);
-        } catch (InterruptedException e) {
-            System.out.println("FAILED HELP");
-        }
-
-        System.out.println(buffer2[1]);
-
-    }
-
-    public void ismailIsALoser() {
+        // Thread.sleep here to account for wait time register
 
         rgbSensor.write(0x80, (byte) 0x03);
         rgbSensor.write(0x81, (byte) 0xC0);
         rgbSensor.write(0x83, (byte) 0xFF);
         rgbSensor.write(0x8F, (byte) 0x00);
-        try {
-            Thread.sleep((long) 154);
-        } catch (InterruptedException e) {
+
+        try{
+            Thread.sleep(50);
+        }catch(InterruptedException e){
 
         }
 
-        byte[] data = new byte[8];
-        rgbSensor.read(0x94, 8, data);
-        int cData = ((data[1] & 0xFF) * 256) + (data[0] & 0xFF);
-        int red = ((data[3] & 0xFF) * 256) + (data[2] & 0xFF);
-        int green = ((data[5] & 0xFF) * 256) + (data[4] & 0xFF);
-        int blue = ((data[7] & 0xFF) * 256) + (data[6] & 0xFF);
+        /*
+            Read 8 Bytes of Data
+         */
 
-        double luminance = (-0.32466 * red) + (1.57837 * green) + (-0.73191 * blue);
+        rgbSensor.read(0x94, 8, data);
+
+        /*
+            Conversion of Data Read
+         */
+
+        cData = ((data[1] & 0xFF) * 256) + (data[0] & 0xFF);
+        red = ((data[3] & 0xFF) * 256) + (data[2] & 0xFF);
+        green = ((data[5] & 0xFF) * 256) + (data[4] & 0xFF);
+        blue = ((data[7] & 0xFF) * 256) + (data[6] & 0xFF);
+
+        /*
+            Luminance Final Calculation
+         */
+
+        luminance = (-0.32466 * red) + (1.57837 * green) + (-0.73191 * blue);
+
+        /*
+            Data Output
+         */
 
 //        System.out.printf("Red Color Luminance   : %d lux %n", red); // no u
 //        System.out.printf("Green Color Luminance : %d lux %n", green);

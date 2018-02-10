@@ -2,6 +2,7 @@ package frc.team696.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class IntakeSubsystem extends Subsystem {
@@ -10,8 +11,8 @@ public class IntakeSubsystem extends Subsystem {
         Declaration of TalonSRX Objects
      */
 
-    WPI_TalonSRX intakeA;
-    WPI_TalonSRX intakeB;
+    public WPI_TalonSRX intakeA;
+    public WPI_TalonSRX intakeB;
 
     public IntakeSubsystem(int intakeA, int intakeB) {
 

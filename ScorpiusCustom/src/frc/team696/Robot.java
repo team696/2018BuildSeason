@@ -46,10 +46,7 @@ public class Robot extends TimedRobot {
     public static Constants constants = new Constants();
     public static RGBSensorSubsystem rgbSensorSubsystem = new RGBSensorSubsystem(RobotMap.deviceAddress);
 //    public static final JustinElevator justinElevator = new JustinElevator(RobotMap.Elevator);
-    public static final IntakeSubsystem intakeSubsystem = new IntakeSubsystem(RobotMap.intakeA, RobotMap.intakeB);
-
-
-
+    public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem(RobotMap.intakeA, RobotMap.intakeB);
 
 
     /*
@@ -87,9 +84,12 @@ public class Robot extends TimedRobot {
 
     // Speed Turn Scale Variables
 
-    double a = 0.286095;
-    double h = -0.243151;
-    double k = -0.130137;
+    double a = 0.170641; // 0.286095
+    double h = -0.258475; // -0.243151
+    double k = 0.364407; // -0.130137
+
+    // Nora's currently preferred values for turn scale
+
     double speedTurnScale;
 
     /*
@@ -153,7 +153,6 @@ public class Robot extends TimedRobot {
 
         rgbSensorSubsystem.rgbSensor.write(0xC0, 1); // set Integration Time
         rgbSensorSubsystem.rgbSensor.write(0x02, 1); // set Gain
-        rgbSensorSubsystem.enable();
     }
 
     @Override
@@ -174,25 +173,15 @@ public class Robot extends TimedRobot {
 
 
         /*
-            Drive Functionality
+            Run Intake (Forward/Backward)
          */
 
-        // Drive Straight Code / Deadzone
-        // VERY WIP, DOESN'T FULLY FUNCTION CURRENTLY
-
-        if(wheel > deadZoneMin && wheel < deadZoneMax){
-
-            loopNumber++;
-            currentDirection = navX.getYaw();
-            if(loopNumber == 1){
-                targetDirection = navX.getYaw();
-            }
-            directionError = targetDirection - currentDirection;
-            driveTrainSubsystem.driveStraightPID.setError(directionError);
-            wheel = driveTrainSubsystem.driveStraightPID.getValue();
-
+        if(OI.Psoc.getRawButton(13)){
+            intakeSubsystem.runIntake(0.6);
+        }else if(OI.Psoc.getRawButton(14)){
+            intakeSubsystem.runIntake(-0.6);
         }else{
-            loopNumber = 0;
+            intakeSubsystem.runIntake(0);
         }
 
         /*
@@ -203,6 +192,29 @@ public class Robot extends TimedRobot {
         speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
         wheel = OI.wheel.getRawAxis(constants.wheelDriveAxis) * speedTurnScale;
 
+        /*
+            Drive Functionality
+         */
+
+        // Drive Straight Code / Deadzone
+        // VERY WIP, DOESN'T FULLY FUNCTION CURRENTLY
+
+        if(wheel > deadZoneMin && wheel < deadZoneMax){
+
+//            loopNumber++;
+//            currentDirection = navX.getYaw();
+//            if(loopNumber == 1){
+//                targetDirection = navX.getYaw();
+//            }
+//            directionError = targetDirection - currentDirection;
+//            driveTrainSubsystem.driveStraightPID.setError(directionError);
+//            wheel = driveTrainSubsystem.driveStraightPID.getValue();
+            wheel = 0;
+
+        }else{
+            loopNumber = 0;
+        }
+
         leftDrive = speed + wheel;
         rightDrive = speed - wheel;
 
@@ -211,7 +223,8 @@ public class Robot extends TimedRobot {
 //        rgbSensorSubsystem.getRawData();
 
 //        System.out.println(wheel);
-        rgbSensorSubsystem.ismailIsALoser();
+//        rgbSensorSubsystem.rgbGetLux();
+        System.out.println(wheel);
 
         driveTrainSubsystem.tankDrive(leftDrive, rightDrive);
 
