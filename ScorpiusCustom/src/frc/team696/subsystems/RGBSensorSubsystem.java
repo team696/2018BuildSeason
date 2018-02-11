@@ -15,8 +15,7 @@ public class RGBSensorSubsystem extends Subsystem {
     public boolean prevValueSet = false;
     double prevValue;
     double nowValue;
-    double nullNowPlus = nowValue + 1;
-    double nullNowMinus = nowValue - 1;
+
 
     public I2C rgbSensor;
     public Timer time = new Timer();
@@ -58,6 +57,7 @@ public class RGBSensorSubsystem extends Subsystem {
      */
 
     byte integrationTime_2_4ms = (byte) 0xFF;
+    byte integrationTime_14ms = (byte) 256-6;
     byte integrationTime_24ms = (byte) 0xF6;
     byte integrationTime_50ms = (byte) 0xEB;
     byte integrationTime_101ms = (byte) 0xD5;
@@ -87,10 +87,10 @@ public class RGBSensorSubsystem extends Subsystem {
         rgbSensor.write(commandBit, sensorWaitTime);
         // Select ALS time register
         // Atime = 700 ms
-        rgbSensor.write(aTimeAddress, integrationTime_50ms);
+        rgbSensor.write(aTimeAddress, integrationTime_14ms);
         // Select Wait Time register
         // WTIME : 50ms
-        rgbSensor.write(0x83, integrationTime_50ms);
+        rgbSensor.write(0x83, integrationTime_14ms);
         // Select control register
         // AGAIN = 1x
         rgbSensor.write(0x8F, gain_x1);
@@ -98,9 +98,9 @@ public class RGBSensorSubsystem extends Subsystem {
         // Thread.sleep here to account for wait time register
 
         try{
-            Thread.sleep(50);
+            Thread.sleep((long)2.4);
         }catch(InterruptedException e){
-            System.out.println("Mission failed. We'll get em next time");
+            System.out.println("If you get this message, then Ismail sucks");
         }
 
         /*
@@ -139,42 +139,48 @@ public class RGBSensorSubsystem extends Subsystem {
         blueNoLuminance = (blue / luminance);
         greenNoLuminance = (green / luminance);
 
-        difference = (red - gbAverage);
+//        difference = (red - gbAverage);
 
 //        System.out.println("redNoLuminance " + redNoLuminance);
 //        System.out.println("greenNoLuminance" + greenNoLuminance);
 //        System.out.println("blueNoLuminance" + blueNoLuminance);
 
-        System.out.println(prevValueSet);
+//        System.out.println(prevValueSet);
+
+        System.out.println( "red                                                                                " + red);
 
         if(time.get() == 0) {
             time.start();
         }
 
-        if(time.get() >= 0.5 && !prevValueSet) {
+        if(time.get() >= 0.024 && !prevValueSet) {
             prevValueSet = true;
             prevValue = redNoLuminance;
+            System.out.println("                                                                Prev Value Set");
         }
 
-        if(time.get() >= 4.0) {
+        if(time.get() >= 0.048) {
             nowValue = redNoLuminance;
 //            System.out.println("nowValue: " + nowValue);
         }
 
-        if(time.get() >= 10.0) {
-            prevValueSet = false;
-            time.reset();
-        }
+
 
         System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue);
 
-        if(prevValue >= nullNowMinus && prevValue <= nullNowPlus) {
+        if(Math.abs(prevValue - nowValue) < 3 ) {   // sensitivity
             System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "         in Null Zone");
             nowValue = prevValue;
         }
 
         if(prevValue != nowValue && nowValue != 0 && prevValue != 0) {
             System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "             Change has occurred.");
+        }
+
+
+        if(time.get() >= 0.08) {             // restarts the rgbLoop
+            prevValueSet = false;
+            time.reset();
         }
     }
 
