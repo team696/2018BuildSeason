@@ -52,7 +52,17 @@ public class RGBSensorSubsystem extends Subsystem {
     byte commandBit =  (byte) 0x80;
     byte sensorWaitTime = 0x03;
     byte aTimeAddress = (byte) 0x81;
-    byte integrationTime_50ms = (byte)0xEB;
+
+    /*
+        Integration Times for RGB Sensor
+     */
+
+    byte integrationTime_2_4ms = (byte) 0xFF;
+    byte integrationTime_24ms = (byte) 0xF6;
+    byte integrationTime_50ms = (byte) 0xEB;
+    byte integrationTime_101ms = (byte) 0xD5;
+    byte integrationTime_154ms = (byte) 0xC0;
+    byte integrationTime_700ms = (byte) 0x00;
 
     public RGBSensorSubsystem(byte enableAddress){
 
