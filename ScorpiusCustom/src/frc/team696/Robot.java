@@ -182,6 +182,15 @@ public class Robot extends TimedRobot {
             Drive Functionality
          */
 
+        if(wheel < 0){
+            wheel = wheel - deadZoneMax;
+        }else{
+            wheel = wheel + deadZoneMax;
+        }
+        speedTurnScale = a*(1/((speed*speed)-h))+k;
+        speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
+        wheel = (OI.wheel.getRawAxis(constants.wheelDriveAxis) * speedTurnScale) - deadZoneMax;
+
         // Drive Straight Code / Deadzone
         /** VERY WIP, DOESN'T FULLY FUNCTION CURRENTLY */
 
@@ -199,14 +208,6 @@ public class Robot extends TimedRobot {
 
         }else{
             loopNumber = 0;
-            if(wheel < 0){
-                wheel = wheel - deadZoneMax;
-            }else{
-                wheel = wheel + deadZoneMax;
-            }
-            speedTurnScale = a*(1/((speed*speed)-h))+k;
-            speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
-            wheel = (OI.wheel.getRawAxis(constants.wheelDriveAxis) * speedTurnScale) - deadZoneMax;
         }
 
         leftDrive = speed + wheel;
@@ -221,6 +222,8 @@ public class Robot extends TimedRobot {
         rgbSensorSubsystem.rgbGetLux();
 
         driveTrainSubsystem.tankDrive(leftDrive, rightDrive);
+
+        System.out.println("speed                                                                                " + speed);
 
     }
 

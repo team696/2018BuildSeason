@@ -168,12 +168,12 @@ public class RGBSensorSubsystem extends Subsystem {
 
         System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue);
 
-        if(Math.abs(prevValue - nowValue) < 3 ) {   // sensitivity
+        if(Math.abs(prevValue - nowValue) < 1) {   // sensitivity
             System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "         in Null Zone");
             nowValue = prevValue;
         }
 
-        if(prevValue != nowValue && nowValue != 0 && prevValue != 0) {
+        if(prevValue != nowValue) {
             System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "             Change has occurred.");
         }
 
