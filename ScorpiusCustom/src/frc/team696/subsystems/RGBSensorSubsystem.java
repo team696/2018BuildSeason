@@ -3,6 +3,7 @@ package frc.team696.subsystems;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team696.Robot;
 
 public class RGBSensorSubsystem extends Subsystem {
 
@@ -51,7 +52,7 @@ public class RGBSensorSubsystem extends Subsystem {
 
     public RGBSensorSubsystem(byte enableAddress){
 
-        this.rgbSensor = new I2C(I2C.Port.kOnboard, enableAddress);
+        this.rgbSensor = new I2C(I2C.Port.kMXP, enableAddress);
 
 
     }
@@ -122,9 +123,9 @@ public class RGBSensorSubsystem extends Subsystem {
 
         difference = (red - gbAverage);
 
-        System.out.println("redNoLuminance " + redNoLuminance);
-        System.out.println("greenNoLuminance" + greenNoLuminance);
-        System.out.println("blueNoLuminance" + blueNoLuminance);
+//        System.out.println("redNoLuminance " + redNoLuminance);
+//        System.out.println("greenNoLuminance" + greenNoLuminance);
+//        System.out.println("blueNoLuminance" + blueNoLuminance);
 
         System.out.println(prevValueSet);
 
@@ -132,12 +133,11 @@ public class RGBSensorSubsystem extends Subsystem {
             time.start();
         }
 
-        System.out.println(time.get());
-
         if(time.get() >= 0.5 && !prevValueSet) {
             prevValueSet = true;
             prevValue = redNoLuminance;
         }
+
         if(time.get() >= 4.0) {
             nowValue = redNoLuminance;
 //            System.out.println("nowValue: " + nowValue);
@@ -148,22 +148,20 @@ public class RGBSensorSubsystem extends Subsystem {
             time.reset();
         }
 
-        System.out.println("prevValue : " + prevValue);
-        System.out.println("nowValue: " + nowValue);
-
+        System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue);
 
         if(prevValue >= nullNowMinus && prevValue <= nullNowPlus) {
-            System.out.println("in Nullzone" );
+            System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "         in Null Zone");
             nowValue = prevValue;
         }
+
         if(prevValue != nowValue && nowValue != 0 && prevValue != 0) {
-            System.out.println("WWWOOOOOAAAAHHHHH!!! ITS A CHANGE!!!!!");
+            System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "             Change has occured.");
         }
     }
 
-            public void initDefaultCommand () {
+    public void initDefaultCommand() {
 
-
-            }
-        }
+    }
+}
 

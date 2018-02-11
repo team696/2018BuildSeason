@@ -85,9 +85,9 @@ public class Robot extends TimedRobot {
 
     // Speed Turn Scale Variables
 
-    double a = 0.170641; // 0.286095
-    double h = -0.258475; // -0.243151
-    double k = 0.364407; // -0.130137
+    double a = 0.170641; // 0.286095    0.170641
+    double h = -0.258475; // -0.243151  -0.258475
+    double k = 0.364407; // -0.130137    0.364407
 
     // Nora's currently preferred values for turn scale
 
@@ -165,9 +165,9 @@ public class Robot extends TimedRobot {
          */
 
         if(OI.Psoc.getRawButton(13)){
-            intakeSubsystem.runIntake(0.6);
+            intakeSubsystem.runIntake(0.4);
         }else if(OI.Psoc.getRawButton(14)){
-            intakeSubsystem.runIntake(-0.6);
+            intakeSubsystem.runIntake(-0.5);
         }else{
             intakeSubsystem.runIntake(0);
         }
@@ -176,6 +176,7 @@ public class Robot extends TimedRobot {
             Speed Turn Scale Stuff
          */
 
+//        speedTurnScale = a*(1/((speed*speed)-h))+k;
         speedTurnScale = a*(1/((speed*speed)-h))+k;
         speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
         wheel = OI.wheel.getRawAxis(constants.wheelDriveAxis) * speedTurnScale;
@@ -212,7 +213,7 @@ public class Robot extends TimedRobot {
 
 //        System.out.println(wheel);
 //        rgbSensorSubsystem.rgbGetLux();
-        System.out.println(wheel);
+        rgbSensorSubsystem.rgbGetLux();
 
         driveTrainSubsystem.tankDrive(leftDrive, rightDrive);
 
