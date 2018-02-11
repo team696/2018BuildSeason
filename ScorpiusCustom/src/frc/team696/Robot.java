@@ -177,9 +177,6 @@ public class Robot extends TimedRobot {
          */
 
 //        speedTurnScale = a*(1/((speed*speed)-h))+k;
-        speedTurnScale = a*(1/((speed*speed)-h))+k;
-        speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
-        wheel = OI.wheel.getRawAxis(constants.wheelDriveAxis) * speedTurnScale;
 
         /*
             Drive Functionality
@@ -202,6 +199,14 @@ public class Robot extends TimedRobot {
 
         }else{
             loopNumber = 0;
+            if(wheel < 0){
+                wheel = wheel - deadZoneMax;
+            }else{
+                wheel = wheel + deadZoneMax;
+            }
+            speedTurnScale = a*(1/((speed*speed)-h))+k;
+            speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
+            wheel = (OI.wheel.getRawAxis(constants.wheelDriveAxis) * speedTurnScale) - deadZoneMax;
         }
 
         leftDrive = speed + wheel;

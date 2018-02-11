@@ -64,6 +64,15 @@ public class RGBSensorSubsystem extends Subsystem {
     byte integrationTime_154ms = (byte) 0xC0;
     byte integrationTime_700ms = (byte) 0x00;
 
+    /*
+        Gain Addresses
+     */
+
+    byte gain_x1 = (byte) 0x00;
+    byte gain_x4 = (byte) 0x01;
+    byte gain_x16 = (byte) 0x02;
+    byte gain_x60 = (byte) 0x03;
+
     public RGBSensorSubsystem(byte enableAddress){
 
         this.rgbSensor = new I2C(I2C.Port.kOnboard, enableAddress);
@@ -84,7 +93,7 @@ public class RGBSensorSubsystem extends Subsystem {
         rgbSensor.write(0x83, integrationTime_50ms);
         // Select control register
         // AGAIN = 1x
-        rgbSensor.write(0x8F, (byte)0x00);
+        rgbSensor.write(0x8F, gain_x1);
 
         // Thread.sleep here to account for wait time register
 
