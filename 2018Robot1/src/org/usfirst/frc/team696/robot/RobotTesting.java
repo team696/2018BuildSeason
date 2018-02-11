@@ -45,6 +45,7 @@ public class RobotTesting extends TimedRobot {
     public void testPeriodic() {
 
 
+<<<<<<< HEAD
 //        /**
 //         * Elevator PIDF Values
 //         */
@@ -111,6 +112,68 @@ public class RobotTesting extends TimedRobot {
 //                            time.reset();
 //                            testDriveMotors = false;
 //                            resetNum();
+=======
+        /**
+         * Elevator PIDF Values
+         */
+
+
+        SmartDashboard.putNumber("Elevator P Value", ElevatorSubsystem.kP);
+        SmartDashboard.putNumber("Elevator I Value", ElevatorSubsystem.kI);
+        SmartDashboard.putNumber("Elevator D Value", ElevatorSubsystem.kD);
+        SmartDashboard.putNumber("Elevator F Value", ElevatorSubsystem.kF);
+
+        /**
+         * Autonomous Drive PID Values
+         */
+
+        SmartDashboard.putNumber("Distance P Value", DriveCommand.kPa);
+        SmartDashboard.putNumber("Distance I Value", DriveCommand.kIa);
+        SmartDashboard.putNumber("Distance D Value", DriveCommand.kDa);
+        SmartDashboard.putNumber("Distance F Value", DriveCommand.kFa);
+
+        SmartDashboard.putNumber("Direction P Value", DriveCommand.kPb);
+        SmartDashboard.putNumber("Direction I Value", DriveCommand.kIb);
+        SmartDashboard.putNumber("Direction D Value", DriveCommand.kDb);
+        SmartDashboard.putNumber("Direction F Value", DriveCommand.kFb);
+
+        SmartDashboard.putNumber("Target Distance (Testing)", DriveCommand.targetDistance);
+        SmartDashboard.putNumber("Target Direction (Testing)", DriveCommand.tempTargetDirection);
+
+
+        /**
+         * Testing Talons
+         */
+
+        SmartDashboard.putBoolean("Test Drive Motors", testDriveMotors);
+        SmartDashboard.putBoolean("Test Elevator", testElevator);
+        SmartDashboard.putBoolean("Test Intake Motors", testIntakeMotors);
+
+        //Drive Talons
+
+
+        // TODO Implement Automatic Test Intake Motors function
+
+        if(testDriveMotors){
+            switch(num) {
+                case 1:
+                    driveTrainSubsystem.leftRear.set(halfSpeed);
+                    time.start();
+                    if (time.get() > 3 && Math.abs(driveTrainSubsystem.leftRear.get()) > 0 && getCurrent(leftRearCurrent) > minCurrent) {
+                        driveTrainSubsystem.leftRear.set(noSpeed);
+                        restartTimer();
+                        if (time.get() > 1) {
+                            time.stop();
+                            time.reset();
+                            driveTrainSubsystem.leftRear.set(-halfSpeed);
+                            time.start();
+                        }
+                        if (time.get() > 3 && driveTrainSubsystem.leftRear.get() > 0 && getCurrent(leftRearCurrent) > minCurrent) {
+                            driveTrainSubsystem.leftRear.set(noSpeed);
+                            num++;
+                            time.stop();
+                            time.reset();
+>>>>>>> Testing_RGBSensor
 //                            break;
 //                        }
 //                    } else if (time.get() > 3 && !(Math.abs(driveTrainSubsystem.leftRear.get()) > 0) || time.get() > 3 && !(getCurrent(leftRearCurrent) > minCurrent)) {

@@ -9,16 +9,30 @@ package org.usfirst.frc.team696.robot;
 
 import com.kauailabs.nav6.frc.IMU;
 import com.kauailabs.nav6.frc.IMUAdvanced;
+<<<<<<< HEAD
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
+=======
 import edu.wpi.first.wpilibj.*;
+>>>>>>> 303724418a6d61f39cd163bb002c7a8b6e25305d
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+<<<<<<< HEAD
+import org.usfirst.frc.team696.robot.commands.ExampleCommand;
+import org.usfirst.frc.team696.robot.subsystems.DriveTrainSubsystem;
+import org.usfirst.frc.team696.robot.subsystems.ExampleSubsystem;
+import org.usfirst.frc.team696.robot.utilities.Util;
+=======
 import org.usfirst.frc.team696.robot.autonomousCommands.CenterPosition;
 import org.usfirst.frc.team696.robot.commands.DriveCommand;
 import org.usfirst.frc.team696.robot.subsystems.*;
 //import org.usfirst.frc.team696.robot.utilities.RGBSensor;
 import org.usfirst.frc.team696.robot.utilities.Constants;
+>>>>>>> 303724418a6d61f39cd163bb002c7a8b6e25305d
 
 /**
  * @Authors Ismail Hasan, Justin Gonzales, Ruben Erkanian
@@ -41,6 +55,13 @@ public class Robot extends TimedRobot {
 
 
 	public static OI oi;
+
+	/*
+	 * set up navX
+	 */
+
+	public static IMU navX;
+	SerialPort port;
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -67,8 +88,18 @@ public class Robot extends TimedRobot {
 	double commandedDrive;
 	double speed;
 	double wheel;
+	double speedTurnScale;
 	double leftDrive;
 	double rightDrive;
+<<<<<<< HEAD
+	boolean intoDeadZone;
+	int loopNumber = 0;
+
+
+	Timer time = new Timer();
+
+	PowerDistributionPanel PDP = new PowerDistributionPanel(0);
+=======
 	public static double targetDirection;
 //	double rampSpeed = 0.015;
 
@@ -102,6 +133,7 @@ public class Robot extends TimedRobot {
 
 
 
+>>>>>>> 303724418a6d61f39cd163bb002c7a8b6e25305d
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -114,7 +146,10 @@ public class Robot extends TimedRobot {
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> 303724418a6d61f39cd163bb002c7a8b6e25305d
 		/*
 		 * initialize navX
 		 */
@@ -124,9 +159,12 @@ public class Robot extends TimedRobot {
 			navX = new IMUAdvanced(port, UpdateRateHz);
 		} catch(Exception ex){System.out.println("NavX not working");}
 
+<<<<<<< HEAD
+=======
 		targetDirection = navX.getYaw();
 		rgbSensor = new I2C(I2C.Port.kOnboard, 0x29);
 
+>>>>>>> 303724418a6d61f39cd163bb002c7a8b6e25305d
 	}
 
 	/**
@@ -189,6 +227,8 @@ public class Robot extends TimedRobot {
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
 		}
+
+		navX.zeroYaw();
 	}
 
 	/**
@@ -197,6 +237,58 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+        System.out.println(navX.getYaw() + "          " + loopNumber + "            " + wheel + "                 " + driveTrainSubsystem.distanceError);
+
+		speed = -OI.Psoc.getRawAxis(0);
+		wheel = OI.wheel.getRawAxis(0) * 0.75;
+
+
+		/*
+		Wheel Deadzone
+		 */
+
+		if(OI.wheel.getRawAxis(0) > -0.1 && OI.wheel.getRawAxis(0) < 0.1){
+		    loopNumber++;
+		    if(loopNumber >= 1 && loopNumber <= 8){
+		        driveTrainSubsystem.targetDirection = navX.getYaw();
+            }
+//            while(intoDeadZone){
+//                int num = 0;
+//                switch(num){
+//                    case 0:
+//                        time.start();
+//                        navX.zeroYaw();
+//                        if(time.get() > 1){
+//                            time.stop();
+//                            time.reset();
+//                            intoDeadZone = false;
+//                            break;
+//                    }
+//                }
+//                break;
+//            }
+
+
+
+//			driveTrainSubsystem.targetDistance = navX.getYaw();
+			driveTrainSubsystem.distanceError = driveTrainSubsystem.targetDirection - navX.getYaw();
+
+			driveTrainSubsystem.driveStraight.setError(driveTrainSubsystem.distanceError);
+
+			wheel = driveTrainSubsystem.driveStraight.getValue();
+
+//            wheel = 0;
+		}else{
+		    loopNumber = 0;
+//		    wheel = OI.Psoc.getRawAxis(0);
+
+        }
+
+		if(OI.joy.getRawButton(2)){
+
+		}else{
+
+		}
 
 
 //		/**
@@ -231,6 +323,26 @@ public class Robot extends TimedRobot {
 		Drive
 		 */
 
+<<<<<<< HEAD
+//        speed = -OI.Psoc.getRawAxis(0);
+//        wheel = OI.wheel.getRawAxis(0);
+//        speed = Util.smoothDeadZone(speed, -0.1, 0.1, -1, 1, 0);
+//        speed = Util.deadZone(speed, -0.1, 0.1, 0);
+//        speedTurnScale = 1/(Math.abs(speed)*1.2 + 1.5);
+//        wheel = Util.smoothDeadZone(wheel, -0.15, 0.15, -1, 1, 0) * Math.abs(speedTurnScale);
+
+
+        leftDrive = speed + wheel;
+		rightDrive = speed - wheel;
+
+//		System.out.println(speed + "           " + wheel);
+//		System.out.println(driveTrainSubsystem.rightFront.get());
+//		System.out.println(PDP.getTemperature());
+//        System.out.println(PDP.getCurrent(15) + "               " + PDP.getCurrent(0));
+//		driveTrainSubsystem.rightFront.set(-0.5);
+//		driveTrainSubsystem.rightRear.set(-0.5);
+//		driveTrainSubsystem.rightMid.set(-0.5);
+=======
 		commandedTurn = OI.joy.getRawAxis(constants.rightXAxis);
 		commandedDrive = OI.joy.getRawAxis(constants.leftYAxis);
 
@@ -240,6 +352,7 @@ public class Robot extends TimedRobot {
 //		System.out.println(rgbSensorUtility.read16(0x18));
 
 
+>>>>>>> 303724418a6d61f39cd163bb002c7a8b6e25305d
 		driveTrainSubsystem.tankDrive(leftDrive, rightDrive);
 
 
@@ -252,6 +365,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void testPeriodic() {
 
+<<<<<<< HEAD
 		/**
 		 * Elevator PIDF Values
 		 */
@@ -636,6 +750,8 @@ public class Robot extends TimedRobot {
 			}
 		}
 
+=======
+>>>>>>> Testing_RGBSensor
 	}
 
 	private double getCurrent(int currentPort){
