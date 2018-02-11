@@ -15,6 +15,7 @@ public class RGBSensorSubsystem extends Subsystem {
     public boolean prevValueSet = false;
     double prevValue;
     double nowValue;
+    public boolean passedTape = false;
 
 
     public I2C rgbSensor;
@@ -98,7 +99,7 @@ public class RGBSensorSubsystem extends Subsystem {
         // Thread.sleep here to account for wait time register
 
         try{
-            Thread.sleep((long)2.4);
+            Thread.sleep(14);
         }catch(InterruptedException e){
             System.out.println("If you get this message, then Ismail sucks");
         }
@@ -173,8 +174,9 @@ public class RGBSensorSubsystem extends Subsystem {
             nowValue = prevValue;
         }
 
-        if(prevValue != nowValue) {
+        if(prevValue != nowValue && nowValue != 0 && prevValue != 0) {
             System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "             Change has occurred.");
+            passedTape = true;
         }
 
 

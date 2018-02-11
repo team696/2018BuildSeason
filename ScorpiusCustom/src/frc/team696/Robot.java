@@ -19,9 +19,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team696.autonomousCommands.CenterPos;
 import frc.team696.autonomousCommands.LeftPos;
 import frc.team696.autonomousCommands.RightPos;
+import frc.team696.autonomousCommands.RGBSensorTest;
 import frc.team696.subsystems.DriveTrainSubsystem;
 import frc.team696.subsystems.IntakeSubsystem;
-import frc.team696.subsystems.JustinElevator;
 import frc.team696.subsystems.RGBSensorSubsystem;
 
 /**
@@ -105,6 +105,7 @@ public class Robot extends TimedRobot {
         chooser.addObject("Left Position", new LeftPos());
         chooser.addObject("Center Position", new CenterPos());
         chooser.addObject("Right Position", new RightPos());
+        chooser.addObject("Test Taper", new RGBSensorTest());
         chooser.addDefault("Center Position", new CenterPos());
 
         SmartDashboard.putData("Auto mode", chooser);
@@ -151,9 +152,6 @@ public class Robot extends TimedRobot {
         if (autonomousCommand != null) {
             autonomousCommand.cancel();
         }
-
-        rgbSensorSubsystem.rgbSensor.write(0xC0, 1); // set Integration Time
-        rgbSensorSubsystem.rgbSensor.write(0x02, 1); // set Gain
     }
 
     @Override
