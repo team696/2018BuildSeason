@@ -52,7 +52,7 @@ public class RGBSensorSubsystem extends Subsystem {
 
     public RGBSensorSubsystem(byte enableAddress){
 
-        this.rgbSensor = new I2C(I2C.Port.kMXP, enableAddress);
+        this.rgbSensor = new I2C(I2C.Port.kOnboard, enableAddress);
 
 
     }
