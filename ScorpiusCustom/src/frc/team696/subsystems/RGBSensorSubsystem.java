@@ -78,11 +78,6 @@ public class RGBSensorSubsystem extends Subsystem {
 
         // Thread.sleep here to account for wait time register
 
-        rgbSensor.write(0x80, (byte) 0x03);
-        rgbSensor.write(0x81, (byte) 0xC0);
-        rgbSensor.write(0x83, (byte) 0xFF);
-        rgbSensor.write(0x8F, (byte) 0x00);
-
         try{
             Thread.sleep(50);
         }catch(InterruptedException e){
