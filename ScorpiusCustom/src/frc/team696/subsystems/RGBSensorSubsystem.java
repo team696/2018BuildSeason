@@ -7,6 +7,10 @@ import frc.team696.Robot;
 
 public class RGBSensorSubsystem extends Subsystem {
 
+    /*
+        TODO Make the whole RGB sensory system run faster, at least 14ms. Faster than that is even better.
+     */
+
     public int loopNumber = 0;
     public boolean prevValueSet = false;
     double prevValue;
@@ -156,7 +160,7 @@ public class RGBSensorSubsystem extends Subsystem {
         }
 
         if(prevValue != nowValue && nowValue != 0 && prevValue != 0) {
-            System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "             Change has occured.");
+            System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "             Change has occurred.");
         }
     }
 
