@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
     public static Constants constants = new Constants();
     public static RGBSensorSubsystem rgbSensorSubsystem = new RGBSensorSubsystem(RobotMap.deviceAddress);
 //    public static final JustinElevator justinElevator = new JustinElevator(RobotMap.Elevator);
-    public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem(RobotMap.intakeA, RobotMap.intakeB);
+    public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem(RobotMap.intakeA, RobotMap.intakeB, RobotMap.intakeAChannel, RobotMap.intakeBChannel);
 
 
     /*
@@ -62,7 +62,7 @@ public class Robot extends TimedRobot {
     public static IMU navX;
     SerialPort port;
 
-    PowerDistributionPanel PDP = new PowerDistributionPanel();
+    public PowerDistributionPanel PDP = new PowerDistributionPanel();
 
     /*
         Drive Variables
