@@ -52,5 +52,11 @@ public class RobotMap {
 
     public static int intakeA = 8;
     public static int intakeB = 9;
+
+    /*
+        Elevator Ports
+     */
+
+    public static int elevator = 13;
 }
 

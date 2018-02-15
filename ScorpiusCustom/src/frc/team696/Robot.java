@@ -9,6 +9,7 @@ package frc.team696;
 
 import com.kauailabs.nav6.frc.IMU;
 import com.kauailabs.nav6.frc.IMUAdvanced;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -19,10 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team696.autonomousCommands.CenterPos;
 import frc.team696.autonomousCommands.LeftPos;
 import frc.team696.autonomousCommands.RightPos;
-import frc.team696.subsystems.DriveTrainSubsystem;
-import frc.team696.subsystems.IntakeSubsystem;
-import frc.team696.subsystems.JustinElevator;
-import frc.team696.subsystems.RGBSensorSubsystem;
+import frc.team696.subsystems.*;
 
 /**
  * @Author: Ismail Hasan && Justin Gonzales
@@ -48,6 +46,7 @@ public class Robot extends TimedRobot {
     public static RGBSensorSubsystem rgbSensorSubsystem = new RGBSensorSubsystem(RobotMap.deviceAddress);
 //    public static final JustinElevator justinElevator = new JustinElevator(RobotMap.Elevator);
     public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem(RobotMap.intakeA, RobotMap.intakeB);
+    public static ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(RobotMap.elevator);
 
 
     /*
@@ -97,6 +96,12 @@ public class Robot extends TimedRobot {
         RGB Sensor Declaration
      */
 
+    /*
+        Compressor
+     */
+
+    Compressor compressor = new Compressor();
+
 
     @Override
     public void robotInit() {
@@ -118,6 +123,17 @@ public class Robot extends TimedRobot {
             port = new SerialPort(57600, SerialPort.Port.kMXP);
             navX = new IMUAdvanced(port, UpdateRateHz);
         } catch(Exception ex){System.out.println("NavX not working");}
+
+        /*
+            Start Compressor
+         */
+
+        compressor.start();
+
+
+        /*
+            Zero Elevator
+         */
 
     }
 
@@ -154,11 +170,17 @@ public class Robot extends TimedRobot {
 
         rgbSensorSubsystem.rgbSensor.write(0xC0, 1); // set Integration Time
         rgbSensorSubsystem.rgbSensor.write(0x02, 1); // set Gain
+
+//        elevatorSubsystem.homeElevator();
     }
 
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+
+        /*
+            Run Elevator Up and Down Manually
+         */
 
         /*
             Run Intake (Forward/Backward)
