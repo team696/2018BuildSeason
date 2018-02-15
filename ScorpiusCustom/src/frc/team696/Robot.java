@@ -9,10 +9,7 @@ package frc.team696;
 
 import com.kauailabs.nav6.frc.IMU;
 import com.kauailabs.nav6.frc.IMUAdvanced;
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.wpilibj.SerialPort;
-import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -45,8 +42,8 @@ public class Robot extends TimedRobot {
     public static Constants constants = new Constants();
     public static RGBSensorSubsystem rgbSensorSubsystem = new RGBSensorSubsystem(RobotMap.deviceAddress);
 //    public static final JustinElevator justinElevator = new JustinElevator(RobotMap.Elevator);
-    public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem(RobotMap.intakeA, RobotMap.intakeB);
-    public static ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(RobotMap.elevator);
+    public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem(RobotMap.intakeA, RobotMap.intakeB, RobotMap.intakeSol);
+    public static ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(RobotMap.elevator, RobotMap.elevatorSol, RobotMap.discBrake);
 
 
     /*
@@ -62,6 +59,7 @@ public class Robot extends TimedRobot {
     SerialPort port;
 
     PowerDistributionPanel PDP = new PowerDistributionPanel();
+    public Timer time = new Timer();
 
     /*
         Drive Variables
@@ -125,13 +123,6 @@ public class Robot extends TimedRobot {
         } catch(Exception ex){System.out.println("NavX not working");}
 
         /*
-            Start Compressor
-         */
-
-        compressor.start();
-
-
-        /*
             Zero Elevator
          */
 
@@ -171,6 +162,12 @@ public class Robot extends TimedRobot {
         rgbSensorSubsystem.rgbSensor.write(0xC0, 1); // set Integration Time
         rgbSensorSubsystem.rgbSensor.write(0x02, 1); // set Gain
 
+        /*
+            Start Compressor
+         */
+
+        compressor.start();
+
 //        elevatorSubsystem.homeElevator();
     }
 
@@ -179,19 +176,54 @@ public class Robot extends TimedRobot {
         Scheduler.getInstance().run();
 
         /*
-            Run Elevator Up and Down Manually
+            Elevator Functions
          */
+
+        // Toggle Elevator Solenoid
+
+        if(OI.Psoc.getRawButton(2)){
+            elevatorSubsystem.toggleElevatorPos(true);
+        }else{
+            elevatorSubsystem.toggleElevatorPos(false);
+        }
+
+        if(OI.Psoc.getRawButton(5)){
+            elevatorSubsystem.discBrake.set(true);
+            try{
+                Thread.sleep(1000);
+            }catch(InterruptedException e){
+
+            }
+            elevatorSubsystem.manualMove(0.5);
+        }else if(OI.Psoc.getRawButton(6)){
+            elevatorSubsystem.discBrake.set(true);
+            try{
+                Thread.sleep(1000);
+            }catch(InterruptedException e){
+
+            }
+            elevatorSubsystem.manualMove(-0.5);
+        }else{
+            elevatorSubsystem.discBrake.set(false);
+            elevatorSubsystem.manualMove(0);
+        }
 
         /*
             Run Intake (Forward/Backward)
          */
 
-        if(OI.Psoc.getRawButton(13)){
+        if(OI.Psoc.getRawButton(4)){
             intakeSubsystem.runIntake(0.4);
-        }else if(OI.Psoc.getRawButton(14)){
+        }else if(OI.Psoc.getRawButton(3)){
             intakeSubsystem.runIntake(-0.5);
         }else{
             intakeSubsystem.runIntake(0);
+        }
+
+        if(OI.Psoc.getRawButton(1)){
+            intakeSubsystem.toggleIntake(true);
+        }else{
+            intakeSubsystem.toggleIntake(false);
         }
 
         /*

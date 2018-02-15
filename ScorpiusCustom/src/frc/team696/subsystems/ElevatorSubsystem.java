@@ -2,6 +2,7 @@ package frc.team696.subsystems;
 
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class ElevatorSubsystem extends Subsystem {
@@ -16,6 +17,8 @@ public class ElevatorSubsystem extends Subsystem {
      */
 
     public TalonSRX elevator;
+    public Solenoid elevatorSol;
+    public Solenoid discBrake;
 
     /*
         Variable Setup and Initialization
@@ -32,13 +35,15 @@ public class ElevatorSubsystem extends Subsystem {
             kD = 0,
             kF = 0;
 
-    public ElevatorSubsystem(int elevator) {
+    public ElevatorSubsystem(int elevator, int elevatorSol, int discBrake) {
 
         /*
             Initialization of Elevator Objects
          */
 
         this.elevator = new TalonSRX(elevator);
+        this.elevatorSol = new Solenoid(elevatorSol);
+        this.discBrake = new Solenoid(discBrake);
 
         elevatorDeviceID = this.elevator.getDeviceID();
 
@@ -71,6 +76,18 @@ public class ElevatorSubsystem extends Subsystem {
             elevator.setSelectedSensorPosition(0, pidIdx, timeoutMs);
             elevator.set(ControlMode.Position, 0);
         }
+
+    }
+
+    public void manualMove(double speed) {
+
+        elevator.set(ControlMode.PercentOutput, speed);
+
+    }
+
+    public void toggleElevatorPos(boolean bool){
+
+        elevatorSol.set(bool);
 
     }
 

@@ -13,8 +13,9 @@ public class IntakeSubsystem extends Subsystem {
 
     public WPI_TalonSRX intakeA;
     public WPI_TalonSRX intakeB;
+    public Solenoid intakeSol;
 
-    public IntakeSubsystem(int intakeA, int intakeB) {
+    public IntakeSubsystem(int intakeA, int intakeB, int intakeSol) {
 
         /*
             Initialization of TalonSRX Objects
@@ -22,6 +23,7 @@ public class IntakeSubsystem extends Subsystem {
 
         this.intakeA = new WPI_TalonSRX(intakeA);
         this.intakeB = new WPI_TalonSRX(intakeB);
+        this.intakeSol = new Solenoid(intakeSol);
 
         /*
             TalonSRX Configuration
@@ -36,6 +38,12 @@ public class IntakeSubsystem extends Subsystem {
 
         intakeA.set(speed);
         intakeB.set(speed);
+
+    }
+
+    public void toggleIntake(boolean bool) {
+
+        intakeSol.set(bool);
 
     }
 
