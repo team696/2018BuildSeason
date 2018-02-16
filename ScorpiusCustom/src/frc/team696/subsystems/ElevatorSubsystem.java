@@ -79,13 +79,21 @@ public class ElevatorSubsystem extends Subsystem {
 
     }
 
-    public void manualMove(double speed) {
+    public void manualMoveElevator(double speed) {
+
+        /*
+            Moves elevator up or down using percent output. No PID Controller involved
+         */
 
         elevator.set(ControlMode.PercentOutput, speed);
 
     }
 
     public void toggleElevatorPos(boolean bool){
+
+        /*
+            Toggles the solenoid value for the elevator, moving it back or forward
+         */
 
         elevatorSol.set(bool);
 

@@ -61,6 +61,10 @@ public class Robot extends TimedRobot {
     PowerDistributionPanel PDP = new PowerDistributionPanel();
     public Timer time = new Timer();
 
+    // Old Button Arrays for different Joysticks
+
+    boolean[] oldPsoc = new boolean[17];
+
     /*
         Drive Variables
      */
@@ -100,6 +104,12 @@ public class Robot extends TimedRobot {
 
     Compressor compressor = new Compressor();
 
+    /*
+        Elevator Solenoid Loop Number Declaration
+     */
+
+    int elevatorLoopNumber = 0;
+
 
     @Override
     public void robotInit() {
@@ -121,6 +131,12 @@ public class Robot extends TimedRobot {
             port = new SerialPort(57600, SerialPort.Port.kMXP);
             navX = new IMUAdvanced(port, UpdateRateHz);
         } catch(Exception ex){System.out.println("NavX not working");}
+
+        /*
+            Old Button Array Initialization For Loops
+         */
+
+        for(int i = 0; i < oldPsoc.length; i++)oldPsoc[i] = false;
 
         /*
             Zero Elevator
@@ -167,6 +183,7 @@ public class Robot extends TimedRobot {
          */
 
         compressor.start();
+        time.start();
 
 //        elevatorSubsystem.homeElevator();
     }
@@ -187,26 +204,25 @@ public class Robot extends TimedRobot {
             elevatorSubsystem.toggleElevatorPos(false);
         }
 
-        if(OI.Psoc.getRawButton(5)){
-            elevatorSubsystem.discBrake.set(true);
-            try{
-                Thread.sleep(1000);
-            }catch(InterruptedException e){
+//        if(OI.Psoc.getRawButton(5)){
+//            elevatorLoopNumber++;
+//            elevatorSubsystem.discBrake.set(true);
+//            if(elevatorLoopNumber >= 20){
+//                elevatorSubsystem.manualMoveElevator(0.5);
+//            }
+//        }else if(OI.Psoc.getRawButton(6)){
+//            elevatorLoopNumber++;
+//            elevatorSubsystem.discBrake.set(true);
+//            if(elevatorLoopNumber >= 20) {
+//                elevatorSubsystem.manualMoveElevator(-0.5);
+//            }
+//        }else{
+//            elevatorLoopNumber = 0;
+//            elevatorSubsystem.discBrake.set(false);
+//            elevatorSubsystem.manualMoveElevator(0);
+//        }
 
-            }
-            elevatorSubsystem.manualMove(0.5);
-        }else if(OI.Psoc.getRawButton(6)){
-            elevatorSubsystem.discBrake.set(true);
-            try{
-                Thread.sleep(1000);
-            }catch(InterruptedException e){
-
-            }
-            elevatorSubsystem.manualMove(-0.5);
-        }else{
-            elevatorSubsystem.discBrake.set(false);
-            elevatorSubsystem.manualMove(0);
-        }
+        elevatorSubsystem.manualMoveElevator(OI.Psoc.getRawAxis(1));
 
         /*
             Run Intake (Forward/Backward)
@@ -273,11 +289,22 @@ public class Robot extends TimedRobot {
 
 //        System.out.println(wheel);
 //        rgbSensorSubsystem.rgbGetLux();
-        rgbSensorSubsystem.rgbGetLux();
+//        rgbSensorSubsystem.rgbGetLux();
 
         driveTrainSubsystem.tankDrive(leftDrive, rightDrive);
 
-        System.out.println("speed                                                                                " + speed);
+        /*
+            Get Old Button Values
+         */
+
+//        for(int i = 1; i < oldPsoc.length; i++)oldPsoc[i] = oi.Psoc.getRawButton(i);
+
+        /*
+            Outputs to console
+         */
+
+//        System.out.println("speed                                                                                " + speed);
+        System.out.println("loopNumber = " + (loopNumber) + "                time.get: " + time.get());
 
     }
 
