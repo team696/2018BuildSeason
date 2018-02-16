@@ -61,10 +61,6 @@ public class Robot extends TimedRobot {
     PowerDistributionPanel PDP = new PowerDistributionPanel();
     public Timer time = new Timer();
 
-    // Old Button Arrays for different Joysticks
-
-    boolean[] oldPsoc = new boolean[17];
-
     /*
         Drive Variables
      */
@@ -95,20 +91,27 @@ public class Robot extends TimedRobot {
     double speedTurnScale;
 
     /*
-        RGB Sensor Declaration
-     */
-
-    /*
         Compressor
      */
 
-    Compressor compressor = new Compressor();
+    public Compressor compressor = new Compressor();
 
     /*
-        Elevator Solenoid Loop Number Declaration
+        Elevator Variables
      */
 
     int elevatorLoopNumber = 0;
+    boolean runElevator = false;
+    boolean oldElevatorState;
+    boolean currentElevatorState;
+
+    /*
+        Intake Variables
+     */
+
+    boolean runIntake = false;
+    boolean oldIntakeState;
+    boolean currentIntakeState;
 
 
     @Override
@@ -131,12 +134,6 @@ public class Robot extends TimedRobot {
             port = new SerialPort(57600, SerialPort.Port.kMXP);
             navX = new IMUAdvanced(port, UpdateRateHz);
         } catch(Exception ex){System.out.println("NavX not working");}
-
-        /*
-            Old Button Array Initialization For Loops
-         */
-
-        for(int i = 0; i < oldPsoc.length; i++)oldPsoc[i] = false;
 
         /*
             Zero Elevator
@@ -198,45 +195,55 @@ public class Robot extends TimedRobot {
 
         // Toggle Elevator Solenoid
 
-        if(OI.Psoc.getRawButton(2)){
+        currentElevatorState = OI.Psoc.getRawButton(2);
+        if(currentElevatorState && !oldElevatorState){
+            runElevator = !runElevator;
+        }
+        oldElevatorState = currentElevatorState;
+//        if(OI.Psoc.getRawButton(2) && !oldPsoc[2])runElevator = true;              // Adjusted for Logitech Controller
+//        if(!OI.Psoc.getRawButton(2) && oldPsoc[2])runElevator = false;
+
+        if(runElevator){
             elevatorSubsystem.toggleElevatorPos(true);
         }else{
             elevatorSubsystem.toggleElevatorPos(false);
         }
 
-//        if(OI.Psoc.getRawButton(5)){
-//            elevatorLoopNumber++;
-//            elevatorSubsystem.discBrake.set(true);
-//            if(elevatorLoopNumber >= 20){
-//                elevatorSubsystem.manualMoveElevator(0.5);
-//            }
-//        }else if(OI.Psoc.getRawButton(6)){
-//            elevatorLoopNumber++;
-//            elevatorSubsystem.discBrake.set(true);
-//            if(elevatorLoopNumber >= 20) {
-//                elevatorSubsystem.manualMoveElevator(-0.5);
-//            }
-//        }else{
-//            elevatorLoopNumber = 0;
-//            elevatorSubsystem.discBrake.set(false);
-//            elevatorSubsystem.manualMoveElevator(0);
-//        }
+        if(OI.Psoc.getRawButton(7)){
+            elevatorLoopNumber++;
+            elevatorSubsystem.discBrake.set(true);
+            elevatorSubsystem.manualMoveElevator(0.5);
+        }else if(OI.Psoc.getRawButton(8)){
+            elevatorLoopNumber++;
+            elevatorSubsystem.discBrake.set(true);
+            elevatorSubsystem.manualMoveElevator(-0.5);
+        }else{
+            elevatorLoopNumber = 0;
+            elevatorSubsystem.discBrake.set(false);
+            elevatorSubsystem.manualMoveElevator(0);
+        }
 
-        elevatorSubsystem.manualMoveElevator(OI.Psoc.getRawAxis(1));
+//        elevatorSubsystem.manualMoveElevator(OI.Psoc.getRawAxis(1));
 
         /*
             Run Intake (Forward/Backward)
          */
 
-        if(OI.Psoc.getRawButton(4)){
-            intakeSubsystem.runIntake(0.4);
+        if(OI.Psoc.getRawButton(4)){                           // Adjusted for Logitech Controller
+            intakeSubsystem.runIntake(0.6);
         }else if(OI.Psoc.getRawButton(3)){
             intakeSubsystem.runIntake(-0.5);
         }else{
             intakeSubsystem.runIntake(0);
         }
 
-        if(OI.Psoc.getRawButton(1)){
+        currentIntakeState = OI.Psoc.getRawButton(1);
+        if(currentIntakeState && !oldIntakeState){
+            runIntake = !runIntake;
+        }
+        oldIntakeState = currentIntakeState;
+
+        if(runIntake){
             intakeSubsystem.toggleIntake(true);
         }else{
             intakeSubsystem.toggleIntake(false);
@@ -258,8 +265,10 @@ public class Robot extends TimedRobot {
             wheel = wheel + deadZoneMax;
         }
         speedTurnScale = a*(1/((speed*speed)-h))+k;
-        speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
-        wheel = (OI.wheel.getRawAxis(constants.wheelDriveAxis) * speedTurnScale) - deadZoneMax;
+//        speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
+//        wheel = (OI.wheel.getRawAxis(constants.wheelDriveAxis) * speedTurnScale) - deadZoneMax;
+        speed = -OI.Psoc.getRawAxis(1);
+        wheel = OI.Psoc.getRawAxis(2);
 
         // Drive Straight Code / Deadzone
         /** VERY WIP, DOESN'T FULLY FUNCTION CURRENTLY */
@@ -297,14 +306,12 @@ public class Robot extends TimedRobot {
             Get Old Button Values
          */
 
-//        for(int i = 1; i < oldPsoc.length; i++)oldPsoc[i] = oi.Psoc.getRawButton(i);
-
         /*
             Outputs to console
          */
 
 //        System.out.println("speed                                                                                " + speed);
-        System.out.println("loopNumber = " + (loopNumber) + "                time.get: " + time.get());
+//        System.out.println("loopNumber = " + (loopNumber) + "                time.get: " + time.get());
 
     }
 
