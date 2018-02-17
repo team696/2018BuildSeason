@@ -195,13 +195,20 @@ public class Robot extends TimedRobot {
 
         // Toggle Elevator Solenoid
 
+
+        /**
+         * Checks to see the current boolean state for the elevator button, and compares it to another boolean.
+         * The if statement checks to see if the two boolean states are opposite of each other, and if they are, flip
+         * the state of the runElevator boolean, which controls the pneumatic solenoid of the elevator.
+         * After the check, oldElevatorState is set equal to currentElevatorState to keep it consistent with the robot,
+         * and to be able to check again in the future.
+         */
+
         currentElevatorState = OI.Psoc.getRawButton(2);
         if(currentElevatorState && !oldElevatorState){
             runElevator = !runElevator;
         }
         oldElevatorState = currentElevatorState;
-//        if(OI.Psoc.getRawButton(2) && !oldPsoc[2])runElevator = true;              // Adjusted for Logitech Controller
-//        if(!OI.Psoc.getRawButton(2) && oldPsoc[2])runElevator = false;
 
         if(runElevator){
             elevatorSubsystem.toggleElevatorPos(true);
@@ -222,8 +229,6 @@ public class Robot extends TimedRobot {
             elevatorSubsystem.discBrake.set(false);
             elevatorSubsystem.manualMoveElevator(0);
         }
-
-//        elevatorSubsystem.manualMoveElevator(OI.Psoc.getRawAxis(1));
 
         /*
             Run Intake (Forward/Backward)
@@ -250,12 +255,6 @@ public class Robot extends TimedRobot {
         }
 
         /*
-            Speed Turn Scale Stuff
-         */
-
-//        speedTurnScale = a*(1/((speed*speed)-h))+k;
-
-        /*
             Drive Functionality
          */
 
@@ -271,6 +270,7 @@ public class Robot extends TimedRobot {
         wheel = OI.Psoc.getRawAxis(2);
 
         // Drive Straight Code / Deadzone
+
         /** VERY WIP, DOESN'T FULLY FUNCTION CURRENTLY */
 
         if(wheel > deadZoneMin && wheel < deadZoneMax){
@@ -292,19 +292,7 @@ public class Robot extends TimedRobot {
         leftDrive = speed + wheel;
         rightDrive = speed - wheel;
 
-//        System.out.println(rgbSensor.addressOnly());
-
-//        rgbSensorSubsystem.getRawData();
-
-//        System.out.println(wheel);
-//        rgbSensorSubsystem.rgbGetLux();
-//        rgbSensorSubsystem.rgbGetLux();
-
         driveTrainSubsystem.tankDrive(leftDrive, rightDrive);
-
-        /*
-            Get Old Button Values
-         */
 
         /*
             Outputs to console
