@@ -52,6 +52,7 @@ public class RobotMap {
 
     public static int intakeA = 8;
     public static int intakeB = 9;
+<<<<<<< HEAD
     public static int intakeSol = 1;
 
     /*
@@ -70,5 +71,10 @@ public class RobotMap {
     public static int climberB = 5;
     public static int climberSol = 2;
 
+=======
+
+    public static int intakeAChannel = 7;
+    public static int intakeBChannel = 8;
+>>>>>>> a0b6b6e79612ab780799d21d55311b52f4848f7d
 }
 
