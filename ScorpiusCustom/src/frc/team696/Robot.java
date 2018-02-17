@@ -9,9 +9,7 @@ package frc.team696;
 
 import com.kauailabs.nav6.frc.IMU;
 import com.kauailabs.nav6.frc.IMUAdvanced;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.wpilibj.SerialPort;
-import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -23,6 +21,7 @@ import frc.team696.autonomousCommands.RGBSensorTest;
 import frc.team696.subsystems.DriveTrainSubsystem;
 import frc.team696.subsystems.IntakeSubsystem;
 import frc.team696.subsystems.RGBSensorSubsystem;
+import frc.team696.subsystems.*;
 
 /**
  * @Author: Ismail Hasan && Justin Gonzales
@@ -47,7 +46,8 @@ public class Robot extends TimedRobot {
     public static Constants constants = new Constants();
     public static RGBSensorSubsystem rgbSensorSubsystem = new RGBSensorSubsystem(RobotMap.deviceAddress);
 //    public static final JustinElevator justinElevator = new JustinElevator(RobotMap.Elevator);
-    public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem(RobotMap.intakeA, RobotMap.intakeB);
+    public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem(RobotMap.intakeA, RobotMap.intakeB, RobotMap.intakeSol);
+    public static ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(RobotMap.elevator, RobotMap.elevatorSol, RobotMap.discBrake);
 
 
     /*
@@ -63,6 +63,7 @@ public class Robot extends TimedRobot {
     SerialPort port;
 
     PowerDistributionPanel PDP = new PowerDistributionPanel();
+    public Timer time = new Timer();
 
     /*
         Drive Variables
@@ -94,8 +95,27 @@ public class Robot extends TimedRobot {
     double speedTurnScale;
 
     /*
-        RGB Sensor Declaration
+        Compressor
      */
+
+    public Compressor compressor = new Compressor();
+
+    /*
+        Elevator Variables
+     */
+
+    int elevatorLoopNumber = 0;
+    boolean runElevator = false;
+    boolean oldElevatorState;
+    boolean currentElevatorState;
+
+    /*
+        Intake Variables
+     */
+
+    boolean runIntake = false;
+    boolean oldIntakeState;
+    boolean currentIntakeState;
 
 
     @Override
@@ -119,6 +139,10 @@ public class Robot extends TimedRobot {
             port = new SerialPort(57600, SerialPort.Port.kMXP);
             navX = new IMUAdvanced(port, UpdateRateHz);
         } catch(Exception ex){System.out.println("NavX not working");}
+
+        /*
+            Zero Elevator
+         */
 
     }
 
@@ -152,6 +176,18 @@ public class Robot extends TimedRobot {
         if (autonomousCommand != null) {
             autonomousCommand.cancel();
         }
+
+        rgbSensorSubsystem.rgbSensor.write(0xC0, 1); // set Integration Time
+        rgbSensorSubsystem.rgbSensor.write(0x02, 1); // set Gain
+
+        /*
+            Start Compressor
+         */
+
+        compressor.start();
+        time.start();
+
+//        elevatorSubsystem.homeElevator();
     }
 
     @Override
@@ -159,15 +195,63 @@ public class Robot extends TimedRobot {
         Scheduler.getInstance().run();
 
         /*
+            Elevator Functions
+         */
+
+        // Toggle Elevator Solenoid
+
+        currentElevatorState = OI.Psoc.getRawButton(2);
+        if(currentElevatorState && !oldElevatorState){
+            runElevator = !runElevator;
+        }
+        oldElevatorState = currentElevatorState;
+//        if(OI.Psoc.getRawButton(2) && !oldPsoc[2])runElevator = true;              // Adjusted for Logitech Controller
+//        if(!OI.Psoc.getRawButton(2) && oldPsoc[2])runElevator = false;
+
+        if(runElevator){
+            elevatorSubsystem.toggleElevatorPos(true);
+        }else{
+            elevatorSubsystem.toggleElevatorPos(false);
+        }
+
+        if(OI.Psoc.getRawButton(7)){
+            elevatorLoopNumber++;
+            elevatorSubsystem.discBrake.set(true);
+            elevatorSubsystem.manualMoveElevator(0.5);
+        }else if(OI.Psoc.getRawButton(8)){
+            elevatorLoopNumber++;
+            elevatorSubsystem.discBrake.set(true);
+            elevatorSubsystem.manualMoveElevator(-0.5);
+        }else{
+            elevatorLoopNumber = 0;
+            elevatorSubsystem.discBrake.set(false);
+            elevatorSubsystem.manualMoveElevator(0);
+        }
+
+//        elevatorSubsystem.manualMoveElevator(OI.Psoc.getRawAxis(1));
+
+        /*
             Run Intake (Forward/Backward)
          */
 
-        if(OI.Psoc.getRawButton(13)){
-            intakeSubsystem.runIntake(0.4);
-        }else if(OI.Psoc.getRawButton(14)){
+        if(OI.Psoc.getRawButton(4)){                           // Adjusted for Logitech Controller
+            intakeSubsystem.runIntake(0.6);
+        }else if(OI.Psoc.getRawButton(3)){
             intakeSubsystem.runIntake(-0.5);
         }else{
             intakeSubsystem.runIntake(0);
+        }
+
+        currentIntakeState = OI.Psoc.getRawButton(1);
+        if(currentIntakeState && !oldIntakeState){
+            runIntake = !runIntake;
+        }
+        oldIntakeState = currentIntakeState;
+
+        if(runIntake){
+            intakeSubsystem.toggleIntake(true);
+        }else{
+            intakeSubsystem.toggleIntake(false);
         }
 
         /*
@@ -186,8 +270,10 @@ public class Robot extends TimedRobot {
             wheel = wheel + deadZoneMax;
         }
         speedTurnScale = a*(1/((speed*speed)-h))+k;
-        speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
-        wheel = (OI.wheel.getRawAxis(constants.wheelDriveAxis) * speedTurnScale) - deadZoneMax;
+//        speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
+//        wheel = (OI.wheel.getRawAxis(constants.wheelDriveAxis) * speedTurnScale) - deadZoneMax;
+        speed = -OI.Psoc.getRawAxis(1);
+        wheel = OI.Psoc.getRawAxis(2);
 
         // Drive Straight Code / Deadzone
         /** VERY WIP, DOESN'T FULLY FUNCTION CURRENTLY */
@@ -217,11 +303,20 @@ public class Robot extends TimedRobot {
 
 //        System.out.println(wheel);
 //        rgbSensorSubsystem.rgbGetLux();
-        rgbSensorSubsystem.rgbGetLux();
+//        rgbSensorSubsystem.rgbGetLux();
 
         driveTrainSubsystem.tankDrive(leftDrive, rightDrive);
 
-        System.out.println("speed                                                                                " + speed);
+        /*
+            Get Old Button Values
+         */
+
+        /*
+            Outputs to console
+         */
+
+//        System.out.println("speed                                                                                " + speed);
+//        System.out.println("loopNumber = " + (loopNumber) + "                time.get: " + time.get());
 
     }
 

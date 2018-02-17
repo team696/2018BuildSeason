@@ -42,14 +42,14 @@ public class RGBSensorSubsystem extends Subsystem {
     double redNoLuminance;
     double greenNoLuminance;
     double blueNoLuminance;
-
+    double rgbLoopNumber = 0;
     double difference;
 
     /*
         Addresses
      */
 
-    byte commandBit =  (byte) 0x80;
+    byte commandBit = (byte) 0x80;
     byte sensorWaitTime = 0x03;
     byte aTimeAddress = (byte) 0x81;
 
@@ -58,7 +58,7 @@ public class RGBSensorSubsystem extends Subsystem {
      */
 
     byte integrationTime_2_4ms = (byte) 0xFF;
-    byte integrationTime_14ms = (byte) 256-6;
+    byte integrationTime_14ms = (byte) 256 - 6;
     byte integrationTime_24ms = (byte) 0xF6;
     byte integrationTime_50ms = (byte) 0xEB;
     byte integrationTime_101ms = (byte) 0xD5;
@@ -74,7 +74,7 @@ public class RGBSensorSubsystem extends Subsystem {
     byte gain_x16 = (byte) 0x02;
     byte gain_x60 = (byte) 0x03;
 
-    public RGBSensorSubsystem(byte enableAddress){
+    public RGBSensorSubsystem(byte enableAddress) {
 
         this.rgbSensor = new I2C(I2C.Port.kOnboard, enableAddress);
 
@@ -148,19 +148,14 @@ public class RGBSensorSubsystem extends Subsystem {
 
 //        System.out.println(prevValueSet);
 
-        System.out.println( "red                                                                                " + red);
+        rgbLoopNumber++;
 
-        if(time.get() == 0) {
-            time.start();
-        }
-
-        if(time.get() >= 0.024 && !prevValueSet) {
-            prevValueSet = true;
+        if(rgbLoopNumber >= 2) {
             prevValue = redNoLuminance;
             System.out.println("                                                                Prev Value Set");
         }
 
-        if(time.get() >= 0.048) {
+        if(rgbLoopNumber >= 4) {
             nowValue = redNoLuminance;
 //            System.out.println("nowValue: " + nowValue);
         }
@@ -174,15 +169,14 @@ public class RGBSensorSubsystem extends Subsystem {
             nowValue = prevValue;
         }
 
-        if(prevValue != nowValue && nowValue != 0 && prevValue != 0) {
+        if(prevValue != nowValue && rgbLoopNumber == 6) {
             System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "             Change has occurred.");
             passedTape = true;
         }
 
 
-        if(time.get() >= 0.08) {             // restarts the rgbLoop
-            prevValueSet = false;
-            time.reset();
+        if(rgbLoopNumber >= 8) {             // restarts the rgbLoop
+            rgbLoopNumber = 0;
         }
     }
 
