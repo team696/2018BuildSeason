@@ -17,14 +17,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team696.autonomousCommands.CenterPos;
 import frc.team696.autonomousCommands.LeftPos;
 import frc.team696.autonomousCommands.RightPos;
-<<<<<<< HEAD
 import frc.team696.subsystems.*;
-=======
 import frc.team696.autonomousCommands.RGBSensorTest;
 import frc.team696.subsystems.DriveTrainSubsystem;
 import frc.team696.subsystems.IntakeSubsystem;
 import frc.team696.subsystems.RGBSensorSubsystem;
->>>>>>> a0b6b6e79612ab780799d21d55311b52f4848f7d
 
 /**
  * @Author: Ismail Hasan && Justin Gonzales
@@ -48,14 +45,9 @@ public class Robot extends TimedRobot {
                                                                                     RobotMap.rightRear, RobotMap.rightMid, RobotMap.rightFront);
     public static Constants constants = new Constants();
     public static RGBSensorSubsystem rgbSensorSubsystem = new RGBSensorSubsystem(RobotMap.deviceAddress);
-//    public static final JustinElevator justinElevator = new JustinElevator(RobotMap.Elevator);
-<<<<<<< HEAD
     public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem(RobotMap.intakeA, RobotMap.intakeB, RobotMap.intakeSol);
     public static ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(RobotMap.elevator, RobotMap.elevatorSol, RobotMap.discBrake);
     public static ClimberSubsystem climberSubsystem = new ClimberSubsystem(RobotMap.climberA, RobotMap.climberB, RobotMap.climberSol);
-=======
-    public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem(RobotMap.intakeA, RobotMap.intakeB, RobotMap.intakeAChannel, RobotMap.intakeBChannel);
->>>>>>> a0b6b6e79612ab780799d21d55311b52f4848f7d
 
 
     /*
@@ -70,12 +62,8 @@ public class Robot extends TimedRobot {
     public static IMU navX;
     SerialPort port;
 
-<<<<<<< HEAD
-    PowerDistributionPanel PDP = new PowerDistributionPanel();
     public Timer time = new Timer();
-=======
     public PowerDistributionPanel PDP = new PowerDistributionPanel();
->>>>>>> a0b6b6e79612ab780799d21d55311b52f4848f7d
 
     /*
         Drive Variables
@@ -188,7 +176,6 @@ public class Robot extends TimedRobot {
         if (autonomousCommand != null) {
             autonomousCommand.cancel();
         }
-<<<<<<< HEAD
 
         rgbSensorSubsystem.rgbSensor.write(0xC0, 1); // set Integration Time
         rgbSensorSubsystem.rgbSensor.write(0x02, 1); // set Gain
@@ -201,8 +188,7 @@ public class Robot extends TimedRobot {
         time.start();
 
 //        elevatorSubsystem.homeElevator();
-=======
->>>>>>> a0b6b6e79612ab780799d21d55311b52f4848f7d
+
     }
 
     @Override
