@@ -94,6 +94,11 @@ public class Robot extends TimedRobot {
 
     double speedTurnScale;
 
+    // Ramping Variables
+
+    double rampRate = 0.03;
+    double commandedSpeed;
+
     /*
         Compressor
      */
@@ -202,6 +207,33 @@ public class Robot extends TimedRobot {
         Scheduler.getInstance().run();
 
         /*
+            Drive Functionality
+         */
+
+        if(wheel < 0){
+            wheel = wheel - deadZoneMax;
+        }else{
+            wheel = wheel + deadZoneMax;
+        }
+        speedTurnScale = a*(1/((speed*speed)-h))+k;
+
+        // Ramping Backwards, not forwards, if the elevator is in it's forward state.
+        if(elevatorSubsystem.elevatorSol.get()){
+            commandedSpeed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
+            if(speed > -0.3 && speed < 0 && commandedSpeed < 0) {
+                speed = -0.3;
+            }else if(speed > commandedSpeed){
+                speed -= rampRate;
+            }else{
+                speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
+            }
+        }else{
+            speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
+        }
+
+        wheel = (OI.wheel.getRawAxis(constants.wheelDriveAxis) * speedTurnScale) - deadZoneMax;
+
+        /*
             Climber Functions
          */
 
@@ -214,14 +246,14 @@ public class Robot extends TimedRobot {
 
 
         /**
-         * Checks to see the current boolean state for the elevator button, and compares it to another boolean.
+         * Checks to see the current boolean state for the elevator button, and compares it to another boolean, oldElevatorState.
          * The if statement checks to see if the two boolean states are opposite of each other, and if they are, flip
          * the state of the runElevator boolean, which controls the pneumatic solenoid of the elevator.
          * After the check, oldElevatorState is set equal to currentElevatorState to keep it consistent with the robot,
          * and to be able to check again in the future.
          */
 
-        currentElevatorState = OI.Psoc.getRawButton(2);
+        currentElevatorState = OI.Psoc.getRawButton(15);
         if(currentElevatorState && !oldElevatorState){
             runElevator = !runElevator;
         }
@@ -233,11 +265,11 @@ public class Robot extends TimedRobot {
             elevatorSubsystem.toggleElevatorPos(false);
         }
 
-        if(OI.Psoc.getRawButton(7)){
+        if(OI.Psoc.getRawButton(11)){
             elevatorLoopNumber++;
             elevatorSubsystem.discBrake.set(true);
             elevatorSubsystem.manualMoveElevator(0.5);
-        }else if(OI.Psoc.getRawButton(8)){
+        }else if(OI.Psoc.getRawButton(12)){
             elevatorLoopNumber++;
             elevatorSubsystem.discBrake.set(true);
             elevatorSubsystem.manualMoveElevator(-0.5);
@@ -251,9 +283,9 @@ public class Robot extends TimedRobot {
             Run Intake (Forward/Backward)
          */
 
-        if(OI.Psoc.getRawButton(4)){                           // Adjusted for Logitech Controller
+        if(OI.Psoc.getRawButton(13)){
             intakeSubsystem.runIntake(0.6);
-        }else if(OI.Psoc.getRawButton(3)){
+        }else if(OI.Psoc.getRawButton(14)){
             intakeSubsystem.runIntake(-0.5);
         }else{
             intakeSubsystem.runIntake(0);
@@ -270,24 +302,6 @@ public class Robot extends TimedRobot {
         }else{
             intakeSubsystem.toggleIntake(false);
         }
-
-        /*
-            Drive Functionality
-         */
-
-        if(wheel < 0){
-            wheel = wheel - deadZoneMax;
-        }else{
-            wheel = wheel + deadZoneMax;
-        }
-        speedTurnScale = a*(1/((speed*speed)-h))+k;
-//        speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
-//        wheel = (OI.wheel.getRawAxis(constants.wheelDriveAxis) * speedTurnScale) - deadZoneMax;
-
-        // Logitech Controller
-
-        speed = -OI.Psoc.getRawAxis(1);
-        wheel = OI.Psoc.getRawAxis(2);
 
         // Drive Straight Code / Deadzone
 
@@ -320,6 +334,7 @@ public class Robot extends TimedRobot {
 
 //        System.out.println("speed                                                                                " + speed);
 //        System.out.println("loopNumber = " + (loopNumber) + "                time.get: " + time.get());
+        System.out.println(speed);
 
     }
 
