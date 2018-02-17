@@ -44,6 +44,7 @@ public class Robot extends TimedRobot {
 //    public static final JustinElevator justinElevator = new JustinElevator(RobotMap.Elevator);
     public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem(RobotMap.intakeA, RobotMap.intakeB, RobotMap.intakeSol);
     public static ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(RobotMap.elevator, RobotMap.elevatorSol, RobotMap.discBrake);
+    public static ClimberSubsystem climberSubsystem = new ClimberSubsystem(RobotMap.climberA, RobotMap.climberB, RobotMap.climberSol);
 
 
     /*
@@ -188,6 +189,12 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+
+        /*
+            Climber Functions
+         */
+
+        climberSubsystem.setClimberSpeed(0.15);
 
         /*
             Elevator Functions

@@ -61,5 +61,14 @@ public class RobotMap {
     public static int elevator = 13;
     public static int elevatorSol = 0;
     public static int discBrake = 3;
+
+    /*
+        Climber Ports
+     */
+
+    public static int climberA = 12;
+    public static int climberB = 5;
+    public static int climberSol = 2;
+
 }
 

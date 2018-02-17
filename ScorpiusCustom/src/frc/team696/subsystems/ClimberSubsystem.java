@@ -10,18 +10,18 @@ public class ClimberSubsystem extends Subsystem {
 
     WPI_TalonSRX climberA;
     WPI_TalonSRX climberB;
-    Solenoid hookDeploy;
+    Solenoid climberSol;
 
     boolean isDeployed = false;
 
     int loopNumber = 0;
 
 
-    public ClimberSubsystem(int climberA, int climberB, int hookDeploy){
+    public ClimberSubsystem(int climberA, int climberB, int climberSol){
 
         this.climberA = new WPI_TalonSRX(climberA);
         this.climberB = new WPI_TalonSRX(climberB);
-        this.hookDeploy = new Solenoid(hookDeploy);
+        this.climberSol = new Solenoid(climberSol);
 
     }
 
@@ -33,7 +33,7 @@ public class ClimberSubsystem extends Subsystem {
 
     public void deployHook(boolean bool){
 
-        hookDeploy.set(bool);
+        climberSol.set(bool);
 
     }
 
