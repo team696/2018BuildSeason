@@ -35,6 +35,18 @@ public class ElevatorSubsystem extends Subsystem {
             kD = 0,
             kF = 0;
 
+    double elevatorTarget;
+
+    double groundPosition;
+    double switchPosition;
+    double scalePosition;
+    double climbPosition;
+    double homePosition = 0;
+
+    int sensorUnitsPer100ms;
+    int sensorUnitsPer100msPerSec;
+
+
     public ElevatorSubsystem(int elevator, int elevatorSol, int discBrake) {
 
         /*
@@ -53,11 +65,17 @@ public class ElevatorSubsystem extends Subsystem {
 
         // Elevator A Configuration
 
-        this.elevator.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, pidIdx, timeoutMs);
-        this.elevator.setNeutralMode(NeutralMode.Brake);
-        this.elevator.set(ControlMode.Position, 0);
+        this.elevator.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, pidIdx, timeoutMs); // Feedback Sensor Config
+        this.elevator.setNeutralMode(NeutralMode.Brake); // What happens when the limit switch is closed
+        this.elevator.configMotionCruiseVelocity(sensorUnitsPer100ms, timeoutMs); // How fast it moves at terminal velocity
+        this.elevator.configMotionAcceleration(sensorUnitsPer100msPerSec, timeoutMs); // How fast it gets to terminal velocity
+        this.elevator.set(ControlMode.MotionMagic, 0); // Configuring the control mode to motion magic
         this.elevator.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, timeoutMs);
+        // Configuration of the Forward Limit Switch Source
         this.elevator.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, timeoutMs);
+        // Configuration of the Reverse Limit Switch Source
+
+        // Elevator PID Values Configuration
 
         this.elevator.config_kP(slotIdx, kP, timeoutMs);
         this.elevator.config_kI(slotIdx, kI, timeoutMs);
@@ -96,6 +114,33 @@ public class ElevatorSubsystem extends Subsystem {
          */
 
         elevatorSol.set(bool);
+
+    }
+
+    public void moveToPos(String position) {
+
+        switch(position){
+
+            case "ground":
+                elevatorTarget = groundPosition;
+
+            case "switch":
+                elevatorTarget = switchPosition;
+
+            case "scale":
+                elevatorTarget = scalePosition;
+
+            case "climb":
+                elevatorTarget = climbPosition;
+
+            default:
+                elevatorTarget = homePosition;
+
+        }
+
+        elevator.configMotionCruiseVelocity(sensorUnitsPer100ms, timeoutMs);
+        elevator.configMotionAcceleration(sensorUnitsPer100msPerSec, timeoutMs);
+        elevator.set(ControlMode.MotionMagic, elevatorTarget);
 
     }
 
