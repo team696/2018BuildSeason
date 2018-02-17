@@ -96,8 +96,11 @@ public class Robot extends TimedRobot {
 
     // Ramping Variables
 
-    double rampRate = 0.03;
+    double lowElevatorRampRate = 0.025;
+    double highElevatorRampRate = 0.01;
     double commandedSpeed;
+    double elevatorMaxHeight;
+    double minimumSpeed = -0.03;
 
     /*
         Compressor
@@ -113,6 +116,8 @@ public class Robot extends TimedRobot {
     boolean runElevator = false;
     boolean oldElevatorState;
     boolean currentElevatorState;
+    double elevatorPositionInches;
+    boolean elevatorSolState;
 
     /*
         Intake Variables
@@ -218,12 +223,24 @@ public class Robot extends TimedRobot {
         speedTurnScale = a*(1/((speed*speed)-h))+k;
 
         // Ramping Backwards, not forwards, if the elevator is in it's forward state.
-        if(elevatorSubsystem.elevatorSol.get()){
+        elevatorPositionInches = elevatorSubsystem.elevator.getSelectedSensorPosition(0) / 200;
+        elevatorSolState = elevatorSubsystem.elevatorSol.get();
+
+        if(elevatorSubsystem.elevatorSol.get() && elevatorPositionInches > elevatorMaxHeight){
             commandedSpeed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
-            if(speed > -0.3 && speed < 0 && commandedSpeed < 0) {
-                speed = -0.3;
+            if(speed > minimumSpeed && speed < 0 && commandedSpeed < 0) {
+                speed = minimumSpeed;
             }else if(speed > commandedSpeed){
-                speed -= rampRate;
+                speed -= highElevatorRampRate;
+            }else{
+                speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
+            }
+        }else if(elevatorSubsystem.elevatorSol.get()){
+            commandedSpeed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
+            if(speed > minimumSpeed && speed < 0 && commandedSpeed < 0) {
+                speed = minimumSpeed;
+            }else if(speed > commandedSpeed){
+                speed -= lowElevatorRampRate;
             }else{
                 speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
             }
@@ -334,7 +351,7 @@ public class Robot extends TimedRobot {
 
 //        System.out.println("speed                                                                                " + speed);
 //        System.out.println("loopNumber = " + (loopNumber) + "                time.get: " + time.get());
-        System.out.println(speed);
+        System.out.println(elevatorPositionInches);
 
     }
 
