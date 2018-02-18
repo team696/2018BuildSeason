@@ -150,6 +150,7 @@ public class RGBSensorSubsystem extends Subsystem {
 
         rgbLoopNumber++;
 
+        if(time.get() >= 0.024 && !prevValueSet) {
         if(rgbLoopNumber >= 2) {
             prevValue = redNoLuminance;
             System.out.println("                                                                Prev Value Set");
