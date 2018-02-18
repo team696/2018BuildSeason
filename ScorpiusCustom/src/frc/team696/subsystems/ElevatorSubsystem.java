@@ -70,6 +70,7 @@ public class ElevatorSubsystem extends Subsystem {
         this.elevator.configMotionCruiseVelocity(sensorUnitsPer100ms, timeoutMs); // How fast it moves at terminal velocity
         this.elevator.configMotionAcceleration(sensorUnitsPer100msPerSec, timeoutMs); // How fast it gets to terminal velocity
         this.elevator.set(ControlMode.MotionMagic, 0); // Configuring the control mode to motion magic
+        this.elevator.setSensorPhase(true); // Sets encoder to inverted, to make values positive.
         this.elevator.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, timeoutMs);
         // Configuration of the Forward Limit Switch Source
         this.elevator.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, timeoutMs);
@@ -119,6 +120,8 @@ public class ElevatorSubsystem extends Subsystem {
 
     public void moveToPos(String position) {
 
+        discBrake.set(true);
+
         switch(position){
 
             case "ground":
@@ -141,6 +144,8 @@ public class ElevatorSubsystem extends Subsystem {
         elevator.configMotionCruiseVelocity(sensorUnitsPer100ms, timeoutMs);
         elevator.configMotionAcceleration(sensorUnitsPer100msPerSec, timeoutMs);
         elevator.set(ControlMode.MotionMagic, elevatorTarget);
+
+        discBrake.set(false);
 
     }
 
