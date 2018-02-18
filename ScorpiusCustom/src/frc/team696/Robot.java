@@ -345,6 +345,8 @@ public class Robot extends TimedRobot {
             loopNumber = 0;
         }
 
+        rgbSensorSubsystem.rgbGetLux();
+
         leftDrive = speed + wheel;
         rightDrive = speed - wheel;
 
@@ -356,7 +358,7 @@ public class Robot extends TimedRobot {
 
 //        System.out.println("speed                                                                                " + speed);
 //        System.out.println("loopNumber = " + (loopNumber) + "                time.get: " + time.get());
-        System.out.println(elevatorSubsystem.elevatorSol.get() + "              " + speed);
+//        System.out.println(elevatorSubsystem.elevatorSol.get() + "              " + speed);
 
     }
 
