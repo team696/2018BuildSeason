@@ -205,6 +205,8 @@ public class Robot extends TimedRobot {
             Climber Functions
          */
 
+//        climberSubsystem.setClimberSpeed(0.15);
+
 
         /*
             Elevator Functions
@@ -236,11 +238,11 @@ public class Robot extends TimedRobot {
         if(OI.Psoc.getRawButton(7)){
             elevatorLoopNumber++;
             elevatorSubsystem.discBrake.set(true);
-            elevatorSubsystem.manualMoveElevator(0.5);
+            elevatorSubsystem.manualMoveElevator(0.3);
         }else if(OI.Psoc.getRawButton(8)){
             elevatorLoopNumber++;
             elevatorSubsystem.discBrake.set(true);
-            elevatorSubsystem.manualMoveElevator(-0.5);
+            elevatorSubsystem.manualMoveElevator(-0.3);
         }else{
             elevatorLoopNumber = 0;
             elevatorSubsystem.discBrake.set(false);
@@ -313,6 +315,7 @@ public class Robot extends TimedRobot {
         rightDrive = speed - wheel;
 
         driveTrainSubsystem.tankDrive(leftDrive, rightDrive);
+//        driveTrainSubsystem.testMotors(0.5);
 
         /*
             Outputs to console
@@ -320,6 +323,7 @@ public class Robot extends TimedRobot {
 
 //        System.out.println("speed                                                                                " + speed);
 //        System.out.println("loopNumber = " + (loopNumber) + "                time.get: " + time.get());
+        System.out.println(elevatorSubsystem.elevator.getMotorOutputPercent());
 
     }
 

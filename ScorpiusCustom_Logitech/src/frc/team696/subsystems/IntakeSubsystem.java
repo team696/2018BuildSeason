@@ -58,7 +58,7 @@ public class IntakeSubsystem extends Subsystem {
             intakeA.set(0);
             intakeB.set(0);
         }else{
-            intakeA.set(speed);
+            intakeA.set(-speed);
             intakeB.set(speed);
         }
 

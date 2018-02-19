@@ -69,8 +69,8 @@ public class DriveTrainSubsystem extends Subsystem {
             Right Side Configuration
          */
 
-        this.leftRear.configPeakOutputReverse(-1, timeoutMs);
-        this.leftRear.configPeakOutputForward(1, timeoutMs);
+        this.rightRear.configPeakOutputReverse(-1, timeoutMs);
+        this.rightRear.configPeakOutputForward(1, timeoutMs);
         this.rightRear.set(ControlMode.PercentOutput, 0);
         this.rightMid.set(ControlMode.Follower, this.rightRear.getDeviceID());
         this.rightFront.set(ControlMode.Follower, this.rightRear.getDeviceID());
@@ -92,6 +92,7 @@ public class DriveTrainSubsystem extends Subsystem {
         drive.tankDrive(leftDrive, rightDrive);
 
     }
+
 
     @Override
     public void initDefaultCommand() {
