@@ -148,14 +148,18 @@ public class RGBSensorSubsystem extends Subsystem {
 
 //        System.out.println(prevValueSet);
 
-        rgbLoopNumber++;
-
-        if(rgbLoopNumber >= 2) {
-            prevValue = redNoLuminance;
-            System.out.println("                                                                Prev Value Set");
+        if(time.get() == 0){
+            time.start();
         }
 
-        if(rgbLoopNumber >= 4) {
+        if(time.get() >= 0.024 && !prevValueSet) {
+            prevValueSet = true;
+            prevValue = redNoLuminance;
+
+
+        }
+
+        if(time.get() >= 0.048) {
             nowValue = redNoLuminance;
 //            System.out.println("nowValue: " + nowValue);
         }
@@ -164,19 +168,20 @@ public class RGBSensorSubsystem extends Subsystem {
 
         System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue);
 
-        if(Math.abs(prevValue - nowValue) < 1) {   // sensitivity
+        if(Math.abs(prevValue - nowValue) < 0.3) {   // sensitivity
             System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "         in Null Zone");
             nowValue = prevValue;
         }
 
-        if(prevValue != nowValue && rgbLoopNumber == 6) {
+        if(prevValue != nowValue) {
             System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "             Change has occurred.");
             passedTape = true;
         }
 
+        if(time.get() >= 0.08) {             // restarts the rgbLoop
+            prevValueSet = false;
+            time.reset();
 
-        if(rgbLoopNumber >= 8) {             // restarts the rgbLoop
-            rgbLoopNumber = 0;
         }
     }
 

@@ -99,7 +99,7 @@ public class Robot extends TimedRobot {
     double lowElevatorRampRate = 0.025;
     double highElevatorRampRate = 0.01;
     double commandedSpeed;
-    double elevatorMaxHeight;
+    double elevatorMaxHeight = 30;
     double minimumSpeed = -0.03;
 
     /*
@@ -160,6 +160,8 @@ public class Robot extends TimedRobot {
             Zero Elevator
          */
 
+        elevatorSubsystem.homeElevator();
+
     }
 
     @Override
@@ -203,8 +205,6 @@ public class Robot extends TimedRobot {
         compressor.start();
         time.start();
 
-//        elevatorSubsystem.homeElevator();
-
     }
 
     @Override
@@ -246,6 +246,11 @@ public class Robot extends TimedRobot {
             }
         }else{
             speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
+        }
+
+        if(elevatorSubsystem.elevatorSol.get() && elevatorPositionInches < elevatorMaxHeight && speed > 0.75){
+            elevatorSubsystem.elevatorSol.set(false);
+            runElevator = false;
         }
 
         wheel = (OI.wheel.getRawAxis(constants.wheelDriveAxis) * speedTurnScale) - deadZoneMax;
@@ -351,7 +356,7 @@ public class Robot extends TimedRobot {
 
 //        System.out.println("speed                                                                                " + speed);
 //        System.out.println("loopNumber = " + (loopNumber) + "                time.get: " + time.get());
-        System.out.println(elevatorPositionInches);
+        System.out.println(elevatorSubsystem.elevatorSol.get() + "              " + speed);
 
     }
 
