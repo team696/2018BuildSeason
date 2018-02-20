@@ -236,11 +236,15 @@ public class Robot extends TimedRobot {
         if(OI.Psoc.getRawButton(7)){
             elevatorLoopNumber++;
             elevatorSubsystem.discBrake.set(true);
-            elevatorSubsystem.manualMoveElevator(0.5);
+            if(elevatorLoopNumber > 5){
+                elevatorSubsystem.manualMoveElevator(0.5);
+            }
         }else if(OI.Psoc.getRawButton(8)){
             elevatorLoopNumber++;
             elevatorSubsystem.discBrake.set(true);
-            elevatorSubsystem.manualMoveElevator(-0.5);
+            if(elevatorLoopNumber > 5){
+                elevatorSubsystem.manualMoveElevator(-0.3);
+            }
         }else{
             elevatorLoopNumber = 0;
             elevatorSubsystem.discBrake.set(false);

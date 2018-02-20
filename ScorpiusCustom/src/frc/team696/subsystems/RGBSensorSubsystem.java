@@ -7,10 +7,6 @@ import frc.team696.Robot;
 
 public class RGBSensorSubsystem extends Subsystem {
 
-    /*
-        TODO Make the whole RGB sensory system run faster, at least 14ms. Faster than that is even better.
-     */
-
     public int loopNumber = 0;
     public boolean prevValueSet = false;
     double prevValue;
@@ -98,9 +94,9 @@ public class RGBSensorSubsystem extends Subsystem {
 
         // Thread.sleep here to account for wait time register
 
-        try{
+        try {
             Thread.sleep(14);
-        }catch(InterruptedException e){
+        } catch (InterruptedException e) {
             System.out.println("If you get this message, then Ismail sucks");
         }
 
@@ -150,33 +146,35 @@ public class RGBSensorSubsystem extends Subsystem {
 
         rgbLoopNumber++;
 
-        if(rgbLoopNumber >= 2) {
-            prevValue = redNoLuminance;
-            System.out.println("                                                                Prev Value Set");
-        }
+        if (time.get() >= 0.024 && !prevValueSet) {
 
-        if(rgbLoopNumber >= 4) {
-            nowValue = redNoLuminance;
+            if (rgbLoopNumber >= 2) {
+                prevValue = redNoLuminance;
+                System.out.println("                                                                Prev Value Set");
+            }
+
+            if (rgbLoopNumber >= 4) {
+                nowValue = redNoLuminance;
 //            System.out.println("nowValue: " + nowValue);
-        }
+            }
 
 
+            System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue);
 
-        System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue);
+            if (Math.abs(prevValue - nowValue) < 1) {   // sensitivity
+                System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "         in Null Zone");
+                nowValue = prevValue;
+            }
 
-        if(Math.abs(prevValue - nowValue) < 1) {   // sensitivity
-            System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "         in Null Zone");
-            nowValue = prevValue;
-        }
-
-        if(prevValue != nowValue && rgbLoopNumber == 6) {
-            System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "             Change has occurred.");
-            passedTape = true;
-        }
+            if (prevValue != nowValue && rgbLoopNumber == 6) {
+                System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "             Change has occurred.");
+                passedTape = true;
+            }
 
 
-        if(rgbLoopNumber >= 8) {             // restarts the rgbLoop
-            rgbLoopNumber = 0;
+            if (rgbLoopNumber >= 8) {             // restarts the rgbLoop
+                rgbLoopNumber = 0;
+            }
         }
     }
 
@@ -184,4 +182,3 @@ public class RGBSensorSubsystem extends Subsystem {
 
     }
 }
-
