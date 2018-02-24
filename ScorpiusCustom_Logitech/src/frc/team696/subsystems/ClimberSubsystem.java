@@ -27,8 +27,12 @@ public class ClimberSubsystem extends Subsystem {
 
     public void setClimberSpeed(double speed){
 
+        /*
+            Both values positive for each climber
+         */
+
         climberA.set(speed);
-        climberB.set(-speed);
+        climberB.set(speed);
     }
 
     public void deployHook(boolean bool){

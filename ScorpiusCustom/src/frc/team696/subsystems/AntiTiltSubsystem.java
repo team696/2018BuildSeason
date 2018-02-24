@@ -15,10 +15,13 @@ public class AntiTiltSubsystem extends Subsystem {
     public Robot robot = new Robot();
 
     int elevatorPosition;
+    double elevatorPositionInches;
 
     double elevatorLow = 0;
-    double elevatorMid = 75;
-    double elevatorHigh = 130;
+    double elevatorMid = 15000;
+    double elevatorHigh = 30000;
+
+    public double speed;
 
     /*
         Booleans
@@ -40,9 +43,9 @@ public class AntiTiltSubsystem extends Subsystem {
 
     public double commandedSpeed;
     public double minimumBackSpeed = -0.3;
-    public double lowRampRate;
+    public double lowRampRate = 0.05;
     public double midRampRate;
-    public double highRampRate;
+    public double highRampRate = 0.02;
 
     /*
         Delayed Auto Elevator Back
@@ -50,6 +53,12 @@ public class AntiTiltSubsystem extends Subsystem {
 
     public double delayLoopNumber;
     public double maxActuatingSpeed;
+
+    /*
+        Limiting Variables
+     */
+
+    public double maxSpeed;
 
     public AntiTiltSubsystem() {
 
@@ -61,12 +70,18 @@ public class AntiTiltSubsystem extends Subsystem {
             Forwards Anti-Tilt
          */
 
+        elevatorPositionInches = elevatorPositionInches();
+
         if(elevatorPositionInches() == 0 && elevatorSol()) {
             elevatorPosition = 1;
         }else if(elevatorPositionInches() < elevatorMid && elevatorPositionInches() > elevatorLow && elevatorSol()) {
             elevatorPosition = 2;
         }else if(elevatorPositionInches() < elevatorHigh && elevatorPositionInches() > elevatorMid && elevatorSol()) {
             elevatorPosition = 3;
+        }else if(elevatorPositionInches() < elevatorHigh && elevatorPositionInches() > elevatorMid && !elevatorSol()){
+            elevatorPosition = 4;
+        }else{
+            speed = -OI.Psoc.getRawAxis(Robot.constants.psocDriveAxis);
         }
 
         switch(elevatorPosition){
@@ -77,11 +92,11 @@ public class AntiTiltSubsystem extends Subsystem {
                 rampDownHigh = false;
                 rampUpLow = false;
                 rampUpHigh = false;
-                if(Math.abs(intakeOutput()) > 0){
-                    delayedAutoBack = false;
-                }else{
-                    delayedAutoBack = true;
-                }
+//                if(Math.abs(intakeOutput()) > 0){
+//                    delayedAutoBack = false;
+//                }else{
+//                    delayedAutoBack = true;
+//                }
                 preventBack = false;
                 limitMaxSpeed = false;
                 break;
@@ -105,6 +120,16 @@ public class AntiTiltSubsystem extends Subsystem {
                 rampUpHigh = true;
                 delayedAutoBack = false;
                 preventBack = true;
+                limitMaxSpeed = true;
+                break;
+
+            case 4:
+                rampDownLow = false;
+                rampDownMid = false;
+                rampDownHigh = true;
+                rampUpLow = false;
+                rampUpHigh = true;
+                delayedAutoBack = false;
                 limitMaxSpeed = true;
                 break;
 
@@ -141,6 +166,10 @@ public class AntiTiltSubsystem extends Subsystem {
             preventBack();
         }
 
+        if(limitMaxSpeed){
+            limitMaxSpeed();
+        }
+
     }
 
     private double elevatorPositionInches() {
@@ -157,61 +186,61 @@ public class AntiTiltSubsystem extends Subsystem {
 
     private void rampDownLow() {
         commandedSpeed = -OI.Psoc.getRawAxis(Robot.constants.psocDriveAxis);
-        if(robot.speed > minimumBackSpeed && robot.speed < 0 && commandedSpeed < 0) {
-            robot.speed = minimumBackSpeed;
-        }else if(robot.speed > commandedSpeed){
-            robot.speed -= lowRampRate;
+        if(speed > minimumBackSpeed && speed < 0 && commandedSpeed < 0) {
+            speed = minimumBackSpeed;
+        }else if(speed > commandedSpeed){
+            speed -= lowRampRate;
         }else{
-            robot.speed = -OI.Psoc.getRawAxis(Robot.constants.psocDriveAxis);
+            speed = -OI.Psoc.getRawAxis(Robot.constants.psocDriveAxis);
         }
     }
 
     private void rampDownMid() {
         commandedSpeed = -OI.Psoc.getRawAxis(Robot.constants.psocDriveAxis);
-        if(robot.speed > minimumBackSpeed && robot.speed < 0 && commandedSpeed < 0) {
-            robot.speed = minimumBackSpeed;
-        }else if(robot.speed > commandedSpeed){
-            robot.speed -= midRampRate;
+        if(speed > minimumBackSpeed && speed < 0 && commandedSpeed < 0) {
+            speed = minimumBackSpeed;
+        }else if(speed > commandedSpeed){
+            speed -= midRampRate;
         }else{
-            robot.speed = -OI.Psoc.getRawAxis(Robot.constants.psocDriveAxis);
+            speed = -OI.Psoc.getRawAxis(Robot.constants.psocDriveAxis);
         }
     }
 
     private void rampDownHigh() {
         commandedSpeed = -OI.Psoc.getRawAxis(Robot.constants.psocDriveAxis);
-        if(robot.speed > minimumBackSpeed && robot.speed < 0 && commandedSpeed < 0) {
-            robot.speed = minimumBackSpeed;
-        }else if(robot.speed > commandedSpeed){
-            robot.speed -= highRampRate;
+        if(speed > minimumBackSpeed && speed < 0 && commandedSpeed < 0) {
+            speed = minimumBackSpeed;
+        }else if(speed > commandedSpeed){
+            speed -= highRampRate;
         }else{
-            robot.speed = -OI.Psoc.getRawAxis(Robot.constants.psocDriveAxis);
+            speed = -OI.Psoc.getRawAxis(Robot.constants.psocDriveAxis);
         }
     }
 
     private void rampUpLow() {
         commandedSpeed = -OI.Psoc.getRawAxis(Robot.constants.psocDriveAxis);
-        if(robot.speed < -minimumBackSpeed && robot.speed > 0 && commandedSpeed > 0) {
-            robot.speed = -minimumBackSpeed;
-        }else if(robot.speed < commandedSpeed){
-            robot.speed += lowRampRate;
+        if(speed < -minimumBackSpeed && speed > 0 && commandedSpeed > 0) {
+            speed = -minimumBackSpeed;
+        }else if(speed < commandedSpeed){
+            speed += lowRampRate;
         }else{
-            robot.speed = -OI.Psoc.getRawAxis(Robot.constants.psocDriveAxis);
+            speed = -OI.Psoc.getRawAxis(Robot.constants.psocDriveAxis);
         }
     }
 
     private void rampUpHigh() {
         commandedSpeed = -OI.Psoc.getRawAxis(Robot.constants.psocDriveAxis);
-        if(robot.speed < -minimumBackSpeed && robot.speed > 0 && commandedSpeed > 0) {
-            robot.speed = -minimumBackSpeed;
-        }else if(robot.speed < commandedSpeed){
-            robot.speed += highRampRate;
+        if(speed < -minimumBackSpeed && speed > 0 && commandedSpeed > 0) {
+            speed = -minimumBackSpeed;
+        }else if(speed < commandedSpeed){
+            speed += highRampRate;
         }else{
-            robot.speed = -OI.Psoc.getRawAxis(Robot.constants.psocDriveAxis);
+            speed = -OI.Psoc.getRawAxis(Robot.constants.psocDriveAxis);
         }
     }
 
     private void delayedAutoBack() {
-        if(robot.speed > maxActuatingSpeed && delayLoopNumber > 30){
+        if(speed > maxActuatingSpeed && delayLoopNumber > 30){
             Robot.elevatorSubsystem.elevatorSol.set(false);
             robot.runElevator = false;
         }
@@ -221,8 +250,20 @@ public class AntiTiltSubsystem extends Subsystem {
          */
 
     private void preventBack() {
+        if(OI.Psoc.getRawButton(15) && robot.runElevator){
+            robot.runElevator = false;
+        }
 
+    }
 
+    private void limitMaxSpeed() {
+        maxSpeed = 0.3;
+        if(speed > maxSpeed){
+            speed = maxSpeed;
+        }
+        if(speed < -maxSpeed){
+            speed = -maxSpeed;
+        }
     }
 
     @Override

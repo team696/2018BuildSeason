@@ -9,6 +9,7 @@ package frc.team696;
 
 import com.kauailabs.nav6.frc.IMU;
 import com.kauailabs.nav6.frc.IMUAdvanced;
+import edu.wpi.cscore.AxisCamera;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -65,6 +66,8 @@ public class Robot extends TimedRobot {
     public Timer time = new Timer();
     public PowerDistributionPanel PDP = new PowerDistributionPanel();
 
+    public Compressor compressor = new Compressor();
+
     /*
         Drive Variables
      */
@@ -98,7 +101,6 @@ public class Robot extends TimedRobot {
         Compressor
      */
 
-    public Compressor compressor = new Compressor();
 
     /*
         Elevator Variables
@@ -108,6 +110,13 @@ public class Robot extends TimedRobot {
     boolean runElevator = false;
     boolean oldElevatorState;
     boolean currentElevatorState;
+    boolean currentElevatorPosition;
+    boolean oldElevatorPosition;
+    private boolean moveToSwitch;
+    private boolean moveToScale;
+    private boolean moveToClimb;
+    private boolean moveToGround;
+    String moveToPos = "home";
 
     /*
         Intake Variables
@@ -147,8 +156,22 @@ public class Robot extends TimedRobot {
         } catch(Exception ex){System.out.println("NavX not working");}
 
         /*
+            Start Compressor
+         */
+
+        compressor.start();
+
+        /*
             Zero Elevator
          */
+
+        elevatorSubsystem.elevator.setSelectedSensorPosition(0, 0, 20);
+
+        /*
+            Camera
+         */
+
+        CameraServer.getInstance().addAxisCamera("10.6.96.3");
 
     }
 
@@ -194,6 +217,7 @@ public class Robot extends TimedRobot {
         time.start();
 
 //        elevatorSubsystem.homeElevator();
+        elevatorSubsystem.homeElevator();
 
     }
 
@@ -205,10 +229,43 @@ public class Robot extends TimedRobot {
             Climber Functions
          */
 
+//        if(OI.Psoc.getRawButton(10)){
+//            climberSubsystem.setClimberSpeed(1);
+//        }else{
+//            climberSubsystem.setClimberSpeed(0);
+//        }
 
         /*
             Elevator Functions
          */
+
+        elevatorSubsystem.moveToPos(moveToPos);
+
+        currentElevatorPosition = OI.Psoc.getRawButton(10);
+
+        if(currentElevatorPosition && !oldElevatorPosition){
+            moveToSwitch = !moveToSwitch;
+        }
+
+        oldElevatorPosition = currentElevatorPosition;
+
+        if(moveToSwitch){
+            moveToPos = "switch";
+            moveToScale = false;
+            moveToClimb = false;
+            moveToGround = false;
+        }else if(moveToScale){
+            moveToPos = "scale";
+            moveToSwitch = false;
+            moveToClimb = false;
+            moveToGround = false;
+        }else{
+            moveToPos = "home";
+            moveToSwitch = false;
+            moveToScale = false;
+            moveToClimb = false;
+            moveToGround = false;
+        }
 
         // Toggle Elevator Solenoid
 
@@ -233,25 +290,31 @@ public class Robot extends TimedRobot {
             elevatorSubsystem.toggleElevatorPos(false);
         }
 
-        if(OI.Psoc.getRawButton(7)){
-            elevatorLoopNumber++;
-            elevatorSubsystem.discBrake.set(true);
-            if(elevatorLoopNumber > 5){
-                elevatorSubsystem.manualMoveElevator(0.5);
-            }
-        }else if(OI.Psoc.getRawButton(8)){
-            elevatorLoopNumber++;
-            elevatorSubsystem.discBrake.set(true);
-            if(elevatorLoopNumber > 5){
-                elevatorSubsystem.manualMoveElevator(-0.3);
-            }
-        }else{
-            elevatorLoopNumber = 0;
-            elevatorSubsystem.discBrake.set(false);
-            elevatorSubsystem.manualMoveElevator(0);
-        }
+        /**
+         * TESTING DISC BRAKE
+         */
 
-        /*
+//        elevatorSubsystem.discBrake.set(OI.Psoc.getRawButton(6));
+
+//        if(OI.Psoc.getRawButton(7)){
+//            elevatorLoopNumber++;
+//            elevatorSubsystem.discBrake.set(true);
+//            if(elevatorLoopNumber > 5){
+//                elevatorSubsystem.manualMoveElevator(0.5);
+//            }
+//        }else if(OI.Psoc.getRawButton(8)){
+//            elevatorLoopNumber++;
+//            elevatorSubsystem.discBrake.set(true);
+//            if(elevatorLoopNumber > 5){
+//                elevatorSubsystem.manualMoveElevator(-0.3);
+//            }
+//        }else{
+//            elevatorLoopNumber = 0;
+//            elevatorSubsystem.discBrake.set(false);
+//            elevatorSubsystem.manualMoveElevator(0);
+//        }
+
+        /**
             Run Intake (Forward/Backward)
          */
 
@@ -275,7 +338,7 @@ public class Robot extends TimedRobot {
             intakeSubsystem.toggleIntake(false);
         }
 
-        /*
+        /**
             Drive Functionality
          */
 
@@ -324,6 +387,8 @@ public class Robot extends TimedRobot {
 
 //        System.out.println("speed                                                                                " + speed);
 //        System.out.println("loopNumber = " + (loopNumber) + "                time.get: " + time.get());
+        System.out.println(elevatorSubsystem.elevator.getSelectedSensorPosition(0) + "            " + (elevatorSubsystem.error)
+        + "               " + moveToSwitch + "             " + elevatorSubsystem.discBrake.get());
 
     }
 
