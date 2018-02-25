@@ -145,6 +145,7 @@ public class RGBSensorSubsystem extends Subsystem {
 //        System.out.println(prevValueSet);
 
 
+<<<<<<< HEAD
         System.out.println(redNoLuminance);
         if(time.get() == 0){
             time.start();
@@ -152,11 +153,24 @@ public class RGBSensorSubsystem extends Subsystem {
 
         if(time.get() >= 0.024 && !prevValueSet) {
             prevValueSet = true;
+            prevValue = redNoLuminance;
+            System.out.println("                                                                Prev Value Set");
+        }
+
+        if(time.get() > 0.048) {
+            nowValue = redNoLuminance;
+//            System.out.println("nowValue: " + nowValue);
+        }
+=======
+        if (time.get() >= 0.024 && !prevValueSet) {
+
+            if (rgbLoopNumber >= 2) {
                 prevValue = redNoLuminance;
                 System.out.println("                                                                Prev Value Set");
             }
+>>>>>>> a2305670802135b3e1631f856de2f68b96786e64
 
-        if(time.get() > 0.048) {
+            if (rgbLoopNumber >= 4) {
                 nowValue = redNoLuminance;
 //            System.out.println("nowValue: " + nowValue);
             }
@@ -164,22 +178,38 @@ public class RGBSensorSubsystem extends Subsystem {
 
             System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue);
 
+<<<<<<< HEAD
         if(Math.abs(prevValue - nowValue) < 3) {   // sensitivity
-                System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "         in Null Zone");
-                nowValue = prevValue;
-            }
+            System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "         in Null Zone");
+            nowValue = prevValue;
+        }
 
         if(prevValue != nowValue ) {
-                System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "             Change has occurred.");
-                passedTape = true;
-            }
+            System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "             Change has occurred.");
+            passedTape = true;
+        }
 
 
         if(time.get() == 0.08) {             // restarts the rgbLoop
 //            rgbLoopNumber = 0;
             time.reset();
             prevValueSet = false;
+=======
+            if (Math.abs(prevValue - nowValue) < 1) {   // sensitivity
+                System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "         in Null Zone");
+                nowValue = prevValue;
             }
+
+            if (prevValue != nowValue && rgbLoopNumber == 6) {
+                System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "             Change has occurred.");
+                passedTape = true;
+            }
+
+
+            if (rgbLoopNumber >= 8) {             // restarts the rgbLoop
+                rgbLoopNumber = 0;
+            }
+>>>>>>> a2305670802135b3e1631f856de2f68b96786e64
         }
     }
 

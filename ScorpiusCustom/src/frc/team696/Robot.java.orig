@@ -424,6 +424,9 @@ public class Robot extends TimedRobot {
             loopNumber = 0;
         }
 
+<<<<<<< HEAD
+        rgbSensorSubsystem.rgbGetLux();
+=======
         /**
          * Speed Deadzone
          */
@@ -431,6 +434,7 @@ public class Robot extends TimedRobot {
         if(speed >= stickDeadZoneMin && speed <= stickDeadZoneMax){
             speed = 0;
         }
+>>>>>>> a2305670802135b3e1631f856de2f68b96786e64
 
         leftDrive = speed + wheel;
         rightDrive = speed - wheel;
@@ -444,10 +448,13 @@ public class Robot extends TimedRobot {
 //        System.out.println("speed                                                                                " + speed);
 //        System.out.println("loopNumber = " + (loopNumber) + "                time.get: " + time.get());
 //        System.out.println(elevatorSubsystem.elevatorSol.get() + "              " + speed);
+<<<<<<< HEAD
+=======
 //        System.out.println(elevatorLoopNumber);
 //        System.out.println(runElevator);
 //        System.out.println("intakeOutputValue = " + intakeOutputValue);
         System.out.println(antiTiltSubsystem.rampUpHigh);
+>>>>>>> a2305670802135b3e1631f856de2f68b96786e64
 
     }
 

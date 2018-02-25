@@ -59,7 +59,7 @@ public class IntakeSubsystem extends Subsystem {
             intakeB.set(0);
         }else{
             intakeA.set(speed);
-            intakeB.set(speed);
+            intakeB.set(-speed);
         }
 
     }
@@ -76,6 +76,10 @@ public class IntakeSubsystem extends Subsystem {
 
         intakeSol.set(bool);
 
+    }
+
+    public double getIntakeValue() {
+        return intakeA.getMotorOutputPercent();
     }
 
     @Override
