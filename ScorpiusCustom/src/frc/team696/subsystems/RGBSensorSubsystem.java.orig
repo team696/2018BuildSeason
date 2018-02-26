@@ -152,15 +152,31 @@ public class RGBSensorSubsystem extends Subsystem {
 
         rgbLoopNumber++;
 
-
-        System.out.println("red:                   " + red);
-
-
+<<<<<<< Updated upstream
+        if(rgbLoopNumber >= 2) {
             prevValue = redNoLuminance;
             System.out.println("                                                                Prev Value Set");
         }
 
         if(rgbLoopNumber >= 4) {
+=======
+
+        System.out.println(redNoLuminance);
+        System.out.println("red:                   " + red);
+
+
+        if(time.get() == 0){
+            time.start();
+        }
+
+        if(time.get() >= 0.024 && !prevValueSet) {
+            prevValueSet = true;
+            prevValue = redNoLuminance;
+            System.out.println("                                                                Prev Value Set");
+        }
+
+        if(time.get() > 0.048) {
+>>>>>>> Stashed changes
             nowValue = redNoLuminance;
 //            System.out.println("nowValue: " + nowValue);
         }
@@ -168,23 +184,37 @@ public class RGBSensorSubsystem extends Subsystem {
 
 
         System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue);
+<<<<<<< Updated upstream
+
+        if(Math.abs(prevValue - nowValue) < 1) {   // sensitivity
+            System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "         in Null Zone");
+            nowValue = prevValue;
+        }
+
+        if(prevValue != nowValue && rgbLoopNumber == 6) {
+=======
 
         if(Math.abs(prevValue - nowValue) < 2) {   // sensitivity
             System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "         in Null Zone");
             nowValue = prevValue;
         }
 
-        if(prevValue != nowValue && rgbLoopNumber == 6) {
+        if(prevValue != nowValue ) {
+>>>>>>> Stashed changes
             System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "             Change has occurred.");
             passedTape = true;
         }
 
 
-        if(time.get() >= 0.08) {             // restarts the rgbLoop
+<<<<<<< Updated upstream
+        if(rgbLoopNumber >= 8) {             // restarts the rgbLoop
             rgbLoopNumber = 0;
+=======
+        if(time.get() >= 0.08) {             // restarts the rgbLoop
 //            rgbLoopNumber = 0;
             time.reset();
             prevValueSet = false;
+>>>>>>> Stashed changes
         }
 
         System.out.println(time.get());

@@ -194,6 +194,8 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
 
+
+        rgbSensorSubsystem.rgbGetLux();
         /*
             Elevator Functions
          */
@@ -306,6 +308,7 @@ public class Robot extends TimedRobot {
 //        rgbSensorSubsystem.rgbGetLux();
 
         driveTrainSubsystem.tankDrive(leftDrive, rightDrive);
+
 
         /*
             Get Old Button Values
