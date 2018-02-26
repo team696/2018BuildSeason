@@ -30,15 +30,15 @@ public class ElevatorSubsystem extends Subsystem {
 
     int elevatorDeviceID;
 
-    double kP = 0.5,
-            kI = 0,
-            kD = 0,
-            kF = 4;
+    double kP = 2.8,
+    kI = 0.000000091,
+    kD = 0.00000000000000003,
+    kF = 4.00987442;
 
     double elevatorTarget;
 
     double groundPosition;
-    double switchPosition = 2000;
+    double switchPosition = 5000;
     double scalePosition;
     double climbPosition;
     double homePosition = 0;
@@ -46,8 +46,8 @@ public class ElevatorSubsystem extends Subsystem {
     public double error;
     public double loopNumber;
 
-    int sensorUnitsPer100ms = 500;
-    int sensorUnitsPer100msPerSec = 500;
+    int sensorUnitsPer100ms = 1350;
+    int sensorUnitsPer100msPerSec = 1350;
 
 
     public ElevatorSubsystem(int elevator, int elevatorSol, int discBrake) {
@@ -152,9 +152,9 @@ public class ElevatorSubsystem extends Subsystem {
         error = elevatorTarget - elevator.getSelectedSensorPosition(pidIdx);
 //        discBrake.set(true);
 
-        if(Math.abs(error) < 10) {
-            elevator.set(ControlMode.Disabled, 0);
+        if(Math.abs(error) < 50) {
             discBrake.set(false);
+            elevator.set(ControlMode.Disabled, 0);
             loopNumber = 0;
         }else{
             elevator.set(ControlMode.MotionMagic, elevatorTarget);
