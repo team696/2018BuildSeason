@@ -94,9 +94,15 @@ public class RGBSensorSubsystem extends Subsystem {
 
         // Thread.sleep here to account for wait time register
 
+<<<<<<< HEAD
         try {
             Thread.sleep(14);
         } catch (InterruptedException e) {
+=======
+        try{
+            Thread.sleep(14);
+        }catch(InterruptedException e){
+>>>>>>> Testing_RGBSensor
             System.out.println("If you get this message, then Ismail sucks");
         }
 
@@ -145,16 +151,9 @@ public class RGBSensorSubsystem extends Subsystem {
 //        System.out.println(prevValueSet);
 
 
-<<<<<<< HEAD
-        if(time.get() >= 0.024 && !prevValueSet) {
-        if(rgbLoopNumber >= 2) {
-            prevValue = redNoLuminance;
-            System.out.println("                                                                Prev Value Set");
-=======
         System.out.println(redNoLuminance);
         if(time.get() == 0){
             time.start();
->>>>>>> Testing_AntiTilt
         }
 
         if(time.get() >= 0.024 && !prevValueSet) {
@@ -176,10 +175,17 @@ public class RGBSensorSubsystem extends Subsystem {
                 nowValue = prevValue;
             }
 
+<<<<<<< HEAD
         if(prevValue != nowValue ) {
                 System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "             Change has occurred.");
                 passedTape = true;
             }
+=======
+        if(prevValue != nowValue && rgbLoopNumber == 6) {
+            System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "             Change has occurred.");
+            passedTape = true;
+        }
+>>>>>>> Testing_RGBSensor
 
 
         if(time.get() == 0.08) {             // restarts the rgbLoop
