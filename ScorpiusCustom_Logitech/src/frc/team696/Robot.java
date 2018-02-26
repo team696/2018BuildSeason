@@ -235,6 +235,10 @@ public class Robot extends TimedRobot {
 //            climberSubsystem.setClimberSpeed(0);
 //        }
 
+        if(elevatorSubsystem.elevator.getSensorCollection().isRevLimitSwitchClosed()){
+            elevatorSubsystem.elevator.setSelectedSensorPosition(0, 0, 20);
+        }
+
         /*
             Elevator Functions
          */
