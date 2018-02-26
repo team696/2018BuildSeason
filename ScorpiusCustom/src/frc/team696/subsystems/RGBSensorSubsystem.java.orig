@@ -145,9 +145,16 @@ public class RGBSensorSubsystem extends Subsystem {
 //        System.out.println(prevValueSet);
 
 
+<<<<<<< HEAD
+        if(time.get() >= 0.024 && !prevValueSet) {
+        if(rgbLoopNumber >= 2) {
+            prevValue = redNoLuminance;
+            System.out.println("                                                                Prev Value Set");
+=======
         System.out.println(redNoLuminance);
         if(time.get() == 0){
             time.start();
+>>>>>>> Testing_AntiTilt
         }
 
         if(time.get() >= 0.024 && !prevValueSet) {

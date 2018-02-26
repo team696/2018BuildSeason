@@ -30,21 +30,24 @@ public class ElevatorSubsystem extends Subsystem {
 
     int elevatorDeviceID;
 
-    double kP = 0,
+    double kP = 0.5,
             kI = 0,
             kD = 0,
-            kF = 0;
+            kF = 4;
 
     double elevatorTarget;
 
     double groundPosition;
-    double switchPosition;
+    double switchPosition = 2000;
     double scalePosition;
     double climbPosition;
     double homePosition = 0;
 
-    int sensorUnitsPer100ms;
-    int sensorUnitsPer100msPerSec;
+    public double error;
+    public double loopNumber;
+
+    int sensorUnitsPer100ms = 500;
+    int sensorUnitsPer100msPerSec = 500;
 
 
     public ElevatorSubsystem(int elevator, int elevatorSol, int discBrake) {
@@ -74,6 +77,8 @@ public class ElevatorSubsystem extends Subsystem {
         // Configuration of the Forward Limit Switch Source
         this.elevator.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, timeoutMs);
         // Configuration of the Reverse Limit Switch Source
+        this.elevator.setSensorPhase(true);
+        // Inverts encoder
 
         // Elevator PID Values Configuration
 
@@ -118,29 +123,49 @@ public class ElevatorSubsystem extends Subsystem {
     }
 
     public void moveToPos(String position) {
+        loopNumber++;
 
         switch(position){
 
             case "ground":
                 elevatorTarget = groundPosition;
+                break;
 
             case "switch":
                 elevatorTarget = switchPosition;
+                break;
 
             case "scale":
                 elevatorTarget = scalePosition;
+                break;
 
             case "climb":
                 elevatorTarget = climbPosition;
+                break;
 
             default:
                 elevatorTarget = homePosition;
+                break;
 
         }
 
-        elevator.configMotionCruiseVelocity(sensorUnitsPer100ms, timeoutMs);
-        elevator.configMotionAcceleration(sensorUnitsPer100msPerSec, timeoutMs);
-        elevator.set(ControlMode.MotionMagic, elevatorTarget);
+        error = elevatorTarget - elevator.getSelectedSensorPosition(pidIdx);
+//        discBrake.set(true);
+
+        if(Math.abs(error) < 10) {
+            elevator.set(ControlMode.Disabled, 0);
+            discBrake.set(false);
+            loopNumber = 0;
+        }else{
+            elevator.set(ControlMode.MotionMagic, elevatorTarget);
+            discBrake.set(true);
+        }
+
+        if(loopNumber > 5){
+            elevator.configMotionCruiseVelocity(sensorUnitsPer100ms, timeoutMs);
+            elevator.configMotionAcceleration(sensorUnitsPer100msPerSec, timeoutMs);
+            elevator.set(ControlMode.MotionMagic, elevatorTarget);
+        }
 
     }
 

@@ -229,11 +229,16 @@ public class Robot extends TimedRobot {
             Climber Functions
          */
 
+<<<<<<< HEAD
+//        climberSubsystem.setClimberSpeed(0.15);
+
+=======
 //        if(OI.Psoc.getRawButton(10)){
 //            climberSubsystem.setClimberSpeed(1);
 //        }else{
 //            climberSubsystem.setClimberSpeed(0);
 //        }
+>>>>>>> Testing_AntiTilt
 
         /*
             Elevator Functions
@@ -290,22 +295,25 @@ public class Robot extends TimedRobot {
             elevatorSubsystem.toggleElevatorPos(false);
         }
 
-        /**
-         * TESTING DISC BRAKE
-         */
+<<<<<<< HEAD
         if(OI.Psoc.getRawButton(7)){
             elevatorLoopNumber++;
             elevatorSubsystem.discBrake.set(true);
-            elevatorSubsystem.manualMoveElevator(0.5);
+            elevatorSubsystem.manualMoveElevator(0.3);
         }else if(OI.Psoc.getRawButton(8)){
             elevatorLoopNumber++;
             elevatorSubsystem.discBrake.set(true);
-            elevatorSubsystem.manualMoveElevator(-0.5);
+            elevatorSubsystem.manualMoveElevator(-0.3);
         }else{
             elevatorLoopNumber = 0;
             elevatorSubsystem.discBrake.set(false);
             elevatorSubsystem.manualMoveElevator(0);
         }
+=======
+        /**
+         * TESTING DISC BRAKE
+         */
+>>>>>>> Testing_AntiTilt
 
 //        elevatorSubsystem.discBrake.set(OI.Psoc.getRawButton(6));
 
@@ -401,8 +409,12 @@ public class Robot extends TimedRobot {
 
 //        System.out.println("speed                                                                                " + speed);
 //        System.out.println("loopNumber = " + (loopNumber) + "                time.get: " + time.get());
+<<<<<<< HEAD
         System.out.println(elevatorSubsystem.elevator.getMotorOutputPercent());
+=======
+        System.out.println(elevatorSubsystem.elevator.getSelectedSensorPosition(0) + "            " + (elevatorSubsystem.error)
         + "               " + moveToSwitch + "             " + elevatorSubsystem.discBrake.get());
+>>>>>>> Testing_AntiTilt
 
     }
 
