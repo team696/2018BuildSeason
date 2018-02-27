@@ -31,23 +31,26 @@ public class ElevatorSubsystem extends Subsystem {
     int elevatorDeviceID;
 
     double kP = 2.8,
-    kI = 0.000000091,
-    kD = 0.00000000000000003,
-    kF = 4.00987442;
+            kI = 0.000000091,
+            kD = 0.00000000000000003,
+            kF = 4.00987442;
 
     double elevatorTarget;
 
     double groundPosition;
-    double switchPosition = 5000;
+    double switchPosition;
     double scalePosition;
     double climbPosition;
     double homePosition = 0;
 
-    public double error;
-    public double loopNumber;
+    String currentMovePos;
+    String oldMovePos;
+
+    double error;
+    double loopNumber;
 
     int sensorUnitsPer100ms = 1350;
-    int sensorUnitsPer100msPerSec = 1350;
+    int sensorUnitsPer100msPerSec;
 
 
     public ElevatorSubsystem(int elevator, int elevatorSol, int discBrake) {
@@ -73,12 +76,11 @@ public class ElevatorSubsystem extends Subsystem {
         this.elevator.configMotionCruiseVelocity(sensorUnitsPer100ms, timeoutMs); // How fast it moves at terminal velocity
         this.elevator.configMotionAcceleration(sensorUnitsPer100msPerSec, timeoutMs); // How fast it gets to terminal velocity
         this.elevator.set(ControlMode.MotionMagic, 0); // Configuring the control mode to motion magic
+        this.elevator.setSensorPhase(true); // Sets encoder to inverted, to make values positive.
         this.elevator.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, timeoutMs);
         // Configuration of the Forward Limit Switch Source
         this.elevator.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, timeoutMs);
         // Configuration of the Reverse Limit Switch Source
-        this.elevator.setSensorPhase(true);
-        // Inverts encoder
 
         // Elevator PID Values Configuration
 
@@ -123,49 +125,43 @@ public class ElevatorSubsystem extends Subsystem {
     }
 
     public void moveToPos(String position) {
-        loopNumber++;
 
         switch(position){
 
             case "ground":
                 elevatorTarget = groundPosition;
-                break;
 
             case "switch":
                 elevatorTarget = switchPosition;
-                break;
 
             case "scale":
                 elevatorTarget = scalePosition;
-                break;
 
             case "climb":
                 elevatorTarget = climbPosition;
-                break;
 
             default:
                 elevatorTarget = homePosition;
-                break;
 
         }
 
         error = elevatorTarget - elevator.getSelectedSensorPosition(pidIdx);
-//        discBrake.set(true);
 
-        if(Math.abs(error) < 50) {
-            discBrake.set(false);
-            elevator.set(ControlMode.Disabled, 0);
+        if(Math.abs(error) < 50){
+            loopNumber++;
+            if(loopNumber > 0){
+                discBrake.set(false);
+                elevator.set(ControlMode.Disabled, 0);
+            }
+        }
+
+        currentMovePos = position;
+        if(currentMovePos == position && !(oldMovePos == position)){
             loopNumber = 0;
-        }else{
-            elevator.set(ControlMode.MotionMagic, elevatorTarget);
             discBrake.set(true);
-        }
-
-        if(loopNumber > 5){
-            elevator.configMotionCruiseVelocity(sensorUnitsPer100ms, timeoutMs);
-            elevator.configMotionAcceleration(sensorUnitsPer100msPerSec, timeoutMs);
             elevator.set(ControlMode.MotionMagic, elevatorTarget);
         }
+        oldMovePos = currentMovePos;
 
     }
 

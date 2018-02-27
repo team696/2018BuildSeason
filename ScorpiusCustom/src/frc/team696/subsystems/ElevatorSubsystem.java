@@ -30,10 +30,10 @@ public class ElevatorSubsystem extends Subsystem {
 
     int elevatorDeviceID;
 
-    double kP = 0,
-            kI = 0,
-            kD = 0,
-            kF = 0;
+    double kP = 2.8,
+            kI = 0.000000091,
+            kD = 0.00000000000000003,
+            kF = 4.00987442;
 
     double elevatorTarget;
 
@@ -43,7 +43,13 @@ public class ElevatorSubsystem extends Subsystem {
     double climbPosition;
     double homePosition = 0;
 
-    int sensorUnitsPer100ms;
+    String currentMovePos;
+    String oldMovePos;
+
+    double error;
+    double loopNumber;
+
+    int sensorUnitsPer100ms = 1350;
     int sensorUnitsPer100msPerSec;
 
 
@@ -120,8 +126,6 @@ public class ElevatorSubsystem extends Subsystem {
 
     public void moveToPos(String position) {
 
-        discBrake.set(true);
-
         switch(position){
 
             case "ground":
@@ -141,11 +145,23 @@ public class ElevatorSubsystem extends Subsystem {
 
         }
 
-        elevator.configMotionCruiseVelocity(sensorUnitsPer100ms, timeoutMs);
-        elevator.configMotionAcceleration(sensorUnitsPer100msPerSec, timeoutMs);
-        elevator.set(ControlMode.MotionMagic, elevatorTarget);
+        error = elevatorTarget - elevator.getSelectedSensorPosition(pidIdx);
 
-        discBrake.set(false);
+        if(Math.abs(error) < 50){
+            loopNumber++;
+            if(loopNumber > 0){
+                discBrake.set(false);
+                elevator.set(ControlMode.Disabled, 0);
+            }
+        }
+
+        currentMovePos = position;
+        if(currentMovePos == position && !(oldMovePos == position)){
+            loopNumber = 0;
+            discBrake.set(true);
+            elevator.set(ControlMode.MotionMagic, elevatorTarget);
+        }
+        oldMovePos = currentMovePos;
 
     }
 

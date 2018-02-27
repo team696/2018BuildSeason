@@ -405,7 +405,7 @@ public class Robot extends TimedRobot {
 
 //        System.out.println("speed                                                                                " + speed);
 //        System.out.println("loopNumber = " + (loopNumber) + "                time.get: " + time.get());
-        System.out.println(elevatorSubsystem.elevator.getMotorOutputPercent());
+        System.out.println(elevatorSubsystem.elevator.getMotorOutputPercent()
         + "               " + moveToSwitch + "             " + elevatorSubsystem.discBrake.get());
 
     }
