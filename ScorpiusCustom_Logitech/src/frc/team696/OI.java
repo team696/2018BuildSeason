@@ -13,6 +13,7 @@ public class OI {
 
     public static Joystick Psoc = new Joystick(0);
     public static Joystick wheel = new Joystick(1);
+    public static Joystick controlPanel = new Joystick(2);
 
     // CREATING BUTTONS
     // One type of button is a joystick button which is any button on a

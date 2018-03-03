@@ -16,7 +16,7 @@ public class ZeroEncoders extends Command {
     public void initialize() {
 
         Robot.driveTrainSubsystem.leftRear.setSelectedSensorPosition(0, pidIdx, timeoutMs);
-        Robot.driveTrainSubsystem.rightRear.setSelectedSensorPosition(0, pidIdx, timeoutMs);
+        Robot.driveTrainSubsystem.rightFront.setSelectedSensorPosition(0, pidIdx, timeoutMs);
 
     }
 

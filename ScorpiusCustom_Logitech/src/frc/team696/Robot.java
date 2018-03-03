@@ -219,6 +219,8 @@ public class Robot extends TimedRobot {
 //        elevatorSubsystem.homeElevator();
         elevatorSubsystem.homeElevator();
 
+        navX.zeroYaw();
+
     }
 
     @Override
@@ -370,6 +372,20 @@ public class Robot extends TimedRobot {
 
         // Logitech Controller
 
+        OI.controlPanel.setOutput(0, true);
+        OI.controlPanel.setOutput(1, true);
+        OI.controlPanel.setOutput(2, true);
+        OI.controlPanel.setOutput(3, true);
+        OI.controlPanel.setOutput(5, true);
+        OI.controlPanel.setOutput(7, true);
+        OI.controlPanel.setOutput(8, true);
+        OI.controlPanel.setOutput(9, true);
+        OI.controlPanel.setOutput(10, true);
+        OI.controlPanel.setOutput(11, true);
+        OI.controlPanel.setOutput(12, true);
+        OI.controlPanel.setOutput(13, true);
+        OI.controlPanel.setOutput(15, true);
+
         speed = -OI.Psoc.getRawAxis(1);
         wheel = OI.Psoc.getRawAxis(2);
 
@@ -406,7 +422,8 @@ public class Robot extends TimedRobot {
 //        System.out.println("speed                                                                                " + speed);
 //        System.out.println("loopNumber = " + (loopNumber) + "                time.get: " + time.get());
         System.out.println(elevatorSubsystem.elevator.getMotorOutputPercent()
-        + "               " + moveToSwitch + "             " + elevatorSubsystem.discBrake.get());
+//        + "               " + moveToSwitch + "             " + elevatorSubsystem.discBrake.get());
+        System.out.println(navX.getYaw());
 
     }
 

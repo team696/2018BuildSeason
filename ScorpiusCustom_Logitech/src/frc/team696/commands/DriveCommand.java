@@ -30,7 +30,7 @@ public class DriveCommand extends Command {
 
     public int pidIdx = 0;
     public double leftRearEnc;
-    public double rightRearEnc;
+    public double rightFrontEnc;
 
     public double speed;
     public double wheel;
@@ -43,19 +43,19 @@ public class DriveCommand extends Command {
 
     // Distance PID Values
 
-    private double kPA = 0.07;
-    private double kIA = 0.0001;
-    private double kDA = 0;
-    private double kAlphaA = 0.5;
+    private double kPA = 1.3;
+    private double kIA = 0.00783199386708127;
+    private double kDA = 0.00069;
+    private double kAlphaA = 4.8;
 
     // Working tests
 
     // Direction PID Values
 
-    private double kPB = 0.025;
-    private double kIB = 0;
-    private double kDB = 0;
-    private double kAlphaB = 0.5;
+    private double kPB = 1.3;
+    private double kIB = 0.00783199386708127;
+    private double kDB = 0.00069;
+    private double kAlphaB = 4.8;
 
     PIDController distancePID;
     PIDController directionPID;
@@ -74,6 +74,11 @@ public class DriveCommand extends Command {
     @Override
     protected void initialize() {
 
+    }
+
+    @Override
+    protected void execute() {
+
         /*
             Set PID Values for Direction and Distance
          */
@@ -81,21 +86,16 @@ public class DriveCommand extends Command {
         distancePID = new PIDController(kPA, kIA, kDA, kAlphaA);
         directionPID = new PIDController(kPB, kIB, kDB, kAlphaB);
 
-    }
-
-    @Override
-    protected void execute() {
-
         /*
             Current Distance and Error initialization
          */
 
         leftRearEnc = (double) Robot.driveTrainSubsystem.leftRear.getSelectedSensorPosition(pidIdx) / 200;
         // Divided by 200 to convert encoder units to inches
-        rightRearEnc = (double) -Robot.driveTrainSubsystem.rightRear.getSelectedSensorPosition(pidIdx) / 200;
+        rightFrontEnc = (double) -Robot.driveTrainSubsystem.rightFront.getSelectedSensorPosition(pidIdx) / 200;
         // Diviced by 200 to convert encoder units to inches, and multiplied by -1 to account for inversion of encoder.
 
-        currentDistance = -(leftRearEnc + rightRearEnc) / 2;
+        currentDistance = -(leftRearEnc + rightFrontEnc) / 2;
         // Making currentDistance negative to account for inversion.
         distanceError = targetDistance - currentDistance;
 
@@ -153,14 +153,6 @@ public class DriveCommand extends Command {
         }
 
         /*
-            Account for if error is too big and PID Values are too small
-         */
-
-        if(speed < 0.1){
-            speed = speed * 4;
-        }
-
-        /*
             Setting up the drive functionality
          */
 
@@ -173,7 +165,7 @@ public class DriveCommand extends Command {
             Output to DriverStation
          */
 
-        System.out.println(directionError + "             " + currentDistance);
+        System.out.println(distanceError + "           " + directionError);
 
     }
 
@@ -185,7 +177,7 @@ public class DriveCommand extends Command {
 
         // Can only finish the command if the error for both distance and direction are less than 2
 
-        if(Math.abs(distanceError) < 2 && Math.abs(directionError) < 2){
+        if(Math.abs(directionError) < 2){
             return true;
         }
         return false;
