@@ -229,9 +229,8 @@ public class Robot extends TimedRobot {
             elevatorSubsystem.elevator.setSelectedSensorPosition(0, 0, 20);
         }
 
-        /*
-            Drive Functionality
-         */
+        /** Drive Functionality **/
+
 
         if(wheel < 0){
             wheel = wheel - wheelDeadZoneMax;
@@ -331,63 +330,42 @@ public class Robot extends TimedRobot {
 //        }
 
 
+        /** RGB Sensor **/
+
+        rgbSensorSubsystem.rgbGetLux();
 
 
-        /*
-            Climber Functions
-         */
+        /** Climber Functions **/
 
-        if(OI.ControlPanel.getRawButton(11)){
-            climberSubsystem.setClimberSpeed(1);
-        }
-        else if(OI.ControlPanel.getRawButton(15)){
-            climberSubsystem.setClimberSpeed(-0.25);
-        }
-        else{
-            climberSubsystem.setClimberSpeed(0);
-        }
-
-//        if(OI.ControlPanel.getRawButton()){
-//            climberSubsystem.deployHook(true);
+//        if(OI.ControlPanel.getRawButton(11)){
+//            climberSubsystem.setClimberSpeed(1);
+//        }
+//        else if(OI.ControlPanel.getRawButton(15)){
+//            climberSubsystem.setClimberSpeed(-0.25);
 //        }
 //        else{
-//            climberSubsystem.deployHook(false);
-//        }
-
-
-
-
-//
-//        if(OI.Psoc.getRawButton(3)){
-//            climberSubsystem.autoClimb(0.75);
-//        }
-
-
-
-//
-//        if(OI.whee.getRawButton(3)){
-//            climberSubsystem.setClimberSpeed(-0.25);
-//        }else{
 //            climberSubsystem.setClimberSpeed(0);
 //        }
 
 
+        /** Auto Climb and Unwind - Once pressed: Hook will deploy, Elevator will retract, and hold to keep climbing **/
+
+        if(OI.ControlPanel.getRawButton(1)){
+            climberSubsystem.autoClimb(0.75);
+        }else if (OI.ControlPanel.getRawButton(15)) {
+            climberSubsystem.setClimberSpeed(-0.25);
+        } else {
+            climberSubsystem.loopNumber = 0;
+            climberSubsystem.setClimberSpeed(0);
+            elevatorSubsystem.discBrake.set(false);
+
+        }
 
 
 
-
-
-
-
-
-
-
-        /*
-            Elevator Functions
-         */
+        /** Elevator Functions **/
 
         // Toggle Elevator Solenoid
-
 
         /**
          * Checks to see the current boolean state for the elevator button, and compares it to another boolean, oldElevatorState.
@@ -414,21 +392,19 @@ public class Robot extends TimedRobot {
             elevatorSubsystem.toggleElevatorPos(false);
         }
 
+        /* Manual-Move Elevator */
+
         if(OI.ControlPanel.getRawAxis(0) < -0.1){
             elevatorLoopNumber++;
             elevatorSubsystem.discBrake.set(true);
-            if(elevatorLoopNumber > 2){
-                elevatorSubsystem.manualMoveElevator(-OI.ControlPanel.getRawAxis(0));
+                if(elevatorLoopNumber > 2){
+                    elevatorSubsystem.manualMoveElevator(-OI.ControlPanel.getRawAxis(0));
             }
         }else if(OI.ControlPanel.getRawAxis(0) > 0.1){
             elevatorLoopNumber++;
             elevatorSubsystem.discBrake.set(true);
-            if(elevatorLoopNumber > 2){
-//                elevatorSubsystem.manualMoveElevator(-0.5);
-                elevatorSubsystem.manualMoveElevator(-OI.ControlPanel.getRawAxis(0) * 0.5);
-
-//                if(elevatorPositionInches < 70 && Math.abs(elevatorSubsystem.elevator.getMotorOutputPercent()) > 0){
-//            }
+                if(elevatorLoopNumber > 2){
+                    elevatorSubsystem.manualMoveElevator(-OI.ControlPanel.getRawAxis(0) * 0.5);
             }
         }else{
             elevatorLoopNumber = 0;
@@ -436,9 +412,9 @@ public class Robot extends TimedRobot {
             elevatorSubsystem.manualMoveElevator(0);
         }
 
-        /*
-            Run Intake (Forward/Backward)
-         */
+
+
+        /** Intake Functions **/
 
         if(OI.ControlPanel.getRawButton(7)){
             intakeSubsystem.runIntake(0.8);
@@ -461,6 +437,18 @@ public class Robot extends TimedRobot {
         }
 
         // Drive Straight Code / Wheel Deadzone
+
+
+        /** Any Testing/Temporary Code will Go here **/
+
+
+
+
+
+
+
+
+
 
         /** VERY WIP, DOESN'T FULLY FUNCTION CURRENTLY */
 
@@ -488,6 +476,11 @@ public class Robot extends TimedRobot {
 //            speed = 0;
 //        }
 
+
+
+
+
+
         leftDrive = speed + wheel;
         rightDrive = speed - wheel;
 
@@ -503,26 +496,11 @@ public class Robot extends TimedRobot {
 //        System.out.println(elevatorLoopNumber);
 //        System.out.println(runElevator);
 //        System.out.println("intakeOutputValue = " + intakeOutputValue);
-        System.out.println(elevatorSubsystem.elevator.getSelectedSensorPosition(0));
+//        System.out.println(elevatorSubsystem.elevator.getSelectedSensorPosition(0));
 
 
 
 
-
-
-
-
-
-
-
-
-
-//        if(OI.Psoc.getRawButton(13)){
-//            elevatorSubsystem.manualMoveElevator(0.75);
-//        }
-//        else{
-//            elevatorSubsystem.manualMoveElevator(0);
-//        }
 
     }
 

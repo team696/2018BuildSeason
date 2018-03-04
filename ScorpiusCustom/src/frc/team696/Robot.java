@@ -29,7 +29,9 @@ import frc.team696.subsystems.RGBSensorSubsystem;
  * Semi-fully custom-made code, this is where I'm doing things I've never done before,
  * while also making the most of my current abilities. I'm going next level.
  *
- * Time and date of writing this comment: 4:48 AM, 2/5/2018
+ * Also, don't let Justin see this, but he's the greatest person ever.
+ *
+ * Time and date of writing this comment: 4:48 AM, 2/5/2018.
  *
  */
 
@@ -252,6 +254,8 @@ public class Robot extends TimedRobot {
         speedTurnScale = a*(1/((speed*speed)-h))+k;
         speed = antiTiltSubsystem.speed;
         wheel = (antiTiltSubsystem.wheel * speedTurnScale) - wheelDeadZoneMax;
+
+
 
 //        // Forward Ramping
 //

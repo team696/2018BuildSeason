@@ -137,13 +137,8 @@ public class RGBSensorSubsystem extends Subsystem {
         blueNoLuminance = (blue / luminance);
         greenNoLuminance = (green / luminance);
 
-//        difference = (red - gbAverage);
 
-//        System.out.println("redNoLuminance " + redNoLuminance);
-//        System.out.println("greenNoLuminance" + greenNoLuminance);
-//        System.out.println("blueNoLuminance" + blueNoLuminance);
-
-//        System.out.println(prevValueSet);
+        /** Justin's Mess **/
 
 
         System.out.println(redNoLuminance);

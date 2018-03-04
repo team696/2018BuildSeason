@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import static frc.team696.Robot.elevatorSubsystem;
+import static frc.team696.RobotMap.elevator;
 
 
 public class ClimberSubsystem extends Subsystem {
@@ -18,7 +19,7 @@ public class ClimberSubsystem extends Subsystem {
     boolean isDeployed = false;
     boolean isHomed = false;
 
-    int loopNumber = 0;
+    public int loopNumber = 0;
 
 
     public ClimberSubsystem(int climberA, int climberB, int climberSol){
@@ -41,6 +42,33 @@ public class ClimberSubsystem extends Subsystem {
 
     }
 
+
+    public void autoClimb(double climberSpeed){
+
+        loopNumber++;
+        if(!isDeployed){
+            deployHook(true);
+            isDeployed = true;
+        }
+        if(loopNumber > 10) {
+            deployHook(false);
+        }
+        if(isDeployed && elevatorSubsystem.elevator.getSelectedSensorPosition(0) > 5) {
+            elevatorSubsystem.discBrake.set(true);
+            elevatorSubsystem.manualMoveElevator(-0.3);
+
+                if(elevatorSubsystem.elevator.getSelectedSensorPosition(0) < 5){
+                    elevatorSubsystem.manualMoveElevator(0);
+                    elevatorSubsystem.discBrake.set(false);
+                    isHomed = true;
+                }
+        }
+        if(isDeployed && isHomed){
+            setClimberSpeed(climberSpeed);
+        }
+
+
+    }
 
 //    public void autoClimb(double climberSpeed){
 //
