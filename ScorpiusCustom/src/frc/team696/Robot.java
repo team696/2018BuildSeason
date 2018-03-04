@@ -216,8 +216,8 @@ public class Robot extends TimedRobot {
             Start Compressor
          */
 
-        compressor.start();
-        time.start();
+//        compressor.start();
+//        time.start();
 
     }
 
@@ -330,21 +330,58 @@ public class Robot extends TimedRobot {
 //            runElevator = false;
 //        }
 
+
+
+
         /*
             Climber Functions
          */
 
         if(OI.Psoc.getRawButton(16)){
             climberSubsystem.setClimberSpeed(1);
-        }else{
+        }
+        else if(OI.wheel.getRawButton(2)){
+            climberSubsystem.setClimberSpeed(-0.25);
+        }
+        else{
             climberSubsystem.setClimberSpeed(0);
         }
 
+
         if(OI.Psoc.getRawButton(3)){
-            climberSubsystem.setClimberSpeed(-0.25);
-        }else{
-            climberSubsystem.setClimberSpeed(0);
+            climberSubsystem.deployHook(true);
         }
+        else{
+            climberSubsystem.deployHook(false);
+        }
+
+
+
+
+//
+//        if(OI.Psoc.getRawButton(3)){
+//            climberSubsystem.autoClimb(0.75);
+//        }
+
+
+
+//
+//        if(OI.whee.getRawButton(3)){
+//            climberSubsystem.setClimberSpeed(-0.25);
+//        }else{
+//            climberSubsystem.setClimberSpeed(0);
+//        }
+
+
+
+
+
+
+
+
+
+
+
 
         /*
             Elevator Functions
@@ -466,7 +503,26 @@ public class Robot extends TimedRobot {
 //        System.out.println(elevatorLoopNumber);
 //        System.out.println(runElevator);
 //        System.out.println("intakeOutputValue = " + intakeOutputValue);
-        System.out.println();
+        System.out.println(elevatorSubsystem.elevator.getSelectedSensorPosition(0));
+
+
+
+
+
+
+
+
+
+
+
+
+
+//        if(OI.Psoc.getRawButton(13)){
+//            elevatorSubsystem.manualMoveElevator(0.75);
+//        }
+//        else{
+//            elevatorSubsystem.manualMoveElevator(0);
+//        }
 
     }
 
