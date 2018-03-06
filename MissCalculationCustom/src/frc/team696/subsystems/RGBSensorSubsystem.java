@@ -124,7 +124,7 @@ public class RGBSensorSubsystem extends Subsystem {
 
         /*
             Data Output
-         */
+//         */
 
 //        System.out.printf("Red Color Luminance   : %d lux %n", red); // no u
 //        System.out.printf("Green Color Luminance : %d lux %n", green);
@@ -173,7 +173,6 @@ public class RGBSensorSubsystem extends Subsystem {
 
 
         if(time.get() >= 0.08) {             // restarts the rgbLoop
-//            rgbLoopNumber = 0;
             time.stop();
             time.reset();
             prevValueSet = false;

@@ -14,10 +14,14 @@ public class CenterPos extends CommandGroup {
         addSequential(new ZeroYaw());
 //        addSequential(new DriveCommand(10, 0, 0.5, 0), 2);
 //        addSequential(new DriveCommand(50, -45, 0.5, 0.25), 2);
-        addSequential(new DriveCommand(0, 90, 0, 0.5), 10);
-        addSequential(new DriveCommand(0, -90, 0, 0.5), 10);
-        addSequential(new DriveCommand(0, 0, 0, 0.75), 10);
-        addSequential(new Wait(5));
+//        addSequential(new DriveCommand(0, 90, 0, 0.5), 10);
+//        addSequential(new DriveCommand(0, -90, 0, 0.5), 10);
+//        addSequential(new DriveCommand(0, 0, 0, 0.75), 10);
+//        addSequential(new Wait(5));
+        addSequential(new DriveCommand(40, 0, 0.75, 0.6), 3);
+//        addSequential(new DriveCommand(90, 90,0.75, 0.6), 10);
+//        addSequential(new DriveCommand(0, 90, 0.75, 0.5));
+
 
     }
 

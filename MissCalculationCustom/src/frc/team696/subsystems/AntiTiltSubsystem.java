@@ -181,7 +181,7 @@ public class AntiTiltSubsystem extends Subsystem {
                 break;
 
             case 7: // Elevator homed, back
-                speed = -OI.Psoc.getRawAxis(1);
+                speed = -OI.Stick.getRawAxis(1);
                 wheel = OI.wheel.getRawAxis(0);
                 rampDownLow = false;
                 rampDownMid = false;
@@ -253,7 +253,7 @@ public class AntiTiltSubsystem extends Subsystem {
 
     private void rampDownLow() {
         System.out.println("Running rampDownLow");
-        commandedSpeed = -OI.Psoc.getRawAxis(1);
+        commandedSpeed = -OI.Stick.getRawAxis(1);
         commandedWheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
 
         if(speed > minimumBackSpeed && speed < 0 && commandedSpeed < 0) {
@@ -261,7 +261,7 @@ public class AntiTiltSubsystem extends Subsystem {
         }else if(speed > commandedSpeed && commandedSpeed < 0){
             speed -= lowRampRate;
         }else{
-            speed = -OI.Psoc.getRawAxis(1);
+            speed = -OI.Stick.getRawAxis(1);
         }
         wheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
 
@@ -287,51 +287,51 @@ public class AntiTiltSubsystem extends Subsystem {
 
     private void rampDownMid() {
         System.out.println("Running rampDownMid");
-        commandedSpeed = -OI.Psoc.getRawAxis(1);
+        commandedSpeed = -OI.Stick.getRawAxis(1);
         commandedWheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
         if(speed > commandedSpeed){
             speed -= midRampRate;
         }else{
-            speed = -OI.Psoc.getRawAxis(1);
+            speed = -OI.Stick.getRawAxis(1);
         }
         wheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
     }
 
     private void rampDownHigh() {
         System.out.println("Running rampDownHigh");
-        commandedSpeed = -OI.Psoc.getRawAxis(1);
+        commandedSpeed = -OI.Stick.getRawAxis(1);
         if(speed > commandedSpeed){
             speed -= highRampRate;
         }else{
-            speed = -OI.Psoc.getRawAxis(4);
+            speed = -OI.Stick.getRawAxis(4);
         }
         wheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
     }
 
     private void rampUpLow() {
         System.out.println("Running rampUpLow");
-        commandedSpeed = -OI.Psoc.getRawAxis(1);
+        commandedSpeed = -OI.Stick.getRawAxis(1);
         commandedWheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
         if(speed < -minimumBackSpeed && speed > 0 && commandedSpeed > 0) {
             speed = -minimumBackSpeed;
         }else if(speed < commandedSpeed){
             speed += lowRampRate;
         }else{
-            speed = -OI.Psoc.getRawAxis(1);
+            speed = -OI.Stick.getRawAxis(1);
         }
         wheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
     }
 
     private void rampUpHigh() {
         System.out.println("Running rampUpHigh");
-        commandedSpeed = -OI.Psoc.getRawAxis(1);
+        commandedSpeed = -OI.Stick.getRawAxis(1);
         commandedWheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
         if(speed < -minimumBackSpeed && speed > 0 && commandedSpeed > 0) {
             speed = -minimumBackSpeed;
         }else if(speed < commandedSpeed){
             speed += highRampRate;
         }else{
-            speed = -OI.Psoc.getRawAxis(1);
+            speed = -OI.Stick.getRawAxis(1);
         }
         wheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
     }

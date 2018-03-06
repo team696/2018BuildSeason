@@ -13,7 +13,8 @@ public class OI {
 
     public static Joystick ControlPanel = new Joystick(0);
     public static Joystick wheel = new Joystick(1);
-    public static Joystick Psoc = new Joystick(2);
+    public static Joystick Stick = new Joystick(2);
+    public static Joystick Psoc = new Joystick(3);
 //    public static Joystick ControlPanel = new Joystick(2);
 
     // CREATING BUTTONS

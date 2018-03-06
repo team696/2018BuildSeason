@@ -51,24 +51,17 @@ public class Robot extends TimedRobot {
     public static AntiTiltSubsystem antiTiltSubsystem = new AntiTiltSubsystem();
 
 
-    /*
-        Object and Variable Declaration
-     */
+    /** Object and Variable Declaration **/
 
     public static OI oi;
-
     private Command autonomousCommand;
     private SendableChooser<Command> chooser = new SendableChooser<>();
-
     public static IMU navX;
     SerialPort port;
-
     public Timer time = new Timer();
     public PowerDistributionPanel PDP = new PowerDistributionPanel();
 
-    /*
-        Drive Variables
-     */
+    /** Drive Variables **/
 
     // Drive Straight and Deadzone variables
 
@@ -174,7 +167,6 @@ public class Robot extends TimedRobot {
             Zero Elevator
          */
 
-        elevatorSubsystem.homeElevator();
 
     }
 
@@ -216,14 +208,16 @@ public class Robot extends TimedRobot {
             Start Compressor
          */
 
-//        compressor.start();
-//        time.start();
+        compressor.start();
+        time.start();
 
     }
 
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+
+
 
         if(elevatorSubsystem.elevator.getSensorCollection().isRevLimitSwitchClosed()){
             elevatorSubsystem.elevator.setSelectedSensorPosition(0, 0, 20);
@@ -252,83 +246,6 @@ public class Robot extends TimedRobot {
         speed = antiTiltSubsystem.speed;
         wheel = (antiTiltSubsystem.wheel * speedTurnScale) - wheelDeadZoneMax;
 
-//        // Forward Ramping
-//
-//        if(OI.wheel.getRawButton(constants.wheelBackRightPaddle)){
-//            commandedSpeed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
-//            if(speed < -minimumSpeed && speed > 0 && commandedSpeed > 0){
-//                speed = commandedSpeed;
-//            }else if(speed < commandedSpeed && commandedSpeed > 0){
-//                speed += forwardRampingRate;
-//            }else{
-//                speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
-//            }
-//        }
-
-        // Ramping Backwards, not forwards, if the elevator is in it's forward state.
-//        elevatorPositionInches = elevatorSubsystem.elevator.getSelectedSensorPosition(0) / 200;
-//        elevatorSolState = elevatorSubsystem.elevatorSol.get();
-//        intakeOutputValue = intakeSubsystem.intakeA.getMotorOutputPercent();
-//
-//
-//        if(!elevatorSolState) {
-//            commandedSpeed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
-//            if(speed > minimumSpeed && speed < 0 && commandedSpeed < 0) {
-//                speed = commandedSpeed;
-//            }else if(speed > commandedSpeed){
-//                speed -= centerElevatorRampRate;
-//            }else{
-//                speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
-//            }
-//        }else if(elevatorSolState && elevatorPositionInches > elevatorMaxHeight){
-//            commandedSpeed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
-//            if(speed > minimumSpeed && speed < 0 && commandedSpeed < 0) {
-//                speed = commandedSpeed;
-//            }else if(speed > commandedSpeed){
-//                speed -= highElevatorRampRate;
-//            }else{
-//                speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
-//            }
-//        }else if(elevatorSolState){
-//            commandedSpeed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
-//            if(speed > minimumSpeed && speed < 0 && commandedSpeed < 0) {
-//                speed = minimumSpeed;
-//            }else if(speed > commandedSpeed){
-//                speed -= lowElevatorRampRate;
-//            }else{
-//                speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
-//            }
-//        }else if(elevatorPositionInches > elevatorMaxHeight && speed > maxForwardSpeed){
-//            speed = maxForwardSpeed;
-//        }else if(elevatorPositionInches > elevatorMaxHeight && speed < maxForwardSpeed) {
-//            commandedSpeed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
-//            if(speed > minimumSpeed && speed < 0 && commandedSpeed < 0) {
-//                speed = minimumSpeed;
-//            }else if(speed > commandedSpeed){
-//                speed -= lowElevatorRampRate;
-//            }else{
-//                speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
-//            }
-//        }else{
-//            speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
-//        }
-//
-//        if(elevatorSolState && elevatorPositionInches < elevatorMaxHeight && speed > maxActuatingSpeed && Math.abs(intakeOutputValue) > 0) {
-//            runElevator = true;
-//        } else if(elevatorSolState && elevatorPositionInches < elevatorMaxHeight && speed > maxActuatingSpeed){
-//            elevatorActuatorLoopNumber++;
-//            if(elevatorActuatorLoopNumber > 30){
-//                elevatorSubsystem.elevatorSol.set(false);
-//                runElevator = !runElevator;
-//            }
-//        }else{
-//            elevatorActuatorLoopNumber = 0;
-//        }
-
-//        if(elevatorSolState && elevatorPositionInches >= elevatorMaxHeight){
-//            runElevator = false;
-//        }
-
 
         /** RGB Sensor **/
 
@@ -337,18 +254,9 @@ public class Robot extends TimedRobot {
 
         /** Climber Functions **/
 
-//        if(OI.ControlPanel.getRawButton(11)){
-//            climberSubsystem.setClimberSpeed(1);
-//        }
-//        else if(OI.ControlPanel.getRawButton(15)){
-//            climberSubsystem.setClimberSpeed(-0.25);
-//        }
-//        else{
-//            climberSubsystem.setClimberSpeed(0);
-//        }
-
 
         /** Auto Climb and Unwind - Once pressed: Hook will deploy, Elevator will retract, and hold to keep climbing **/
+
 
         if(OI.ControlPanel.getRawButton(1)){
             climberSubsystem.autoClimb(0.75);
@@ -358,11 +266,7 @@ public class Robot extends TimedRobot {
             climberSubsystem.loopNumber = 0;
             climberSubsystem.setClimberSpeed(0);
             elevatorSubsystem.discBrake.set(false);
-
         }
-
-
-
         /** Elevator Functions **/
 
         // Toggle Elevator Solenoid
@@ -408,11 +312,9 @@ public class Robot extends TimedRobot {
             }
         }else{
             elevatorLoopNumber = 0;
-            elevatorSubsystem.discBrake.set(false);
+//            elevatorSubsystem.discBrake.set(false);   already set in auto-climb, would cause overlaps.
             elevatorSubsystem.manualMoveElevator(0);
         }
-
-
 
         /** Intake Functions **/
 
@@ -436,7 +338,7 @@ public class Robot extends TimedRobot {
             intakeSubsystem.toggleIntake(false);
         }
 
-        // Drive Straight Code / Wheel Deadzone
+
 
 
         /** Any Testing/Temporary Code will Go here **/
@@ -450,7 +352,11 @@ public class Robot extends TimedRobot {
 
 
 
-        /** VERY WIP, DOESN'T FULLY FUNCTION CURRENTLY */
+
+
+        /** VERY WIP, DOESN'T FULLY FUNCTION CURRENTLY
+            Drive-straight and Testing code.
+                                                      **/
 
         if(wheel >= wheelDeadZoneMin && wheel <= wheelDeadZoneMax){
 
@@ -486,9 +392,7 @@ public class Robot extends TimedRobot {
 
         driveTrainSubsystem.tankDrive(leftDrive, rightDrive);
 
-        /*
-            Outputs to console
-         */
+        /** Outputs to Console **/
 
 //        System.out.println("speed                                                                                " + speed);
 //        System.out.println("loopNumber = " + (loopNumber) + "                time.get: " + time.get());

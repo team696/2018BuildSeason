@@ -20,6 +20,8 @@ public class Outtake extends Command {
     public void execute() {
 
         Robot.intakeSubsystem.runIntake(-0.5);
+        loopNumber++;
+
 
     }
 

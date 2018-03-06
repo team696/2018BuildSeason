@@ -93,13 +93,13 @@ public class ElevatorSubsystem extends Subsystem {
 
     public void homeElevator() {
 
-//        elevator.set(ControlMode.PercentOutput, 0.15);
-
-        elevator.set(ControlMode.PercentOutput, -0.3);
+        discBrake.set(true);
+        manualMoveElevator(-0.3);
         if(elevator.getSensorCollection().isRevLimitSwitchClosed()) {
-            elevator.set(ControlMode.PercentOutput, 0);
+            manualMoveElevator(0);
             elevator.setSelectedSensorPosition(0, pidIdx, timeoutMs);
-            elevator.set(ControlMode.Position, 0);
+            elevator.set(ControlMode.MotionMagic, 0);
+            discBrake.set(false);
         }
 
     }

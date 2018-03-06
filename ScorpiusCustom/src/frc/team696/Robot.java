@@ -178,6 +178,8 @@ public class Robot extends TimedRobot {
 
         elevatorSubsystem.homeElevator();
 
+        CameraServer.getInstance().addAxisCamera("169.254.130.83");
+
     }
 
     @Override
@@ -507,8 +509,10 @@ public class Robot extends TimedRobot {
 //        System.out.println(elevatorLoopNumber);
 //        System.out.println(runElevator);
 //        System.out.println("intakeOutputValue = " + intakeOutputValue);
-        System.out.println(elevatorSubsystem.elevator.getSelectedSensorPosition(0));
+//        System.out.println(elevatorSubsystem.elevator.getSelectedSensorPosition(0));
 
+
+        System.out.println("current direction                  " + navX.getYaw());
 
 
 
