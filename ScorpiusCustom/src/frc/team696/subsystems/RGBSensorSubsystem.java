@@ -9,6 +9,7 @@ public class RGBSensorSubsystem extends Subsystem {
 
     public int loopNumber = 0;
     public boolean prevValueSet = false;
+    public boolean nowValueSet = true;
     double prevValue;
     double nowValue;
     public boolean passedTape = false;
@@ -156,8 +157,9 @@ public class RGBSensorSubsystem extends Subsystem {
                 System.out.println("                                                                Prev Value Set");
             }
 
-        if(time.get() > 0.048) {
+        if(time.get() >= 0.048 && !nowValueSet) {
                 nowValue = redNoLuminance;
+                nowValueSet = true;
 //            System.out.println("nowValue: " + nowValue);
             }
 
@@ -169,19 +171,21 @@ public class RGBSensorSubsystem extends Subsystem {
                 nowValue = prevValue;
             }
 
-        if(prevValue != nowValue ) {
+        if(prevValue != nowValue ) { // True if it passes a tape.
                 System.out.println("prevValue: " + prevValue + "            nowValue: " + nowValue + "             Change has occurred.");
                 passedTape = true;
             }
 
 
-        if(time.get() == 0.08) {             // restarts the rgbLoop
+        if(time.get() >= 0.08) {             // restarts the rgbLoop
 //            rgbLoopNumber = 0;
+            time.stop();
             time.reset();
             prevValueSet = false;
+            nowValueSet = true;
             }
         }
-    }
+
 
     public void initDefaultCommand() {
 

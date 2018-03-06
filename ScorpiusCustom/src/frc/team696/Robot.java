@@ -29,7 +29,9 @@ import frc.team696.subsystems.RGBSensorSubsystem;
  * Semi-fully custom-made code, this is where I'm doing things I've never done before,
  * while also making the most of my current abilities. I'm going next level.
  *
- * Time and date of writing this comment: 4:48 AM, 2/5/2018
+ * Also, don't let Justin see this, but he's the greatest person ever.
+ *
+ * Time and date of writing this comment: 4:48 AM, 2/5/2018.
  *
  */
 
@@ -216,8 +218,8 @@ public class Robot extends TimedRobot {
             Start Compressor
          */
 
-        compressor.start();
-        time.start();
+//        compressor.start();
+//        time.start();
 
     }
 
@@ -254,16 +256,54 @@ public class Robot extends TimedRobot {
         wheel = (antiTiltSubsystem.wheel * speedTurnScale) - wheelDeadZoneMax;
 
         /**
+
+
+
+
             Climber Functions
          */
 
         if(OI.Psoc.getRawButton(16)) {
             climberSubsystem.setClimberSpeed(1);
-        }else if(OI.Psoc.getRawButton(3)){
-            climberSubsystem.setClimberSpeed(-0.25);
-        }else{
-            climberSubsystem.setClimberSpeed(0);
         }
+        else if(OI.wheel.getRawButton(2)){
+            climberSubsystem.setClimberSpeed(-0.25);
+        }
+        else{
+
+            climberSubsystem.deployHook(true);
+        }
+        else{
+            climberSubsystem.deployHook(false);
+        }
+
+
+
+
+//
+//        if(OI.Psoc.getRawButton(3)){
+//            climberSubsystem.autoClimb(0.75);
+//        }
+
+
+
+//
+//        if(OI.whee.getRawButton(3)){
+//            climberSubsystem.setClimberSpeed(-0.25);
+//        }else{
+//            climberSubsystem.setClimberSpeed(0);
+//        }
+
+
+
+
+
+
+
+
+
+
+
 
 
         /**
@@ -386,7 +426,26 @@ public class Robot extends TimedRobot {
 //        System.out.println(elevatorLoopNumber);
 //        System.out.println(runElevator);
 //        System.out.println("intakeOutputValue = " + intakeOutputValue);
-        System.out.println();
+        System.out.println(elevatorSubsystem.elevator.getSelectedSensorPosition(0));
+
+
+
+
+
+
+
+
+
+
+
+
+
+//        if(OI.Psoc.getRawButton(13)){
+//            elevatorSubsystem.manualMoveElevator(0.75);
+//        }
+//        else{
+//            elevatorSubsystem.manualMoveElevator(0);
+//        }
 
     }
 

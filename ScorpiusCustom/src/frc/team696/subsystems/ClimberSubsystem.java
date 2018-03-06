@@ -1,9 +1,12 @@
 package frc.team696.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+import static frc.team696.Robot.elevatorSubsystem;
 
 
 public class ClimberSubsystem extends Subsystem {
@@ -13,6 +16,7 @@ public class ClimberSubsystem extends Subsystem {
     Solenoid climberSol;
 
     boolean isDeployed = false;
+    boolean isHomed = false;
 
     int loopNumber = 0;
 
@@ -37,21 +41,37 @@ public class ClimberSubsystem extends Subsystem {
 
     }
 
-    public void autoClimb(double climberSpeed){
-
-        loopNumber++;
-
-        if(!isDeployed){
-            deployHook(true);
-            isDeployed = true;
-        }
-
-        if(loopNumber >= 10000) {
-            setClimberSpeed(climberSpeed);
-        }
-
-        System.out.println(loopNumber);
-    }
+//    public void autoClimb(double climberSpeed){
+//
+////        loopNumber++;
+////        Timer time = new Timer();
+//
+////        time.start();
+//
+//
+//        if(!isDeployed){
+//            deployHook(true);
+//            isDeployed = true;
+//
+//        }
+//
+//        if(isDeployed && elevatorSubsystem.elevator.getSelectedSensorPosition(0) > 5) {
+//            elevatorSubsystem.manualMoveElevator(-0.5);
+//            if(elevatorSubsystem.elevator.getSelectedSensorPosition(0) < 5){
+//                elevatorSubsystem.manualMoveElevator(0);
+//                isHomed = true;
+//            }
+//        }
+//
+//        if(isDeployed && isHomed ){
+//            setClimberSpeed(climberSpeed);
+//            deployHook(false);
+//
+//
+//        }
+//
+//        System.out.println(loopNumber);
+//    }
 
     public void initDefaultCommand() {
 

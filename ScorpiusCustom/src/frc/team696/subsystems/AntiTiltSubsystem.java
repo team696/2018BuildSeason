@@ -180,9 +180,9 @@ public class AntiTiltSubsystem extends Subsystem {
                 limitMaxHighSpeed = true;
                 break;
 
-            case 7:
+            case 7: // Elevator homed, back
                 speed = -OI.Psoc.getRawAxis(1);
-                wheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
+                wheel = OI.wheel.getRawAxis(0);
                 rampDownLow = false;
                 rampDownMid = false;
                 rampDownHigh = false;

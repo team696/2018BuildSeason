@@ -93,7 +93,7 @@ public class DriveCommand extends Command {
         leftRearEnc = (double) Robot.driveTrainSubsystem.leftRear.getSelectedSensorPosition(pidIdx) / 200;
         // Divided by 200 to convert encoder units to inches
         rightRearEnc = (double) -Robot.driveTrainSubsystem.rightRear.getSelectedSensorPosition(pidIdx) / 200;
-        // Diviced by 200 to convert encoder units to inches, and multiplied by -1 to account for inversion of encoder.
+        // Divided by 200 to convert encoder units to inches, and multiplied by -1 to account for inversion of encoder.
 
         currentDistance = -(leftRearEnc + rightRearEnc) / 2;
         // Making currentDistance negative to account for inversion.
