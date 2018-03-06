@@ -243,10 +243,6 @@ public class AntiTiltSubsystem extends Subsystem {
         return Robot.elevatorSubsystem.elevator.getSelectedSensorPosition(0);
     }
 
-    private double intakeOutput() {
-        return Robot.intakeSubsystem.intakeA.getMotorOutputPercent();
-    }
-
     private boolean elevatorSol() {
         return Robot.elevatorSubsystem.elevatorSol.get();
     }
@@ -256,33 +252,54 @@ public class AntiTiltSubsystem extends Subsystem {
         commandedSpeed = -OI.Psoc.getRawAxis(1);
         commandedWheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
 
-        if(speed > minimumBackSpeed && speed < 0 && commandedSpeed < 0) {
+//        if(speed > minimumBackSpeed && speed < 0 && commandedSpeed < 0) {
+//            speed = minimumBackSpeed;
+//        }else if(speed > commandedSpeed && commandedSpeed < 0){
+//            speed -= lowRampRate;
+//        }else{
+//            speed = -OI.Psoc.getRawAxis(1);
+//        }
+//        wheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
+//
+//        if(limitMaxLowSpeed){
+//            System.out.println("running limitMaxLowSpeed");
+//            if(commandedSpeed > maxMidSpeed){
+//                speed = maxMidSpeed;
+//            }else if(commandedSpeed < -maxMidSpeed){
+//                speed = -maxMidSpeed;
+//            }else{
+//                speed = commandedSpeed;
+//            }
+//
+//            if(commandedWheel > maxMidTurn){
+//                wheel = maxMidTurn;
+//            }else if(commandedSpeed < -maxMidTurn){
+//                wheel = -maxMidTurn;
+//            }else{
+//                wheel = commandedWheel;
+//            }
+//        }
+
+        if(speed > minimumBackSpeed && speed < 0 && commandedSpeed < 0){
             speed = minimumBackSpeed;
+        }else if(speed > maxLowSpeed && limitMaxLowSpeed){
+            speed = maxLowSpeed;
+        }else if(speed < -maxLowSpeed && limitMaxLowSpeed){
+            speed = -maxLowSpeed;
         }else if(speed > commandedSpeed && commandedSpeed < 0){
             speed -= lowRampRate;
         }else{
-            speed = -OI.Psoc.getRawAxis(1);
+            speed = commandedSpeed;
         }
-        wheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
 
-        if(limitMaxLowSpeed){
-            System.out.println("running limitMaxLowSpeed");
-            if(commandedSpeed > maxMidSpeed){
-                speed = maxMidSpeed;
-            }else if(commandedSpeed < -maxMidSpeed){
-                speed = -maxMidSpeed;
-            }else{
-                speed = commandedSpeed;
-            }
-
-            if(commandedWheel > maxMidTurn){
-                wheel = maxMidTurn;
-            }else if(commandedSpeed < -maxMidTurn){
-                wheel = -maxMidTurn;
-            }else{
-                wheel = commandedWheel;
-            }
+        if(commandedWheel > maxLowTurn){
+            wheel = maxLowTurn;
+        }else if(commandedSpeed < -maxLowTurn){
+            wheel = -maxLowTurn;
+        }else{
+            wheel = commandedWheel;
         }
+
     }
 
     private void rampDownMid() {
