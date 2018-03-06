@@ -52,7 +52,7 @@ public class DriveCommand extends Command {
 
     // Direction PID Values
 
-    private double kPB = 0.025;
+    private double kPB = 0.025; // try 0.1, with all others at zero, and 1 with I at 0.025, rest at 0
     private double kIB = 0;
     private double kDB = 0;
     private double kAlphaB = 0.5;

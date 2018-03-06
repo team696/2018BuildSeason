@@ -50,7 +50,7 @@ public class ElevatorSubsystem extends Subsystem {
     double loopNumber;
 
     int sensorUnitsPer100ms = 1350;
-    int sensorUnitsPer100msPerSec;
+    int sensorUnitsPer100msPerSec = 1350;
 
 
     public ElevatorSubsystem(int elevator, int elevatorSol, int discBrake) {
