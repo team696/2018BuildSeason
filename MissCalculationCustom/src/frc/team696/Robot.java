@@ -119,6 +119,11 @@ public class Robot extends TimedRobot {
     boolean elevatorSolState;
     double maxForwardSpeed = 0.5;
     double maxActuatingSpeed = 0.8;
+    public boolean isHomed = false;
+    int homeLoopNumber;
+
+    public boolean currentHome;
+    public boolean oldHome;
 
     /*
         Intake Variables
@@ -218,10 +223,10 @@ public class Robot extends TimedRobot {
         Scheduler.getInstance().run();
 
 
+        /**
+         * Homing Button
+         */
 
-        if(elevatorSubsystem.elevator.getSensorCollection().isRevLimitSwitchClosed()){
-            elevatorSubsystem.elevator.setSelectedSensorPosition(0, 0, 20);
-        }
 
         /** Drive Functionality **/
 
@@ -232,15 +237,15 @@ public class Robot extends TimedRobot {
             wheel = wheel + wheelDeadZoneMax;
         }
 
-        if(OI.wheel.getRawButton(2)){
-            antiTilt = false;
-        }else{
-            antiTilt = true;
-        }
-
-        if(antiTilt){
-            antiTiltSubsystem.antiTilt();
-        }
+//        if(OI.wheel.getRawButton(2)){
+//            antiTilt = false;
+//        }else{
+//            antiTilt = true;
+//        }
+//
+//        if(antiTilt){
+//            antiTiltSubsystem.antiTilt();
+//        }
 
         speedTurnScale = a*(1/((speed*speed)-h))+k;
         speed = antiTiltSubsystem.speed;
@@ -249,7 +254,7 @@ public class Robot extends TimedRobot {
 
         /** RGB Sensor **/
 
-        rgbSensorSubsystem.rgbGetLux();
+//        rgbSensorSubsystem.rgbGetLux();
 
 
         /** Climber Functions **/
@@ -265,7 +270,6 @@ public class Robot extends TimedRobot {
         } else {
             climberSubsystem.loopNumber = 0;
             climberSubsystem.setClimberSpeed(0);
-            elevatorSubsystem.discBrake.set(false);
         }
         /** Elevator Functions **/
 
@@ -296,15 +300,34 @@ public class Robot extends TimedRobot {
             elevatorSubsystem.toggleElevatorPos(false);
         }
 
-        /* Manual-Move Elevator */
+        /**
+         *  Manual-Move Elevator
+         */
 
-        if(OI.ControlPanel.getRawAxis(0) < -0.1){
+        if(!isHomed){
+            homeLoopNumber++;
+            elevatorSubsystem.discBrake.set(true);
+            if(homeLoopNumber > 2){
+                elevatorSubsystem.manualMoveElevator(-0.1);
+                System.out.println("Homing...");
+                if(elevatorSubsystem.elevator.getSensorCollection().isRevLimitSwitchClosed()){
+                    elevatorSubsystem.discBrake.set(false);
+                    elevatorSubsystem.manualMoveElevator(0);
+                    elevatorSubsystem.elevator.setSelectedSensorPosition(0, 0, 20);
+                    System.out.println("Homed");
+                    isHomed = true;
+                }
+            }
+        }else{
+            homeLoopNumber = 0;
+        }
+        if(OI.ControlPanel.getRawAxis(0) < -0.1 && isHomed){
             elevatorLoopNumber++;
             elevatorSubsystem.discBrake.set(true);
                 if(elevatorLoopNumber > 2){
                     elevatorSubsystem.manualMoveElevator(-OI.ControlPanel.getRawAxis(0));
             }
-        }else if(OI.ControlPanel.getRawAxis(0) > 0.1){
+        }else if(OI.ControlPanel.getRawAxis(0) > 0.1 && isHomed){
             elevatorLoopNumber++;
             elevatorSubsystem.discBrake.set(true);
                 if(elevatorLoopNumber > 2){
@@ -314,6 +337,7 @@ public class Robot extends TimedRobot {
             elevatorLoopNumber = 0;
 //            elevatorSubsystem.discBrake.set(false);   already set in auto-climb, would cause overlaps.
             elevatorSubsystem.manualMoveElevator(0);
+            elevatorSubsystem.discBrake.set(false);
         }
 
         /** Intake Functions **/
@@ -401,10 +425,7 @@ public class Robot extends TimedRobot {
 //        System.out.println(runElevator);
 //        System.out.println("intakeOutputValue = " + intakeOutputValue);
 //        System.out.println(elevatorSubsystem.elevator.getSelectedSensorPosition(0));
-
-
-
-
+        System.out.println(isHomed + "      " + elevatorSubsystem.elevator.getSelectedSensorPosition(0) + "          " + elevatorLoopNumber);
 
     }
 
