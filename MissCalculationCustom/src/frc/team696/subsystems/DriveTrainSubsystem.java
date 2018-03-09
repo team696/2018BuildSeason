@@ -10,20 +10,20 @@ import frc.team696.utilities.PIDController;
 public class DriveTrainSubsystem extends Subsystem {
 
     public WPI_TalonSRX leftRear;
-    public WPI_TalonSRX leftMid;
-    public WPI_TalonSRX leftFront;
+    private WPI_TalonSRX leftMid;
+    private WPI_TalonSRX leftFront;
 
     public WPI_TalonSRX rightRear;
-    public WPI_TalonSRX rightMid;
-    public WPI_TalonSRX rightFront;
+    private WPI_TalonSRX rightMid;
+    private WPI_TalonSRX rightFront;
 
-    public DifferentialDrive drive;
+    private DifferentialDrive drive;
 
 //    public int leftRearDeviceID = leftRear.getDeviceID();
 //    public int rightRearDeviceID = rightRear.getDeviceID();
 
-    public int timeoutMs = 20;
-    public int pidIdx = 0;
+    private int timeoutMs = 20;
+    private int pidIdx = 0;
 
     /*
         PID Values
@@ -31,10 +31,10 @@ public class DriveTrainSubsystem extends Subsystem {
 
     public PIDController driveStraightPID;
 
-    public double kP = 0.03;
-    public double kI = 0;
-    public double kD = 0;
-    public double kAlpha = 0.02;
+    private double kP = 0.025;
+    private double kI = 0;
+    private double kD = 0;
+    private double kAlpha = 0.5;
 
     public DriveTrainSubsystem(int leftRear, int leftMid, int leftFront,
                                int rightRear, int rightMid, int rightFront) {
