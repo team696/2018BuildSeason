@@ -252,9 +252,12 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
 
+        if(elevatorSubsystem.elevator.getSensorCollection().isRevLimitSwitchClosed()){
+            elevatorSubsystem.elevator.setSelectedSensorPosition(0, 0, 20);
+        }
 
-        /**
-         * Homing Button
+        /*
+            Drive Functionality
          */
 
 
@@ -269,20 +272,56 @@ public class Robot extends TimedRobot {
             wheel = wheel + wheelDeadZoneMax;
         }
 
-//        if(OI.wheel.getRawButton(2)){
-//            antiTilt = false;
-//        }else{
-//            antiTilt = true;
-//        }
-//
-//        if(antiTilt){
-//            antiTiltSubsystem.antiTilt();
-//        }
+        if(OI.Psoc.getRawButton(2)){
+            antiTilt = false;
+        }else{
+            antiTilt = true;
+        }
+
+        if(antiTilt){
+            antiTiltSubsystem.antiTilt();
+        }
 
         speedTurnScale = a*(1/((speed*speed)-h))+k;
         speed = antiTiltSubsystem.speed;
         wheel = (antiTiltSubsystem.wheel * speedTurnScale) - wheelDeadZoneMax;
 
+//        // Forward Ramping
+=======
+        /**
+
+
+
+
+            Climber Functions
+         */
+
+        if(OI.Psoc.getRawButton(16)) {
+            climberSubsystem.setClimberSpeed(1);
+        }
+        else if(OI.wheel.getRawButton(2)){
+            climberSubsystem.setClimberSpeed(-0.25);
+        }
+        else{
+
+            climberSubsystem.deployHook(true);
+        }
+
+
+
+
+>>>>>>> Stashed changes
+//
+//        if(OI.wheel.getRawButton(constants.wheelBackRightPaddle)){
+//            commandedSpeed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
+//            if(speed < -minimumSpeed && speed > 0 && commandedSpeed > 0){
+//                speed = commandedSpeed;
+//            }else if(speed < commandedSpeed && commandedSpeed > 0){
+//                speed += forwardRampingRate;
+//            }else{
+//                speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
+//            }
+//        }
 
         /** RGB Sensor **/
 
@@ -290,6 +329,11 @@ public class Robot extends TimedRobot {
 
 
         /** Climber Functions **/
+        if(OI.Psoc.getRawButton(16)){
+            climberSubsystem.setClimberSpeed(1);
+        }else{
+            climberSubsystem.setClimberSpeed(0);
+        }
 
 
 
@@ -404,7 +448,7 @@ public class Robot extends TimedRobot {
             moveIntake = false;
             moveSwitch = false;
             moveClimb = false;
-                if(elevatorLoopNumber > 2){
+            if(elevatorLoopNumber > 2){
                     elevatorSubsystem.manualMoveElevator(-OI.ControlPanel.getRawAxis(0));
             }
         }else if(OI.ControlPanel.getRawAxis(0) > 0.1 && isHomed){
