@@ -22,7 +22,7 @@ public class ClimberSubsystem extends Subsystem {
     boolean isHomed = false;
 
     public int loopNumber = 0;
-    public double manualMoveSpeed = -0.65;
+    public double manualMoveSpeed = -0.25;
     public int resetValue = 10;
 
 
@@ -57,21 +57,19 @@ public class ClimberSubsystem extends Subsystem {
         if(loopNumber > resetValue) { /** resetValue subject to change */
             deployHook(false);  /** reset pneumatic so hook can be easily connected again **/
         }
-        if(isDeployed && !revLimitSwitch()) {
+        if(isDeployed) {
+            if(revLimitSwitch()){
+                elevatorSubsystem.manualMoveElevator(0);
+                elevatorSubsystem.discBrake.set(false);
+                isHomed = true;
+            }else{
+                isHomed = false;
+
+            }
             elevatorSubsystem.discBrake.set(true);
-            elevatorSubsystem.manualMoveElevator(manualMoveSpeed);
-        }
-        if(revLimitSwitch()){
-            elevatorSubsystem.manualMoveElevator(0);
-            elevatorSubsystem.discBrake.set(false);
-            isHomed = true;
-        }else{
-            isHomed = false;
-        }
-        if(isDeployed && isHomed){
+            elevatorSubsystem.manualMoveElevator(-0.5);
             setClimberSpeed(climberSpeed);
         }
-
     }
 
     public boolean revLimitSwitch() {

@@ -41,37 +41,6 @@ public class ClimberSubsystem extends Subsystem {
 
     }
 
-//    public void autoClimb(double climberSpeed){
-//
-////        loopNumber++;
-////        Timer time = new Timer();
-//
-////        time.start();
-//
-//
-//        if(!isDeployed){
-//            deployHook(true);
-//            isDeployed = true;
-//
-//        }
-//
-//        if(isDeployed && elevatorSubsystem.elevator.getSelectedSensorPosition(0) > 5) {
-//            elevatorSubsystem.manualMoveElevator(-0.5);
-//            if(elevatorSubsystem.elevator.getSelectedSensorPosition(0) < 5){
-//                elevatorSubsystem.manualMoveElevator(0);
-//                isHomed = true;
-//            }
-//        }
-//
-//        if(isDeployed && isHomed ){
-//            setClimberSpeed(climberSpeed);
-//            deployHook(false);
-//
-//
-//        }
-//
-//        System.out.println(loopNumber);
-//    }
 
     public void initDefaultCommand() {
 

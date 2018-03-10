@@ -30,15 +30,15 @@ public class ElevatorSubsystem extends Subsystem {
 
     int elevatorDeviceID;
 
-    double kP = 2.8,
-            kI = 0.000000091,
-            kD = 0.00000000000000003,
-            kF = 4.00987442;
+    double kP = 0.5, // 2.8
+            kI = 0, // 0.000000091
+            kD = 0, // 0.00000000000000003
+            kF = 0; // 4.00987442
 
-    double elevatorTarget;
+    public double elevatorTarget;
 
     double groundPosition;
-    double switchPosition;
+    double switchPosition = 8000;
     double scalePosition;
     double climbPosition;
     double homePosition = 0;
@@ -49,8 +49,11 @@ public class ElevatorSubsystem extends Subsystem {
     double error;
     double loopNumber;
 
-    int sensorUnitsPer100ms = 1350;
-    int sensorUnitsPer100msPerSec;
+    int sensorUnitsPer100ms = 3500;
+    int sensorUnitsPer100msPerSec = 3000;
+
+
+
 
 
     public ElevatorSubsystem(int elevator, int elevatorSol, int discBrake) {
@@ -93,13 +96,13 @@ public class ElevatorSubsystem extends Subsystem {
 
     public void homeElevator() {
 
-        discBrake.set(true);
-        manualMoveElevator(-0.3);
+//        elevator.set(ControlMode.PercentOutput, 0.15);
+
+        elevator.set(ControlMode.PercentOutput, -0.3);
         if(elevator.getSensorCollection().isRevLimitSwitchClosed()) {
-            manualMoveElevator(0);
+            elevator.set(ControlMode.PercentOutput, 0);
             elevator.setSelectedSensorPosition(0, pidIdx, timeoutMs);
-            elevator.set(ControlMode.MotionMagic, 0);
-            discBrake.set(false);
+            elevator.set(ControlMode.Position, 0);
         }
 
     }
@@ -130,24 +133,29 @@ public class ElevatorSubsystem extends Subsystem {
 
             case "ground":
                 elevatorTarget = groundPosition;
+                break;
 
             case "switch":
                 elevatorTarget = switchPosition;
+                break;
 
             case "scale":
                 elevatorTarget = scalePosition;
+                break;
 
             case "climb":
                 elevatorTarget = climbPosition;
+                break;
 
             default:
                 elevatorTarget = homePosition;
+                break;
 
         }
 
         error = elevatorTarget - elevator.getSelectedSensorPosition(pidIdx);
 
-        if(Math.abs(error) < 50){
+        if(Math.abs(error) < 200){
             loopNumber++;
             if(loopNumber > 0){
                 discBrake.set(false);
@@ -156,9 +164,11 @@ public class ElevatorSubsystem extends Subsystem {
         }
 
         currentMovePos = position;
-        if(currentMovePos == position && !(oldMovePos == position)){
+        if(currentMovePos == (position) && !(oldMovePos == (position))){
             loopNumber = 0;
             discBrake.set(true);
+            elevator.configMotionCruiseVelocity(sensorUnitsPer100ms, timeoutMs);
+            elevator.configMotionAcceleration(sensorUnitsPer100msPerSec, timeoutMs);
             elevator.set(ControlMode.MotionMagic, elevatorTarget);
         }
         oldMovePos = currentMovePos;

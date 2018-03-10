@@ -32,7 +32,30 @@ public class Constants extends Robot {
         Psoc Constants
      */
 
-    public int psocDriveAxis = 0;
+
+
+    /*
+        ControlPanel Constants
+     */
+
+    public int AutoClimb = 1;
+    public int LimitSwitchOverride = 2;
+    public int scaleLow = 3;
+    public int scaleMid = 4;
+    public int scaleHigh = 5;
+    public int tilt = 6;
+    public int intakeDown = 7;
+    public int outtakeUp = 8;
+    public int intakePos = 9;
+    public int switchPos = 10;
+    public int climbPos = 11;
+    public int intakeSol = 12;
+    public int elevatorHome = 13;
+    public int compDemoSwitch = 14;
+    public int unwind = 15;
+    public int manual = 0;
+
+//    public int psocDriveAxis = 0;
 
 
 }

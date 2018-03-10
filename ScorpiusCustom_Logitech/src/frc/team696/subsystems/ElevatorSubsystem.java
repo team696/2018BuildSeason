@@ -130,18 +130,23 @@ public class ElevatorSubsystem extends Subsystem {
 
             case "ground":
                 elevatorTarget = groundPosition;
+                break;
 
             case "switch":
                 elevatorTarget = switchPosition;
+                break;
 
             case "scale":
                 elevatorTarget = scalePosition;
+                break;
 
             case "climb":
                 elevatorTarget = climbPosition;
+                break;
 
             default:
                 elevatorTarget = homePosition;
+                break;
 
         }
 
@@ -156,7 +161,7 @@ public class ElevatorSubsystem extends Subsystem {
         }
 
         currentMovePos = position;
-        if(currentMovePos == position && !(oldMovePos == position)){
+        if(currentMovePos.equals(position) && !(oldMovePos.equals(position))){
             loopNumber = 0;
             discBrake.set(true);
             elevator.set(ControlMode.MotionMagic, elevatorTarget);

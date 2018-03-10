@@ -19,15 +19,17 @@ public class Intake extends Command {
     @Override
     public void execute() {
 
-        Robot.intakeSubsystem.runIntake(0.5);
+        Robot.intakeSubsystem.runIntake(0.7);
+        System.out.println(Robot.PDP.getCurrent(7));
 
 
     }
 
     @Override
     public boolean isFinished() {
-        if(loopNumber >= 500){
-            loopNumber = 0;
+        if(Robot.PDP.getCurrent(7) > 25){
+            Robot.intakeSubsystem.runIntake(0);
+            Robot.intakeSubsystem.intakeSol.set(false);
             return true;
         }
         return false;

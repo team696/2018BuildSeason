@@ -268,15 +268,10 @@ public class Robot extends TimedRobot {
         if(OI.Psoc.getRawButton(16)) {
             climberSubsystem.setClimberSpeed(1);
         }
-        else if(OI.wheel.getRawButton(2)){
-            climberSubsystem.setClimberSpeed(-0.25);
-        }
-        else{
-
-            climberSubsystem.deployHook(true);
-        }
-        else{
-            climberSubsystem.deployHook(false);
+        else if(OI.wheel.getRawButton(2)) {
+            climberSubsystem.setClimberSpeed(-0.2);
+        }else{
+            elevatorSubsystem.discBrake.set(true);
         }
 
 
@@ -391,14 +386,14 @@ public class Robot extends TimedRobot {
 
         if(wheel >= wheelDeadZoneMin && wheel <= wheelDeadZoneMax){
 
-//            loopNumber++;
-//            currentDirection = navX.getYaw();
-//            if(loopNumber == 1){
-//                targetDirection = navX.getYaw();
-//            }
-//            directionError = targetDirection - currentDirection;
-//            driveTrainSubsystem.driveStraightPID.setError(directionError);
-//            wheel = driveTrainSubsystem.driveStraightPID.getValue();
+            loopNumber++;
+            currentDirection = navX.getYaw();
+            if(loopNumber == 1){
+                targetDirection = navX.getYaw();
+            }
+            directionError = targetDirection - currentDirection;
+            driveTrainSubsystem.driveStraightPID.setError(directionError);
+            wheel = driveTrainSubsystem.driveStraightPID.getValue();
             wheel = 0;
 
         }else{
@@ -431,7 +426,7 @@ public class Robot extends TimedRobot {
 //        System.out.println(elevatorSubsystem.elevator.getSelectedSensorPosition(0));
 
 
-        System.out.println("current direction                  " + navX.getYaw());
+//        System.out.println("current direction                  " + navX.getYaw());
 
 
 
