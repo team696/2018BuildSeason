@@ -287,7 +287,7 @@ public class Robot extends TimedRobot {
         wheel = (antiTiltSubsystem.wheel * speedTurnScale) - wheelDeadZoneMax;
 
 //        // Forward Ramping
-
+=======
         /**
 
 
@@ -304,10 +304,24 @@ public class Robot extends TimedRobot {
         }
         else{
 
-//            climberSubsystem.deployHook(true);
+            climberSubsystem.deployHook(true);
         }
 
 
+
+
+>>>>>>> Stashed changes
+//
+//        if(OI.wheel.getRawButton(constants.wheelBackRightPaddle)){
+//            commandedSpeed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
+//            if(speed < -minimumSpeed && speed > 0 && commandedSpeed > 0){
+//                speed = commandedSpeed;
+//            }else if(speed < commandedSpeed && commandedSpeed > 0){
+//                speed += forwardRampingRate;
+//            }else{
+//                speed = -OI.Psoc.getRawAxis(constants.psocDriveAxis);
+//            }
+//        }
 
         /** RGB Sensor **/
 
@@ -416,6 +430,7 @@ public class Robot extends TimedRobot {
 
         if(!isHomed){
             elevatorSubsystem.discBrake.set(true);
+<<<<<<< HEAD
             elevatorSubsystem.manualMoveElevator(-0.1);
             System.out.println("Homing...");
             if(elevatorSubsystem.elevator.getSensorCollection().isRevLimitSwitchClosed()){
@@ -424,17 +439,33 @@ public class Robot extends TimedRobot {
                 elevatorSubsystem.elevator.setSelectedSensorPosition(0, 0, 20);
                 System.out.println("Homed");
                 isHomed = true;
+=======
+            if(elevatorLoopNumber > 2){
+                elevatorSubsystem.manualMoveElevator(-0.1);
+                System.out.println("Homing...");
+                if(elevatorSubsystem.elevator.getSensorCollection().isRevLimitSwitchClosed()){
+                    elevatorSubsystem.discBrake.set(false);
+                    elevatorSubsystem.manualMoveElevator(0);
+                    elevatorSubsystem.elevator.setSelectedSensorPosition(0, 0, 20);
+                    System.out.println("Homed");
+                    isHomed = true;
+                }
+>>>>>>> 9913dfadb8cd8ed080403df08853b7d2d536cb2e
             }
         }else if(OI.ControlPanel.getRawAxis(0) < -0.1 && isHomed){
             elevatorLoopNumber++;
             elevatorSubsystem.discBrake.set(true);
+<<<<<<< HEAD
             moveLow = false;
             moveMid = false;
             moveHigh = false;
             moveIntake = false;
             moveSwitch = false;
             moveClimb = false;
+                if(elevatorLoopNumber > 2){
+=======
             if(elevatorLoopNumber > 2){
+>>>>>>> 9913dfadb8cd8ed080403df08853b7d2d536cb2e
                     elevatorSubsystem.manualMoveElevator(-OI.ControlPanel.getRawAxis(0));
             }
         }else if(OI.ControlPanel.getRawAxis(0) > 0.1 && isHomed){
@@ -458,7 +489,7 @@ public class Robot extends TimedRobot {
             moveSwitch = false;
             moveClimb = false;
             moveLow = false;
-            climberSubsystem.autoClimb(1);
+            climberSubsystem.autoClimb(0.75);
 
 
         }else if (OI.ControlPanel.getRawButton(15)) {
@@ -475,7 +506,6 @@ public class Robot extends TimedRobot {
             elevatorSubsystem.manualMoveElevator(0);
             elevatorSubsystem.discBrake.set(false);
             homeLoopNumber = 0;
-            climberSubsystem.deployHook(false);
         }
 
         /** Intake Functions **/
@@ -541,9 +571,12 @@ public class Robot extends TimedRobot {
 
 
 
+<<<<<<< HEAD
 //        if(elevatorSubsystem.elevator.getSensorCollection().isRevLimitSwitchClosed()){
 //            elevatorSubsystem.elevator.setSelectedSensorPosition(0, 0, 20);
 //        }
+=======
+>>>>>>> 9913dfadb8cd8ed080403df08853b7d2d536cb2e
 
         leftDrive = speed + wheel;
         rightDrive = speed - wheel;

@@ -54,10 +54,10 @@ public class ClimberSubsystem extends Subsystem {
             deployHook(true);
             isDeployed = true;
         }
-        if(loopNumber > resetValue) { /** resetValue subject to change */
-            deployHook(false);  /** reset pneumatic so hook can be easily connected again **/
-        }
-        if(isDeployed) {
+//        if(loopNumber > resetValue) { /** resetValue subject to change */
+//            deployHook(false);  /** reset pneumatic so hook can be easily connected again **/
+//        }
+        if(isDeployed && loopNumber > 15) {
             if(revLimitSwitch()){
                 elevatorSubsystem.manualMoveElevator(0);
                 elevatorSubsystem.discBrake.set(false);
