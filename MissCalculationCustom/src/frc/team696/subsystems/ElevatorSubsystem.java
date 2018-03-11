@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team696.utilities.PIDController;
 
 public class ElevatorSubsystem extends Subsystem {
 
@@ -30,30 +31,33 @@ public class ElevatorSubsystem extends Subsystem {
 
     int elevatorDeviceID;
 
-    double kP = 0.5, // 2.8
+    double kP = 0.6, // 2.8
             kI = 0, // 0.000000091
             kD = 0, // 0.00000000000000003
-            kF = 0; // 4.00987442
+            kF = 1.5; // 4.00987442
 
     public double elevatorTarget;
+    private double elevatorTarget2;
 
-    double groundPosition;
-    double switchPosition = 4000;
-    double scalePosition = 28000;
-    double climbPosition;
-    double homePosition = 0;
-    
+    public double intakePosition = 1;
+    public double switchPosition = 9090;
+    public double lowPosition = 10000;
+    public double midPosition;
+    public double highPosition = 29000;
+    public double climbPosition = 21420;
+    public double homePosition = 0;
 
     String currentMovePos;
     String oldMovePos;
 
     double error;
+    double error2;
     double loopNumber;
 
     int sensorUnitsPer100ms = 3500;
     int sensorUnitsPer100msPerSec = 3000;
 
-
+    public PIDController pidController;
 
 
 
@@ -93,6 +97,8 @@ public class ElevatorSubsystem extends Subsystem {
         this.elevator.config_kD(slotIdx, kD, timeoutMs);
         this.elevator.config_kF(slotIdx, kF, timeoutMs);
 
+        pidController = new PIDController(kP, kI, kD, kF);
+
     }
 
     public void homeElevator() {
@@ -116,6 +122,7 @@ public class ElevatorSubsystem extends Subsystem {
 
         elevator.set(ControlMode.PercentOutput, speed);
 
+
     }
 
     public void toggleElevatorPos(boolean bool){
@@ -132,16 +139,20 @@ public class ElevatorSubsystem extends Subsystem {
 
         switch(position){
 
-            case "ground":
-                elevatorTarget = groundPosition;
+            case "intake":
+                elevatorTarget = intakePosition;
                 break;
 
             case "switch":
                 elevatorTarget = switchPosition;
                 break;
 
-            case "scale":
-                elevatorTarget = scalePosition;
+            case "low":
+                elevatorTarget = lowPosition;
+                break;
+
+            case "high":
+                elevatorTarget = highPosition;
                 break;
 
             case "climb":
@@ -156,7 +167,7 @@ public class ElevatorSubsystem extends Subsystem {
 
         error = elevatorTarget - elevator.getSelectedSensorPosition(pidIdx);
 
-        if(Math.abs(error) < 200){
+        if(error < 200){
             loopNumber++;
             if(loopNumber > 0){
                 discBrake.set(false);
@@ -171,9 +182,14 @@ public class ElevatorSubsystem extends Subsystem {
             elevator.configMotionCruiseVelocity(sensorUnitsPer100ms, timeoutMs);
             elevator.configMotionAcceleration(sensorUnitsPer100msPerSec, timeoutMs);
             elevator.set(ControlMode.MotionMagic, elevatorTarget);
+            System.out.println(elevatorTarget);
         }
         oldMovePos = currentMovePos;
 
+    }
+
+    public double elevatorError() {
+        return elevator.getClosedLoopError(pidIdx);
     }
 
     @Override
