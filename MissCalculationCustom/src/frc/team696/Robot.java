@@ -177,8 +177,7 @@ public class Robot extends TimedRobot {
         chooser.addObject("Right Position", new RightPos());
         chooser.addObject("Test Taper", new RGBSensorTest());
         chooser.addObject("Center Position", new CenterPos());
-        chooser.addObject("Center Right", new CenterPosRight());
-        chooser.addDefault("LeftScale", new LeftScale());
+        chooser.addDefault("Center Position", new CenterPos());
         SmartDashboard.putData("Auto mode", chooser);
 
         /*

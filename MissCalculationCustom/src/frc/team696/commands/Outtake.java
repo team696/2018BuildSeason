@@ -28,7 +28,7 @@ public class Outtake extends Command {
     @Override
     public boolean isFinished() {
 
-        if(loopNumber > 100){
+        if(loopNumber > 25){
             Robot.intakeSubsystem.runIntake(0);
             return true;
         }
