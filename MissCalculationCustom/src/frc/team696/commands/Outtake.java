@@ -19,18 +19,21 @@ public class Outtake extends Command {
     @Override
     public void execute() {
 
-        Robot.intakeSubsystem.runIntake(-0.5);
         loopNumber++;
+        Robot.intakeSubsystem.runIntake(-0.5);
 
 
     }
 
     @Override
     public boolean isFinished() {
-        if(loopNumber >= 100){
-            loopNumber = 0;
+
+        if(loopNumber > 100){
+            Robot.intakeSubsystem.runIntake(0);
             return true;
         }
+
+
         return false;
     }
 

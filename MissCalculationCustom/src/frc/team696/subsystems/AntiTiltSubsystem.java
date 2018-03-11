@@ -255,7 +255,7 @@ public class AntiTiltSubsystem extends Subsystem {
     private void rampDownLow() {
         System.out.println("Running rampDownLow");
         System.out.println("Running rampDownLow");
-        commandedSpeed = -OI.Psoc.getRawAxis(1);
+        commandedSpeed = -OI.Stick.getRawAxis(1);
         commandedWheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
 
 //        if(speed > minimumBackSpeed && speed < 0 && commandedSpeed < 0) {
@@ -423,7 +423,7 @@ public class AntiTiltSubsystem extends Subsystem {
 
     private void limitMaxLowSpeed() {
         System.out.println("Running limitMaxLowSpeed");
-        commandedSpeed = -OI.Psoc.getRawAxis(1);
+        commandedSpeed = -OI.Stick.getRawAxis(1);
         commandedWheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
         if(commandedSpeed > maxLowSpeed){
             speed = maxLowSpeed;
@@ -445,14 +445,14 @@ public class AntiTiltSubsystem extends Subsystem {
 
     private void limitMaxMidSpeed() {
         System.out.println("Running limitMaxMidSpeed");
-        commandedSpeed = -OI.Psoc.getRawAxis(1);
+        commandedSpeed = -OI.Stick.getRawAxis(1);
         commandedWheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
 
     }
 
     private void limitMaxHighSpeed() {
         System.out.println("Running limitMaxHighSpeed");
-        commandedSpeed = -OI.Psoc.getRawAxis(1);
+        commandedSpeed = -OI.Stick.getRawAxis(1);
         commandedWheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
         if(commandedSpeed > maxHighSpeed){
             speed = maxHighSpeed;

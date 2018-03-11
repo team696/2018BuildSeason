@@ -61,7 +61,7 @@ public class RobotMap {
         Elevator Ports
      */
 
-    public static int elevator = 13;
+    public static int elevator = 12;
     public static int elevatorSol = 0;
     public static int discBrake = 3;
 
@@ -69,8 +69,8 @@ public class RobotMap {
         Climber Ports
      */
 
-    public static int climberA = 12; // Positive output works
-    public static int climberB = 5; // Negative output works
+    public static int climberA = 13; // Positive output works
+    public static int climberB = 4; // Negative output works
     public static int climberSol = 2;
 
 }

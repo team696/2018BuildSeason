@@ -50,13 +50,10 @@ public class ClimberSubsystem extends Subsystem {
     public void autoClimb(double climberSpeed){
 
         loopNumber++;
-        if(!isDeployed && !isHomed ){
-            deployHook(true);
-            isDeployed = true;
-        }
-//        if(loopNumber > resetValue) { /** resetValue subject to change */
-//            deployHook(false);  /** reset pneumatic so hook can be easily connected again **/
-//        }
+
+        deployHook(true);
+        isDeployed = true;
+
         if(isDeployed && loopNumber > 15) {
             if(revLimitSwitch()){
                 elevatorSubsystem.manualMoveElevator(0);
