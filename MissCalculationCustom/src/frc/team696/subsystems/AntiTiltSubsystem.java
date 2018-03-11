@@ -255,6 +255,7 @@ public class AntiTiltSubsystem extends Subsystem {
     private void rampDownLow() {
         System.out.println("Running rampDownLow");
         commandedSpeed = -OI.Stick.getRawAxis(1);
+        commandedSpeed = -OI.Stick.getRawAxis(1);
         commandedWheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
 
         if(limitMaxLowSpeed){
@@ -446,7 +447,7 @@ public class AntiTiltSubsystem extends Subsystem {
 
     private void limitMaxHighSpeed() {
         System.out.println("Running limitMaxHighSpeed");
-        commandedSpeed = -OI.ControlPanel.getRawAxis(1);
+        commandedSpeed = -OI.Stick.getRawAxis(1);
         commandedWheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
         if(commandedSpeed > maxHighSpeed){
             speed = maxHighSpeed;
