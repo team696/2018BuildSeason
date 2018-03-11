@@ -11,11 +11,10 @@ public class CenterPosRight extends CommandGroup {
         addSequential(new ZeroEncoders());
         addSequential(new ZeroYaw());
         addSequential(new Rise());
-//        addParallel(new DriveCommand(15, 0, 0.60 ,0.2));
         addSequential(new DriveCommand(45, 45, 0.55, 0.12), 3);
         addSequential(new DriveCommand(60, 0,0.25, 0.35), 3);
         addSequential(new Tilt());
-        addSequential(new MoveToPos());
+        addSequential(new MoveToPos("switch"));
         addSequential(new Wait(1));
         addSequential(new OpenIntake());
         addSequential(new Outtake(), 2);

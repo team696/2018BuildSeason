@@ -20,16 +20,18 @@ public class Wait extends Command {
     @Override
     public void execute() {
 
-        if(timer.get() > time){
-            timer.stop();
-            timer.reset();
-        }
+
 
     }
 
     @Override
     public boolean isFinished() {
-        return true;
+        if(timer.get() > time){
+            timer.stop();
+            timer.reset();
+            return true;
+        }
+        return false;
     }
 
 }

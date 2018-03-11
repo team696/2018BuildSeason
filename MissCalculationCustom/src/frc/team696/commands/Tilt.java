@@ -8,7 +8,10 @@ import static frc.team696.Robot.elevatorSubsystem;
 
 public class Tilt extends Command {
     public Tilt() {
+        
         requires(elevatorSubsystem);
+
+
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }

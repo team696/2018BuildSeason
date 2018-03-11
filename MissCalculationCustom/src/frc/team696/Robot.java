@@ -175,9 +175,9 @@ public class Robot extends TimedRobot {
         chooser.addObject("Center Position", new CenterPos());
         chooser.addObject("Right Position", new RightPos());
         chooser.addObject("Test Taper", new RGBSensorTest());
-        chooser.addDefault("Center Position", new CenterPos());
+        chooser.addObject("Center Position", new CenterPos());
         chooser.addObject("Center Right", new CenterPosRight());
-
+        chooser.addDefault("LeftScale", new LeftScale());
         SmartDashboard.putData("Auto mode", chooser);
 
         /*
@@ -569,7 +569,7 @@ public class Robot extends TimedRobot {
 
 //        System.out.println(movePos + "   " + moveSwitch + "   " + switchButton + "   " + elevatorSubsystem.elevatorSol.get() + "  " + elevatorSubsystem.elevator.getSelectedSensorPosition(0) );
 
-        System.out.println(elevatorSubsystem.elevator.getSensorCollection().isRevLimitSwitchClosed());
+        System.out.println(elevatorSubsystem.elevator.getSelectedSensorPosition(0));
     }
 
     @Override

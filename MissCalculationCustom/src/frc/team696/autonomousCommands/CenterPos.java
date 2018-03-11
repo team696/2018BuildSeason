@@ -19,12 +19,10 @@ public class CenterPos extends CommandGroup {
         addSequential(new Rise());
         addParallel(new DriveCommand(10, 0, 0.60 ,0.1));
         addSequential(new DriveCommand(40, -90, 0.35, 0.35), 2);
-//        addSequential(new DriveCommand(50, -90, 0.35, 0.1));
         addSequential(new DriveCommand( 70, 0, 0.35, 0.30), 2);
         addSequential(new DriveCommand(75, 0, 0.35, 0.35), 2);
         addSequential(new Tilt());
-        addSequential(new MoveToPos());
-//        addSequential(new Wait(1));
+        addSequential(new MoveToPos("switch"));
         addSequential(new OpenIntake());
         addSequential(new Outtake(), 2);
 

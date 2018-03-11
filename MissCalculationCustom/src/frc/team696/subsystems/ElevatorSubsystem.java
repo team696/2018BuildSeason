@@ -38,10 +38,11 @@ public class ElevatorSubsystem extends Subsystem {
     public double elevatorTarget;
 
     double groundPosition;
-    double switchPosition = 8000;
-    double scalePosition;
+    double switchPosition = 4000;
+    double scalePosition = 28000;
     double climbPosition;
     double homePosition = 0;
+    
 
     String currentMovePos;
     String oldMovePos;

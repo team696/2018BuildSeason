@@ -9,7 +9,10 @@ import static frc.team696.Robot.elevatorSubsystem;
 public class MoveToPos extends Command {
 
     int loopNumber;
-    public MoveToPos() {
+    String string;
+    public MoveToPos(String string) {
+
+        this.string = string;
 
         requires(elevatorSubsystem);
         // Use requires() here to declare subsystem dependencies
@@ -34,7 +37,7 @@ public class MoveToPos extends Command {
     @Override
     protected void execute() {
         loopNumber++;
-        elevatorSubsystem.moveToPos("switch");
+        elevatorSubsystem.moveToPos(string);
 
     }
 
