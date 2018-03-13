@@ -597,14 +597,15 @@ public class Robot extends TimedRobot {
 
         if(wheel >= wheelDeadZoneMin && wheel <= wheelDeadZoneMax){
 
-            loopNumber++;
-            currentDirection = navX.getYaw();
-            if(loopNumber == 1){
-                targetDirection = navX.getYaw();
-            }
-            directionError = targetDirection - currentDirection;
-            driveTrainSubsystem.driveStraightPID.setError(directionError);
-            wheel = driveTrainSubsystem.driveStraightPID.getValue();
+//            loopNumber++;
+//            currentDirection = navX.getYaw();
+//            if(loopNumber == 1){
+//                targetDirection = navX.getYaw();
+//            }
+//            directionError = targetDirection - currentDirection;
+//            driveTrainSubsystem.driveStraightPID.setError(directionError);
+//            wheel = driveTrainSubsystem.driveStraightPID.getValue();
+            wheel = 0;
 
         }else{
             loopNumber = 0;

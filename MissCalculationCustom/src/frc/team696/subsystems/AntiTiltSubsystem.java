@@ -105,7 +105,7 @@ public class AntiTiltSubsystem extends Subsystem {
         switch(elevatorPosition){
 
             case 1: // Elevator not extended, forward
-                rampDownLow = true;
+                rampDownLow = false;
                 rampDownMid = false;
                 rampDownHigh = false;
                 rampUpLow = false;
@@ -119,9 +119,9 @@ public class AntiTiltSubsystem extends Subsystem {
 
             case 2: // Elevator up to halfway extended, forward
                 rampDownLow = false;
-                rampDownMid = true;
+                rampDownMid = false;
                 rampDownHigh = false;
-                rampUpLow = true;
+                rampUpLow = false;
                 rampUpHigh = false;
                 preventBack = false;
                 preventForward = false;
@@ -133,14 +133,14 @@ public class AntiTiltSubsystem extends Subsystem {
             case 3: // Elevator extended at least halfway to max, forward
                 rampDownLow = false;
                 rampDownMid = false;
-                rampDownHigh = true;
+                rampDownHigh = false;
                 rampUpLow = false;
-                rampUpHigh = true;
+                rampUpHigh = false;
                 preventBack = true;
                 preventForward = false;
                 limitMaxLowSpeed = false;
-                limitMaxMidSpeed = false;
-                limitMaxHighSpeed = true;
+                limitMaxMidSpeed = true;
+                limitMaxHighSpeed = false;
                 break;
 
             case 4: // Elevator between low and mid, back
@@ -148,12 +148,12 @@ public class AntiTiltSubsystem extends Subsystem {
                 rampDownMid = false;
                 rampDownHigh = true;
                 rampUpLow = false;
-                rampUpHigh = true;
+                rampUpHigh = false;
                 preventBack = false;
                 preventForward = false;
                 limitMaxLowSpeed = false;
                 limitMaxMidSpeed = false;
-                limitMaxHighSpeed = false;
+                limitMaxHighSpeed = true;
                 break;
 
             case 5: // Elevator between mid and high, back
@@ -161,7 +161,7 @@ public class AntiTiltSubsystem extends Subsystem {
                 rampDownMid = false;
                 rampDownHigh = true;
                 rampUpLow = false;
-                rampUpHigh = true;
+                rampUpHigh = false;
                 preventBack = false;
                 preventForward = true;
                 limitMaxMidSpeed = true;
@@ -173,7 +173,7 @@ public class AntiTiltSubsystem extends Subsystem {
                 rampDownMid = false;
                 rampDownHigh = true;
                 rampUpLow = false;
-                rampUpHigh = true;
+                rampUpHigh = false;
                 preventBack = false;
                 preventForward = true;
                 limitMaxLowSpeed = false;
@@ -257,44 +257,7 @@ public class AntiTiltSubsystem extends Subsystem {
         commandedSpeed = -OI.Stick.getRawAxis(1);
         commandedWheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
 
-//        if(limitMaxLowSpeed){
-//            System.out.println("Running limitMaxLowSpeed");
-//            if(speed > maxLowSpeed){
-//                speed = maxLowSpeed;
-//            }else if(speed < -maxLowSpeed){
-//                speed = -maxLowSpeed;
-//            }else{
-//                speed = commandedSpeed;
-//            }
-//
-//            if(commandedWheel > maxLowSpeed){
-//                wheel = maxLowSpeed;
-//            }else if(commandedSpeed < -maxLowSpeed){
-//                wheel = -maxLowSpeed;
-//            }else{
-//                wheel = commandedWheel;
-//            }
-//        }
-
-//        String c, u, w, e, i, r, d, o;
-//        c = "adverbial clause";
-//        u = "unknown";
-//        w = "wish";
-//        e = "emotion rxn";
-//        i = "impersonal opionion";
-//        r = "request";
-//        d = "doubt, denial, disbelief";
-//        o = "OJALA";
-
-//        if(speed > minimumBackSpeed && speed < 0 && commandedSpeed < 0) {
-//            speed = minimumBackSpeed;
-//        }else if(speed > commandedSpeed && commandedSpeed < 0){
-//            speed -= lowRampRate;
-//        }else{
-//            speed = -OI.Stick.getRawAxis(1);
-//        }
         wheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
-
 
         if(speed > commandedSpeed && commandedSpeed < 0){
             speed -= lowRampRate;
