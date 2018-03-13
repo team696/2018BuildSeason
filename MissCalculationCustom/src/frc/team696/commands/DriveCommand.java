@@ -53,7 +53,7 @@ public class DriveCommand extends Command {
     // Direction PID Values
 
     private double kPB = 0.05; //0.05
-    private double kIB = 0;
+    private double kIB = 0.01;
     private double kDB = 0;
     private double kAlphaB = 0;
 
@@ -185,7 +185,7 @@ public class DriveCommand extends Command {
 
         // Can only finish the command if the error for both distance and direction are less than 2
 
-        if(Math.abs(distanceError) < 2 && Math.abs(directionError) < 2){
+        if(Math.abs(distanceError) < 5 && Math.abs(directionError) < 5){
             return true;
         }
         return false;

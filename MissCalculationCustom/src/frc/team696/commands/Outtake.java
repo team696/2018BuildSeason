@@ -6,9 +6,11 @@ import frc.team696.Robot;
 public class Outtake extends Command {
 
     int loopNumber = 0;
+    double speed;
 
-    public Outtake() {
+    public Outtake(double speed) {
         requires(Robot.intakeSubsystem);
+        this.speed = speed;
     }
 
     @Override
@@ -20,7 +22,7 @@ public class Outtake extends Command {
     public void execute() {
 
         loopNumber++;
-        Robot.intakeSubsystem.runIntake(-0.5);
+        Robot.intakeSubsystem.runIntake(-(Math.abs(speed)));
 
 
     }

@@ -255,27 +255,36 @@ public class AntiTiltSubsystem extends Subsystem {
     private void rampDownLow() {
         System.out.println("Running rampDownLow");
         commandedSpeed = -OI.Stick.getRawAxis(1);
-        commandedSpeed = -OI.Stick.getRawAxis(1);
         commandedWheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
 
-        if(limitMaxLowSpeed){
-            System.out.println("Running limitMaxLowSpeed");
-            if(speed > maxLowSpeed){
-                speed = maxLowSpeed;
-            }else if(speed < -maxLowSpeed){
-                speed = -maxLowSpeed;
-            }else{
-                speed = commandedSpeed;
-            }
+//        if(limitMaxLowSpeed){
+//            System.out.println("Running limitMaxLowSpeed");
+//            if(speed > maxLowSpeed){
+//                speed = maxLowSpeed;
+//            }else if(speed < -maxLowSpeed){
+//                speed = -maxLowSpeed;
+//            }else{
+//                speed = commandedSpeed;
+//            }
+//
+//            if(commandedWheel > maxLowSpeed){
+//                wheel = maxLowSpeed;
+//            }else if(commandedSpeed < -maxLowSpeed){
+//                wheel = -maxLowSpeed;
+//            }else{
+//                wheel = commandedWheel;
+//            }
+//        }
 
-            if(commandedWheel > maxLowSpeed){
-                wheel = maxLowSpeed;
-            }else if(commandedSpeed < -maxLowSpeed){
-                wheel = -maxLowSpeed;
-            }else{
-                wheel = commandedWheel;
-            }
-        }
+//        String c, u, w, e, i, r, d, o;
+//        c = "adverbial clause";
+//        u = "unknown";
+//        w = "wish";
+//        e = "emotion rxn";
+//        i = "impersonal opionion";
+//        r = "request";
+//        d = "doubt, denial, disbelief";
+//        o = "OJALA";
 
 //        if(speed > minimumBackSpeed && speed < 0 && commandedSpeed < 0) {
 //            speed = minimumBackSpeed;
@@ -287,17 +296,15 @@ public class AntiTiltSubsystem extends Subsystem {
         wheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
 
 
-//        if(speed > minimumBackSpeed && speed < 0 && commandedSpeed < 0){
-//            speed = minimumBackSpeed;
-//        }else if(speed > commandedSpeed && commandedSpeed < 0){
-//            speed -= lowRampRate;
-//        }else if(speed > maxLowSpeed && limitMaxLowSpeed){
-//            speed = maxLowSpeed;
-//        }else if(speed < -maxLowSpeed && limitMaxLowSpeed) {
-//            speed = -maxLowSpeed;
-//        }else{
-//            speed = -OI.Stick.getRawAxis(1);
-//        }
+        if(speed > commandedSpeed && commandedSpeed < 0){
+            speed -= lowRampRate;
+        }else if(speed > maxLowSpeed && limitMaxLowSpeed){
+            speed = maxLowSpeed;
+        }else if(speed < -maxLowSpeed && limitMaxLowSpeed) {
+            speed = -maxLowSpeed;
+        }else{
+            speed = -OI.Stick.getRawAxis(1);
+        }
 
 
     }
@@ -313,24 +320,37 @@ public class AntiTiltSubsystem extends Subsystem {
 //        }
 //        wheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
 
-        if(speed > minimumBackSpeed && speed < 0 && commandedSpeed < 0){
-            speed = minimumBackSpeed;
-        }else if(speed > maxMidSpeed && limitMaxMidSpeed){
-            speed = maxMidSpeed;
-        }else if(speed < -maxMidSpeed && limitMaxMidSpeed){
-            speed = -maxMidSpeed;
-        }else if(speed > commandedSpeed && commandedSpeed < 0){
-            speed -= midRampRate;
-        }else{
-            speed = commandedSpeed;
-        }
+//        if(speed > minimumBackSpeed && speed < 0 && commandedSpeed < 0){
+//            speed = minimumBackSpeed;
+//        }else if(speed > maxMidSpeed && limitMaxMidSpeed){
+//            speed = maxMidSpeed;
+//        }else if(speed < -maxMidSpeed && limitMaxMidSpeed){
+//            speed = -maxMidSpeed;
+//        }else if(speed > commandedSpeed && commandedSpeed < 0){
+//            speed -= midRampRate;
+//        }else{
+//            speed = commandedSpeed;
+//        }
+//
+//        if(commandedWheel > maxMidTurn){
+//            wheel = maxMidTurn;
+//        }else if(commandedSpeed < -maxMidTurn){
+//            wheel = -maxMidTurn;
+//        }else{
+//            wheel = commandedWheel;
+//        }
 
-        if(commandedWheel > maxMidTurn){
-            wheel = maxMidTurn;
-        }else if(commandedSpeed < -maxMidTurn){
-            wheel = -maxMidTurn;
+        wheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
+
+
+        if(speed > commandedSpeed && commandedSpeed < 0){
+            speed -= midRampRate;
+        }else if(speed > maxLowSpeed && limitMaxMidSpeed){
+            speed = maxMidSpeed;
+        }else if(speed < -maxLowSpeed && limitMaxMidSpeed) {
+            speed = -maxMidSpeed;
         }else{
-            wheel = commandedWheel;
+            speed = -OI.Stick.getRawAxis(1);
         }
 
     }
@@ -346,25 +366,37 @@ public class AntiTiltSubsystem extends Subsystem {
 //        }
 //        wheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
 
-        if(speed > minimumBackSpeed && speed < 0 && commandedSpeed < 0){
-            speed = minimumBackSpeed;
-        }else if(speed > maxHighSpeed && limitMaxHighSpeed){
+//        if(speed > minimumBackSpeed && speed < 0 && commandedSpeed < 0){
+//            speed = minimumBackSpeed;
+//        }else if(speed > maxHighSpeed && limitMaxHighSpeed){
+//            speed = maxHighSpeed;
+//        }else if(speed < -maxHighSpeed && limitMaxHighSpeed){
+//            speed = -maxHighSpeed;
+//        }else if(speed > commandedSpeed && commandedSpeed < 0){
+//            speed = highRampRate;
+//        }else{
+//            speed = commandedSpeed;
+//        }
+//
+//        if(commandedWheel > maxHighTurn){
+//            wheel = maxHighTurn;
+//        }else if(commandedWheel < -maxHighTurn){
+//            wheel = -maxHighTurn;
+//        }else{
+//            wheel = commandedWheel;
+//        }
+        wheel = OI.wheel.getRawAxis(Robot.constants.wheelDriveAxis);
+
+        if(speed > commandedSpeed && commandedSpeed < 0){
+            speed -= highRampRate;
+        }else if(speed > maxLowSpeed && limitMaxHighSpeed){
             speed = maxHighSpeed;
-        }else if(speed < -maxHighSpeed && limitMaxHighSpeed){
+        }else if(speed < -maxLowSpeed && limitMaxHighSpeed) {
             speed = -maxHighSpeed;
-        }else if(speed > commandedSpeed && commandedSpeed < 0){
-            speed = highRampRate;
         }else{
-            speed = commandedSpeed;
+            speed = -OI.Stick.getRawAxis(1);
         }
 
-        if(commandedWheel > maxHighTurn){
-            wheel = maxHighTurn;
-        }else if(commandedWheel < -maxHighTurn){
-            wheel = -maxHighTurn;
-        }else{
-            wheel = commandedWheel;
-        }
     }
 
     private void rampUpLow() {

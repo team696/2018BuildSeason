@@ -31,18 +31,17 @@ public class ElevatorSubsystem extends Subsystem {
 
     int elevatorDeviceID;
 
-    double kP = 0.6, // 2.8
-            kI = 0, // 0.000000091
+    double kP = 0.5, // 2.8
+            kI = 0.001, // 0.000000091
             kD = 0, // 0.00000000000000003
-            kF = 1.5; // 4.00987442
+            kF = 0; // 4.00987442
 
     public double elevatorTarget;
-    private double elevatorTarget2;
 
     public double intakePosition = 1;
     public double switchPosition = 9090;
-    public double lowPosition = 10000;
-    public double midPosition;
+    public double lowPosition = 21068;
+    public double midPosition = 23970;
     public double highPosition = 29000;
     public double climbPosition = 21420;
     public double homePosition = 0;
@@ -50,14 +49,12 @@ public class ElevatorSubsystem extends Subsystem {
     String currentMovePos;
     String oldMovePos;
 
-    double error;
-    double error2;
+    public double error;
     double loopNumber;
 
     int sensorUnitsPer100ms = 3500;
     int sensorUnitsPer100msPerSec = 3000;
 
-    public PIDController pidController;
 
 
 
@@ -86,6 +83,7 @@ public class ElevatorSubsystem extends Subsystem {
         this.elevator.set(ControlMode.MotionMagic, 0); // Configuring the control mode to motion magic
         this.elevator.setSensorPhase(true); // Sets encoder to inverted, to make values positive.
         this.elevator.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, timeoutMs);
+        this.elevator.setNeutralMode(NeutralMode.Brake);
         // Configuration of the Forward Limit Switch Source
         this.elevator.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, timeoutMs);
         // Configuration of the Reverse Limit Switch Source
@@ -97,7 +95,6 @@ public class ElevatorSubsystem extends Subsystem {
         this.elevator.config_kD(slotIdx, kD, timeoutMs);
         this.elevator.config_kF(slotIdx, kF, timeoutMs);
 
-        pidController = new PIDController(kP, kI, kD, kF);
 
     }
 
@@ -151,6 +148,10 @@ public class ElevatorSubsystem extends Subsystem {
                 elevatorTarget = lowPosition;
                 break;
 
+            case "mid":
+                elevatorTarget = midPosition;
+                break;
+
             case "high":
                 elevatorTarget = highPosition;
                 break;
@@ -167,21 +168,23 @@ public class ElevatorSubsystem extends Subsystem {
 
         error = elevatorTarget - elevator.getSelectedSensorPosition(pidIdx);
 
-        if(error < 200){
-            loopNumber++;
-            if(loopNumber > 0){
-                discBrake.set(false);
-                elevator.set(ControlMode.Disabled, 0);
-            }
+        if(Math.abs(error) < 200){
+            discBrake.set(false);
+            elevator.neutralOutput();
         }
 
         currentMovePos = position;
-        if(currentMovePos == (position) && !(oldMovePos == (position))){
+        if(currentMovePos == (position) && !(oldMovePos == (position)) || Math.abs(error) > 200){
             loopNumber = 0;
             discBrake.set(true);
             elevator.configMotionCruiseVelocity(sensorUnitsPer100ms, timeoutMs);
             elevator.configMotionAcceleration(sensorUnitsPer100msPerSec, timeoutMs);
             elevator.set(ControlMode.MotionMagic, elevatorTarget);
+            if(elevator.getMotorOutputPercent() > 0){
+                elevator.config_kI(slotIdx, 0.001, timeoutMs);
+            }else if(elevator.getMotorOutputPercent() < 0){
+                elevator.config_kI(slotIdx, 0.0001, timeoutMs);
+            }
             System.out.println(elevatorTarget);
         }
         oldMovePos = currentMovePos;
@@ -190,6 +193,10 @@ public class ElevatorSubsystem extends Subsystem {
 
     public double elevatorError() {
         return elevator.getClosedLoopError(pidIdx);
+    }
+
+    public void zeroElevator() {
+        elevator.setSelectedSensorPosition(0, pidIdx, timeoutMs);
     }
 
     @Override

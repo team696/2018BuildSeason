@@ -31,10 +31,10 @@ public class DriveTrainSubsystem extends Subsystem {
 
     public PIDController driveStraightPID;
 
-    private double kP = 0.025;
-    private double kI = 0;
+    private double kP = 0.07;
+    private double kI = 0.01;
     private double kD = 0;
-    private double kAlpha = 0.5;
+    private double kAlpha = 0.05;
 
     public DriveTrainSubsystem(int leftRear, int leftMid, int leftFront,
                                int rightRear, int rightMid, int rightFront) {

@@ -32,7 +32,9 @@ public class CenterPos extends CommandGroup {
             addSequential(new Tilt());
             addSequential(new MoveToPos("switch"));
             addSequential(new OpenIntake());
-            addSequential(new Outtake(), 2);
+            addSequential(new Outtake(-1));
+            addSequential(new DriveCommand(65, 30, 0.15, 0.35));
+            addSequential(new MoveToPos("intake"));
         }
 
         /*
@@ -48,9 +50,12 @@ public class CenterPos extends CommandGroup {
             addSequential(new DriveCommand(60, 0,0.25, 0.35), 3);
             addSequential(new Tilt());
             addSequential(new MoveToPos("switch"));
-            addSequential(new Wait(1));
+//            addSequential(new Wait(1));
             addSequential(new OpenIntake());
-            addSequential(new Outtake(), 2);
+            addSequential(new Outtake(-1));
+//            addParallel(new Wait(1));
+            addSequential(new DriveCommand(40, 0, 0.15, 0.12), 3);
+            addParallel(new MoveToPos("intake"));
         }
 
 //        addSequential(new DriveCommand( 65, 0, 0.65, 0.4));
