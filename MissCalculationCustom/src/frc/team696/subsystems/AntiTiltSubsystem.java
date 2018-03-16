@@ -105,7 +105,7 @@ public class AntiTiltSubsystem extends Subsystem {
         switch(elevatorPosition){
 
             case 1: // Elevator not extended, forward
-                rampDownLow = false;
+                rampDownLow = true;
                 rampDownMid = false;
                 rampDownHigh = false;
                 rampUpLow = false;
@@ -119,7 +119,7 @@ public class AntiTiltSubsystem extends Subsystem {
 
             case 2: // Elevator up to halfway extended, forward
                 rampDownLow = false;
-                rampDownMid = false;
+                rampDownMid = true;
                 rampDownHigh = false;
                 rampUpLow = false;
                 rampUpHigh = false;
@@ -133,7 +133,7 @@ public class AntiTiltSubsystem extends Subsystem {
             case 3: // Elevator extended at least halfway to max, forward
                 rampDownLow = false;
                 rampDownMid = false;
-                rampDownHigh = false;
+                rampDownHigh = true;
                 rampUpLow = false;
                 rampUpHigh = false;
                 preventBack = true;
@@ -144,16 +144,16 @@ public class AntiTiltSubsystem extends Subsystem {
                 break;
 
             case 4: // Elevator between low and mid, back
-                rampDownLow = false;
+                rampDownLow = true;
                 rampDownMid = false;
-                rampDownHigh = true;
+                rampDownHigh = false;
                 rampUpLow = false;
                 rampUpHigh = false;
                 preventBack = false;
                 preventForward = false;
-                limitMaxLowSpeed = false;
+                limitMaxLowSpeed = true;
                 limitMaxMidSpeed = false;
-                limitMaxHighSpeed = true;
+                limitMaxHighSpeed = false;
                 break;
 
             case 5: // Elevator between mid and high, back
@@ -164,8 +164,8 @@ public class AntiTiltSubsystem extends Subsystem {
                 rampUpHigh = false;
                 preventBack = false;
                 preventForward = true;
-                limitMaxMidSpeed = true;
-                limitMaxHighSpeed = false;
+                limitMaxMidSpeed = false;
+                limitMaxHighSpeed = true;
                 break;
 
             case 6: // Elevator Max Extended, back
@@ -261,9 +261,9 @@ public class AntiTiltSubsystem extends Subsystem {
 
         if(speed > commandedSpeed && commandedSpeed < 0){
             speed -= lowRampRate;
-        }else if(speed > maxLowSpeed && limitMaxLowSpeed){
+        }else if(commandedSpeed >= maxLowSpeed && limitMaxLowSpeed){
             speed = maxLowSpeed;
-        }else if(speed < -maxLowSpeed && limitMaxLowSpeed) {
+        }else if(commandedSpeed <= -maxLowSpeed && limitMaxLowSpeed) {
             speed = -maxLowSpeed;
         }else{
             speed = -OI.Stick.getRawAxis(1);
@@ -308,9 +308,9 @@ public class AntiTiltSubsystem extends Subsystem {
 
         if(speed > commandedSpeed && commandedSpeed < 0){
             speed -= midRampRate;
-        }else if(speed > maxLowSpeed && limitMaxMidSpeed){
+        }else if(commandedSpeed >= maxMidSpeed && limitMaxMidSpeed){
             speed = maxMidSpeed;
-        }else if(speed < -maxLowSpeed && limitMaxMidSpeed) {
+        }else if(commandedSpeed <= -maxMidSpeed && limitMaxMidSpeed) {
             speed = -maxMidSpeed;
         }else{
             speed = -OI.Stick.getRawAxis(1);
@@ -352,9 +352,9 @@ public class AntiTiltSubsystem extends Subsystem {
 
         if(speed > commandedSpeed && commandedSpeed < 0){
             speed -= highRampRate;
-        }else if(speed > maxLowSpeed && limitMaxHighSpeed){
+        }else if(commandedSpeed >= maxHighSpeed && limitMaxHighSpeed){
             speed = maxHighSpeed;
-        }else if(speed < -maxLowSpeed && limitMaxHighSpeed) {
+        }else if(commandedSpeed <= -maxHighSpeed && limitMaxHighSpeed) {
             speed = -maxHighSpeed;
         }else{
             speed = -OI.Stick.getRawAxis(1);

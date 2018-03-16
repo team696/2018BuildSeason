@@ -51,8 +51,8 @@ public class Robot extends TimedRobot {
     /** Object and Variable Declaration **/
 
     public static OI oi;
-    private Command autonomousCommand;
-    private SendableChooser<Command> chooser = new SendableChooser<>();
+    private String autonomousCommand;
+    private SendableChooser<String> chooser = new SendableChooser<>();
     public static IMU navX;
     SerialPort port;
     public Timer time = new Timer();
@@ -173,12 +173,10 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         oi = new OI();
 
-        chooser.addObject("Left Position", new LeftPos());
-        chooser.addObject("Center Position", new CenterPos());
-        chooser.addObject("Right Position", new RightPos());
-        chooser.addObject("Test Taper", new RGBSensorTest());
-        chooser.addObject("Center Position", new CenterPos());
-        chooser.addDefault("Center Position", new CenterPos());
+        chooser.addObject("Left Position","LeftPos");
+        chooser.addObject("Center Position", "CenterPos");
+        chooser.addObject("Right Position", "RightPos");
+        chooser.addDefault("Center Position", "CenterPos");
         SmartDashboard.putData("Auto mode", chooser);
 
         /*
@@ -225,10 +223,21 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         autonomousCommand = chooser.getSelected();
-
-        if (autonomousCommand != null) {
-            autonomousCommand.start();
+        if(autonomousCommand.equals("LeftPos")){
+            new LeftPos().start();
         }
+
+        if(autonomousCommand.equals("CenterPos")){
+            new CenterPos().start();
+        }
+
+        if(autonomousCommand.equals("RightPos")){
+            new RightPos().start();
+        }
+
+//        if (autonomousCommand != null) {
+//            autonomousCommand.start();
+//        }
     }
 
     @Override
@@ -239,9 +248,9 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
 
-        if (autonomousCommand != null) {
-            autonomousCommand.cancel();
-        }
+//        if (autonomousCommand != null) {
+//            autonomousCommand.cancel();
+//        }
 
         rgbSensorSubsystem.rgbSensor.write(0xC0, 1); // set Integration Time
         rgbSensorSubsystem.rgbSensor.write(0x02, 1); // set Gain
@@ -505,6 +514,10 @@ public class Robot extends TimedRobot {
                 isHomed = true;
                 elevatorSubsystem.zeroElevator();
             }
+        }else if(!elevatorSubsystem.elevatorSol.get() && elevatorSubsystem.elevator.getSelectedSensorPosition(0) >= 26000 && OI.ControlPanel.getRawAxis(0) < -0.1){
+            elevatorSubsystem.discBrake.set(false);
+            elevatorSubsystem.manualMoveElevator(0);
+            System.out.println("hi");
         }else if(OI.ControlPanel.getRawAxis(0) < -0.1 && isHomed){
             elevatorLoopNumber++;
             elevatorSubsystem.discBrake.set(true);
@@ -567,13 +580,9 @@ public class Robot extends TimedRobot {
 
         /** Intake Functions **/
 
-        if(PDP.getCurrent(7) > 20){
-            toggleIntake = false;
-            intakeSubsystem.runIntake(0);
-            intakeSubsystem.intakeSol.set(false);
+        if(OI.ControlPanel.getRawButton(8)){
+            intakeSubsystem.runIntake(0.5);
         }else if(OI.ControlPanel.getRawButton(7)){
-            intakeSubsystem.runIntake(0.7);
-        }else if(OI.ControlPanel.getRawButton(8)){
             intakeSubsystem.runIntake(-0.7);
         }else{
             intakeSubsystem.runIntake(0);
@@ -655,7 +664,7 @@ public class Robot extends TimedRobot {
 //        System.out.println(elevatorSubsystem.elevator.getSelectedSensorPosition(0));
 //        System.out.println(controlMode + " " + moveSwitch +  "   " + moveClimb + " " + elevatorSubsystem.elevator.getClosedLoopError(0) + " " + elevatorSubsystem.elevatorTarget);
 
-        System.out.println(PDP.getCurrent(7));
+        System.out.println(navX.getYaw());
 
 
     }

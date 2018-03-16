@@ -10,12 +10,12 @@ import frc.team696.utilities.PIDController;
 public class DriveTrainSubsystem extends Subsystem {
 
     public WPI_TalonSRX leftRear;
-    private WPI_TalonSRX leftMid;
-    private WPI_TalonSRX leftFront;
+    public  WPI_TalonSRX leftMid;
+    public  WPI_TalonSRX leftFront;
 
-    public WPI_TalonSRX rightRear;
-    private WPI_TalonSRX rightMid;
-    private WPI_TalonSRX rightFront;
+    public  WPI_TalonSRX rightRear;
+    public  WPI_TalonSRX rightMid;
+    public  WPI_TalonSRX rightFront;
 
     private DifferentialDrive drive;
 
@@ -71,11 +71,11 @@ public class DriveTrainSubsystem extends Subsystem {
 
         this.leftRear.configPeakOutputReverse(-1, timeoutMs);
         this.leftRear.configPeakOutputForward(1, timeoutMs);
-        this.rightRear.set(ControlMode.PercentOutput, 0);
-        this.rightMid.set(ControlMode.Follower, this.rightRear.getDeviceID());
-        this.rightFront.set(ControlMode.Follower, this.rightRear.getDeviceID());
+        this.rightFront.set(ControlMode.Follower, this.rightFront.getDeviceID());
+        this.rightRear.set(ControlMode.Follower, this.rightFront.getDeviceID());
+        this.rightMid.set(ControlMode.Follower, this.rightFront.getDeviceID());
 
-        this.rightRear.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, pidIdx, timeoutMs);
+        this.rightFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, pidIdx, timeoutMs);
 
         /*
             Differential Drive Configuration

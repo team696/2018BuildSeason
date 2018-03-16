@@ -43,6 +43,7 @@ public class ElevatorSubsystem extends Subsystem {
     public double lowPosition = 21068;
     public double midPosition = 23970;
     public double highPosition = 29000;
+    public double highTiltPosition = 26000;
     public double climbPosition = 21420;
     public double homePosition = 0;
 
@@ -153,7 +154,13 @@ public class ElevatorSubsystem extends Subsystem {
                 break;
 
             case "high":
-                elevatorTarget = highPosition;
+//                elevatorTarget = highPosition;
+//                break;
+                if(!elevatorSol.get()){
+                    elevatorTarget = highTiltPosition;
+                }else{
+                    elevatorTarget = highPosition;
+                }
                 break;
 
             case "climb":
@@ -168,7 +175,7 @@ public class ElevatorSubsystem extends Subsystem {
 
         error = elevatorTarget - elevator.getSelectedSensorPosition(pidIdx);
 
-        if(Math.abs(error) < 200){
+        if(Math.abs(error) < 300){
             discBrake.set(false);
             elevator.neutralOutput();
         }

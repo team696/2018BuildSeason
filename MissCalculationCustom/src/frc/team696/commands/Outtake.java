@@ -22,7 +22,7 @@ public class Outtake extends Command {
     public void execute() {
 
         loopNumber++;
-        Robot.intakeSubsystem.runIntake(-(Math.abs(speed)));
+        Robot.intakeSubsystem.runIntake(speed);
 
 
     }

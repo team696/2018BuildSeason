@@ -1,5 +1,6 @@
 package frc.team696.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team696.Robot;
 import frc.team696.utilities.PIDController;
@@ -30,7 +31,7 @@ public class DriveCommand extends Command {
 
     public int pidIdx = 0;
     public double leftRearEnc;
-    public double rightRearEnc;
+    public double rightFrontEnc;
 
     public double speed;
     public double wheel;
@@ -92,10 +93,10 @@ public class DriveCommand extends Command {
 
         leftRearEnc = (double) Robot.driveTrainSubsystem.leftRear.getSelectedSensorPosition(pidIdx) / 200;
         // Divided by 200 to convert encoder units to inches
-        rightRearEnc = (double) -Robot.driveTrainSubsystem.rightRear.getSelectedSensorPosition(pidIdx) / 200;
+        rightFrontEnc = (double) -Robot.driveTrainSubsystem.rightFront.getSelectedSensorPosition(pidIdx) / 200;
         // Divided by 200 to convert encoder units to inches, and multiplied by -1 to account for inversion of encoder.
 
-        currentDistance = -(leftRearEnc + rightRearEnc) / 2;
+        currentDistance = -(leftRearEnc + rightFrontEnc) / 2;
         // Making currentDistance negative to account for inversion.
         distanceError = targetDistance - currentDistance;
 
@@ -173,7 +174,7 @@ public class DriveCommand extends Command {
             Output to DriverStation
          */
 
-        System.out.println(directionError + "             " + currentDistance);
+        System.out.println(directionError + "             " + currentDistance + "    " + DriverStation.getInstance().getGameSpecificMessage());
 
     }
 
