@@ -22,7 +22,7 @@ public class Outtake extends Command {
     public void execute() {
 
         loopNumber++;
-        Robot.intakeSubsystem.runIntake(speed);
+        Robot.intakeSubsystem.runIntake(-speed);
 
 
     }
@@ -30,7 +30,7 @@ public class Outtake extends Command {
     @Override
     public boolean isFinished() {
 
-        if(loopNumber > 25){
+        if(loopNumber > 100){
             Robot.intakeSubsystem.runIntake(0);
             return true;
         }

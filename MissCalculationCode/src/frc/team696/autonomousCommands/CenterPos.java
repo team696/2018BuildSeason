@@ -37,19 +37,19 @@ public class CenterPos extends CommandGroup {
 //                addSequential(new Outtake(0.5));
 //                addSequential(new DriveCommand(65, 30, 0.15, 0.35), 2);
 //                addSequential(new MoveToPos("intake"));
-                addSequential(new DriveCommand(10, 0, 0.6, 0.1), 2);
+                addSequential(new DriveCommand(10, 0, 0.9, 0.1));
 //                addSequential(new Wait(0.5));
-                addSequential(new DriveCommand(10, 50, 0.1, 0.7), 2);
+                addSequential(new DriveCommand(10, 50, 0.1, 0.7));
 //                addSequential(new Wait(0.5));
-                addSequential(new DriveCommand(70, 50, 0.75, 0.05), 2);
+                addSequential(new DriveCommand(65, 50, 0.9, 0.05));
 //                addSequential(new Wait(0.5));
-                addSequential(new DriveCommand(70, 0, 0.1, 0.7), 2);
+                addSequential(new DriveCommand(65, 0, 0.1, 0.7), 0.5);
 //                addSequential(new Wait(0.5));
-                addSequential(new Tilt());
-                addSequential(new MoveToPos("switch"));
+//                addSequential(new Tilt());
+                addSequential(new MoveToPos("switch"), 1);
 //                addSequential(new Wait(0.5));
-                addSequential(new DriveCommand(110, 0, 0.6, 0.5), 2);
-                addSequential(new Wait(1));
+                addParallel(new DriveCommand(130, 0, 0.8, 0.5));
+                addSequential(new Wait(0.5));
                 addSequential(new Outtake(0.5));
 
 
@@ -76,19 +76,19 @@ public class CenterPos extends CommandGroup {
 ////            addParallel(new Wait(1));
 //                addSequential(new DriveCommand(40, 0, 0.15, 0.35));
 //                addParallel(new MoveToPos("intake"));
-                addSequential(new DriveCommand(10, 0, 0.6, 0.1), 2);
+                addSequential(new DriveCommand(10, 0, 0.9, 0.1));
 //                addSequential(new Wait(0.5));
-                addSequential(new DriveCommand(10, -70, 0.1, 0.6), 2);
+                addSequential(new DriveCommand(10, -70, 0.1, 0.7));
 //                addSequential(new Wait(0.5));
-                addSequential(new DriveCommand(80, -70, 0.5, 0.1), 2);
+                addSequential(new DriveCommand(80, -70, 0.9, 0.1));
 //                addSequential(new Wait(0.5));
-                addSequential(new DriveCommand(80, 0, 0.5, 0.5), 2);
+                addSequential(new DriveCommand(80, 0, 0.1, 0.5), 0.5);
 //                addSequential(new Wait(0.5));
-                addSequential(new DriveCommand(80, 0, 0.5, 0.5), 2);
+//                addSequential(new DriveCommand(70, 0, 0.1, 0.7), 0.5);
 //                addSequential(new Wait(0.5));
                 addSequential(new MoveToPos("switch"));
-                addSequential(new DriveCommand(120, 0, 0.5, 0.1), 2);
-                addSequential(new Wait(0.5));
+                addSequential(new DriveCommand(150, 0, 0.9, 0.2), 1);
+//                addSequential(new Wait(0.5));
                 addSequential(new Outtake(0.5));
 
             }

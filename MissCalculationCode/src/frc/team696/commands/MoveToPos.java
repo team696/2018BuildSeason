@@ -46,7 +46,7 @@ public class MoveToPos extends Command {
     @Override
     protected boolean isFinished() {
         // TODO: Make this return true when this Command no longer needs to run execute()
-        if(loopNumber > 60){
+        if(loopNumber > 50){
             return true;
         }
         return false;

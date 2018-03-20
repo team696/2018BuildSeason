@@ -51,16 +51,21 @@ public class LeftPos extends CommandGroup {
 
             }
 
-            if(gameData.charAt(0) == 'L'){
+            if(gameData.charAt(1) == 'L'){
                 addSequential(new ZeroElevator());
                 addSequential(new ZeroEncoders());
                 addSequential(new ZeroYaw());
                 addParallel(new Rise());
-                addSequential(new DriveCommand(50,0,0.6,0.1), 2);
-                addSequential(new DriveCommand(50, 90, 0.5, 0.5), 2);
-                addSequential(new MoveToPos("switch"));
-                addSequential(new DriveCommand(70, 90, 0.35, 0.1), 2);
-                addSequential(new Outtake(-0.5));
+                addSequential(new DriveCommand(260, 0,0.80, 0.1));
+                addSequential(new DriveCommand(260, 45, 0.35, 0.35));
+                addSequential(new DriveCommand(295, 45, 0.50, 0.1));
+//                addSequential(new DriveCommand(50,0,0.6,0.1), 2);
+//                addSequential(new DriveCommand(50, 90, 0.5, 0.5), 2);
+//                addSequential(new MoveToPos("switch"));
+//                addSequential(new DriveCommand(70, 90, 0.35, 0.1), 2);
+//                addSequential(new Outtake(-0.5));
+            }
+
             }
 
 
@@ -90,4 +95,4 @@ public class LeftPos extends CommandGroup {
         }
     }
 
-}
+

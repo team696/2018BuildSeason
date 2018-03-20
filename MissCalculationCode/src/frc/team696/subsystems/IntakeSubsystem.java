@@ -53,15 +53,8 @@ public class IntakeSubsystem extends Subsystem {
 
     public void runIntake(double speed) {
 
-        currentAverage = (intakeACurrent() + intakeBCurrent()) / 2;
-        if(currentAverage > currentMin){
-            intakeA.set(0);
-            intakeB.set(0);
-        }else{
-            intakeA.set(speed);
-            intakeB.set(speed);
-        }
-
+        intakeA.set(speed);
+        intakeB.set(speed);
     }
 
     public double intakeACurrent() {
