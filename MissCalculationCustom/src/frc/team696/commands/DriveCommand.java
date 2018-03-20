@@ -53,8 +53,8 @@ public class DriveCommand extends Command {
 
     // Direction PID Values
 
-    private double kPB = 0.05; //0.05
-    private double kIB = 0.01;
+    private double kPB = 0.06; //0.05
+    private double kIB = 0.001;
     private double kDB = 0;
     private double kAlphaB = 0;
 
@@ -93,10 +93,10 @@ public class DriveCommand extends Command {
 
         leftRearEnc = (double) Robot.driveTrainSubsystem.leftRear.getSelectedSensorPosition(pidIdx) / 200;
         // Divided by 200 to convert encoder units to inches
-        rightFrontEnc = (double) -Robot.driveTrainSubsystem.rightFront.getSelectedSensorPosition(pidIdx) / 200;
+        rightFrontEnc = (double) Robot.driveTrainSubsystem.rightFront.getSelectedSensorPosition(pidIdx) / 200;
         // Divided by 200 to convert encoder units to inches, and multiplied by -1 to account for inversion of encoder.
 
-        currentDistance = -(leftRearEnc + rightFrontEnc) / 2;
+        currentDistance = (leftRearEnc + rightFrontEnc) / 2;
         // Making currentDistance negative to account for inversion.
         distanceError = targetDistance - currentDistance;
 
@@ -157,10 +157,6 @@ public class DriveCommand extends Command {
             Account for if error is too big and PID Values are too small
          */
 
-        if(speed < 0.1){
-            speed = speed * 4;
-        }
-
         /*
             Setting up the drive functionality
          */
@@ -174,7 +170,7 @@ public class DriveCommand extends Command {
             Output to DriverStation
          */
 
-        System.out.println(directionError + "             " + currentDistance + "    " + DriverStation.getInstance().getGameSpecificMessage());
+        System.out.println(directionError + "             " + currentDistance + "    " + wheel);
 
     }
 

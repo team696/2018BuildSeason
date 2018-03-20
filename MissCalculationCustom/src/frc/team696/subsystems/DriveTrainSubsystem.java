@@ -64,6 +64,8 @@ public class DriveTrainSubsystem extends Subsystem {
         this.leftFront.set(ControlMode.Follower, this.leftRear.getDeviceID());
 
         this.leftRear.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, pidIdx, timeoutMs);
+//        this.leftRear.setInverted(true);
+        this.leftRear.setSensorPhase(true);
 
         /*
             Right Side Configuration
@@ -71,7 +73,7 @@ public class DriveTrainSubsystem extends Subsystem {
 
         this.leftRear.configPeakOutputReverse(-1, timeoutMs);
         this.leftRear.configPeakOutputForward(1, timeoutMs);
-        this.rightFront.set(ControlMode.Follower, this.rightFront.getDeviceID());
+        this.rightFront.set(ControlMode.PercentOutput, 0);
         this.rightRear.set(ControlMode.Follower, this.rightFront.getDeviceID());
         this.rightMid.set(ControlMode.Follower, this.rightFront.getDeviceID());
 
@@ -81,7 +83,7 @@ public class DriveTrainSubsystem extends Subsystem {
             Differential Drive Configuration
          */
 
-        this.drive = new DifferentialDrive(this.leftRear, this.rightRear);
+        this.drive = new DifferentialDrive(this.leftRear, this.rightFront);
 
 
 

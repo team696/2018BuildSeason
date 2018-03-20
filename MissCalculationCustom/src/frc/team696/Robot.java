@@ -217,7 +217,9 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
+
         Scheduler.getInstance().run();
+        SmartDashboard.putString("Selected Auto", chooser.getSelected());
     }
 
     @Override
@@ -261,6 +263,7 @@ public class Robot extends TimedRobot {
 
         compressor.start();
         time.start();
+        navX.zeroYaw();
 
     }
 
@@ -325,16 +328,16 @@ public class Robot extends TimedRobot {
             Climber Functions
          */
 
-        if(OI.Psoc.getRawButton(16)) {
-            climberSubsystem.setClimberSpeed(1);
-        }
-        else if(OI.wheel.getRawButton(2)){
-            climberSubsystem.setClimberSpeed(-0.25);
-        }
-        else{
-
-//            climberSubsystem.deployHook(true);
-        }
+//        if(OI.Psoc.getRawButton(16)) {
+//            climberSubsystem.setClimberSpeed(1);
+//        }
+//        else if(OI.wheel.getRawButton(2)){
+//            climberSubsystem.setClimberSpeed(-0.25);
+//        }
+//        else{
+//
+////            climberSubsystem.deployHook(true);
+//        }
 
 
 
@@ -344,11 +347,11 @@ public class Robot extends TimedRobot {
 
 
         /** Climber Functions **/
-        if(OI.Psoc.getRawButton(16)){
-            climberSubsystem.setClimberSpeed(1);
-        }else{
-            climberSubsystem.setClimberSpeed(0);
-        }
+//        if(OI.Psoc.getRawButton(16)){
+//            climberSubsystem.setClimberSpeed(1);
+//        }else{
+//            climberSubsystem.setClimberSpeed(0);
+//        }
 
 
 
@@ -581,9 +584,9 @@ public class Robot extends TimedRobot {
         /** Intake Functions **/
 
         if(OI.ControlPanel.getRawButton(8)){
-            intakeSubsystem.runIntake(0.5);
+            intakeSubsystem.runIntake(0.35);
         }else if(OI.ControlPanel.getRawButton(7)){
-            intakeSubsystem.runIntake(-0.7);
+            intakeSubsystem.runIntake(-0.6);
         }else{
             intakeSubsystem.runIntake(0);
         }

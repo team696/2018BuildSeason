@@ -399,16 +399,16 @@ public class AntiTiltSubsystem extends Subsystem {
 
     private void preventBack() {
         System.out.println("Running preventBack");
-        if(OI.Psoc.getRawButton(15) && robot.runElevator){
-            robot.runElevator = false;
-        }
+//        if(OI.Psoc.getRawButton(15) && robot.runElevator){
+//            robot.runElevator = false;
+//        }
     }
 
     private void preventForward() {
         System.out.println("Running preventFoward");
-        if(OI.Psoc.getRawButton(15) && !robot.runElevator){
-            robot.runElevator = false;
-        }
+//        if(OI.Psoc.getRawButton(15) && !robot.runElevator){
+//            robot.runElevator = false;
+//        }
     }
 
     private void limitMaxLowSpeed() {
