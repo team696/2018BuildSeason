@@ -19,7 +19,7 @@ public class Intake extends Command {
     @Override
     public void execute() {
 
-        Robot.intakeSubsystem.runIntake(0.7);
+        Robot.intakeSubsystem.runIntake(0.9);
         System.out.println(Robot.PDP.getCurrent(7));
 
 
