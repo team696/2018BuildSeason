@@ -584,9 +584,9 @@ public class Robot extends TimedRobot {
         /** Intake Functions **/
 
         if(OI.ControlPanel.getRawButton(8)){
-            intakeSubsystem.runIntake(0.35);
+            intakeSubsystem.runIntake(-0.50);
         }else if(OI.ControlPanel.getRawButton(7)){
-            intakeSubsystem.runIntake(-0.6);
+            intakeSubsystem.runIntake(0.60);
         }else{
             intakeSubsystem.runIntake(0);
         }
