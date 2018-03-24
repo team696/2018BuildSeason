@@ -29,7 +29,7 @@ public class Intake extends Command {
 
     @Override
     public boolean isFinished() {
-        if(Robot.PDP.getCurrent(7) > 20 && loopNumber > 10){
+        if(Robot.PDP.getCurrent(7) > 20 && loopNumber > 20){
             Robot.intakeSubsystem.runIntake(0);
             Robot.intakeSubsystem.intakeSol.set(false);
             return true;

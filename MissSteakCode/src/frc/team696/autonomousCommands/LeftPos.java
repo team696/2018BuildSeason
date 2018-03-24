@@ -12,23 +12,65 @@ public class LeftPos extends CommandGroup {
 
         gameData = DriverStation.getInstance().getGameSpecificMessage();
         if (gameData.length() > 0) {
-            if (gameData.charAt(1) == 'L') {
+            if (gameData.charAt(1) == 'L' && gameData.charAt(0)  == 'L') {
 
                 addSequential(new ZeroElevator());
                 addSequential(new ZeroEncoders());
                 addSequential(new ZeroYaw());
                 addParallel(new Rise());
-                addSequential(new DriveCommand(250 ,0, 0.90, 0.1), 3);
+                addSequential(new DriveCommand(250 ,0, 0.90, 0.1), 3.5);
                 addSequential(new Tilt());
                 addSequential(new DriveCommand(250, 45, 0.4, 0.6));
-                addSequential(new MoveToPos("high"), 2);
+                addSequential(new MoveToPos("high"), 1.5);
                 addSequential(new DriveCommand( 265, 45, 0.6, 0.1), 2 );
                 addSequential(new Outtake(0.65));
-                addSequential(new DriveCommand(240, 45, 0.3, 0.1), 2);
+
+
+                addSequential(new DriveCommand(240, 45, 0.5, 0.1), 1);
                 addSequential(new MoveToPos("intake"));
+                addSequential(new DriveCommand(240, 125, 0.7, 0.6), 4);
+                addSequential(new OpenIntake());
+                addSequential(new DriveCommand(290, 125, 0.6, 0.1), 2);
+                addSequential(new DriveCommand(290, 155, 0.5, 0.35), 3);
+                addParallel(new Intake());
+                addParallel(new DriveCommand(330, 162, 0.5, 0.1 ), 3);
+                addSequential(new Wait(2));
+                addSequential(new MoveToPos("switch"));
+                addSequential(new Outtake(0.6));
+
+
+
 
 
             }
+
+            if (gameData.charAt(1) == 'L' && gameData.charAt(0)  == 'R') {
+
+                addSequential(new ZeroElevator());
+                addSequential(new ZeroEncoders());
+                addSequential(new ZeroYaw());
+                addParallel(new Rise());
+                addSequential(new DriveCommand(250 ,0, 0.90, 0.1), 3.5);
+                addSequential(new Tilt());
+                addSequential(new DriveCommand(250, 45, 0.4, 0.6));
+                addSequential(new MoveToPos("high"), 1.5);
+                addSequential(new DriveCommand( 265, 45, 0.6, 0.1), 2 );
+                addSequential(new Outtake(0.65));
+
+                // spin around code
+                addSequential(new DriveCommand(240, 45, 0.5, 0.1), 1);
+                addSequential(new MoveToPos("intake"));
+                addSequential(new DriveCommand(240, 125, 0.7, 0.6), 4);
+                addSequential(new OpenIntake());
+                addSequential(new DriveCommand(290, 125, 0.6, 0.1), 2);
+                addSequential(new DriveCommand(290, 155, 0.5, 0.35), 3);
+                addParallel(new Intake());
+                addParallel(new DriveCommand(330, 162, 0.6, 0.1 ), 3);
+                addSequential(new Wait(2));
+                addSequential(new DriveCommand(330, 30, 0.4, 0.6));
+
+            }
+
 
             if(gameData.charAt(1) == 'R'){
                 addSequential(new ZeroElevator());
