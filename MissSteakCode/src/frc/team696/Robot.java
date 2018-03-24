@@ -545,6 +545,15 @@ public class Robot extends TimedRobot {
             if (elevatorLoopNumber > 2) {
                 elevatorSubsystem.manualMoveElevator(-OI.ControlPanel.getRawAxis(0) * 0.5);
             }
+        }else if(OI.ControlPanel.getRawButton(1)){
+            /** Auto Climb and Unwind - Once pressed: Hook will deploy, Elevator will retract, and hold to keep climbing **/
+            moveMid = false;
+            moveHigh = false;
+            moveIntake = false;
+            moveSwitch = false;
+            moveClimb = false;
+            moveLow = false;
+            climberSubsystem.autoClimb(1);
         }else if(moveSwitch) {
             elevatorSubsystem.moveToPos("switch");
         }else if(moveClimb) {
@@ -557,15 +566,6 @@ public class Robot extends TimedRobot {
             elevatorSubsystem.moveToPos("low");
         }else if(moveMid) {
             elevatorSubsystem.moveToPos("mid");
-        }else if(OI.ControlPanel.getRawButton(1)){
-            /** Auto Climb and Unwind - Once pressed: Hook will deploy, Elevator will retract, and hold to keep climbing **/
-            moveMid = false;
-            moveHigh = false;
-            moveIntake = false;
-            moveSwitch = false;
-            moveClimb = false;
-            moveLow = false;
-            climberSubsystem.autoClimb(1);
         }else if (OI.ControlPanel.getRawButton(15)) {
             climberSubsystem.setClimberSpeed(-0.25);
         }else if (OI.ControlPanel.getRawButton(10)){
@@ -583,20 +583,17 @@ public class Robot extends TimedRobot {
 
         /** Intake Functions **/
 
-        if(OI.ControlPanel.getRawButton(8)){
+        if(OI.ControlPanel.getRawButton(8)){ // outtake
             intakeSubsystem.runIntake(-0.50);
-        }else if(OI.ControlPanel.getRawButton(7)){
+        }else if(OI.ControlPanel.getRawButton(7)){ // intake
+            intakeSubsystem.intakeSol.set(true);
             intakeSubsystem.runIntake(0.60);
         }else{
+            intakeSubsystem.toggleIntake(OI.ControlPanel.getRawButton(constants.intakeSol));
             intakeSubsystem.runIntake(0);
         }
 
 
-        /**
-         * Intake Solenoid Toggling
-         */
-
-       intakeSubsystem.toggleIntake(toggleIntake);
 
 
 
