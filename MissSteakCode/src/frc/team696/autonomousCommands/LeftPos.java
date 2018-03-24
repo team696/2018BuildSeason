@@ -13,7 +13,7 @@ public class LeftPos extends CommandGroup {
         gameData = DriverStation.getInstance().getGameSpecificMessage();
         if (gameData.length() > 0) {
             if (gameData.charAt(1) == 'L') {
-                
+
                 addSequential(new ZeroElevator());
                 addSequential(new ZeroEncoders());
                 addSequential(new ZeroYaw());
