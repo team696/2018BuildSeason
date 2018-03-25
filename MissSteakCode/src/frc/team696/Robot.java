@@ -169,6 +169,10 @@ public class Robot extends TimedRobot {
 
     public boolean antiTilt = false;
 
+    public boolean currentAntiDriver;
+    public boolean oldAntiDriver;
+    public boolean toggleAntiTilt = true;
+
     @Override
     public void robotInit() {
         oi = new OI();
@@ -306,10 +310,21 @@ public class Robot extends TimedRobot {
             wheel = wheel + wheelDeadZoneMax;
         }
 
-        if(OI.ControlPanel.getRawButton(14)){
-            antiTilt = true;
-        }else{
+//        if(OI.ControlPanel.getRawButton(14)){
+//            antiTilt = true;
+//        }else{
+//            antiTilt = false;
+//        }
+        currentAntiDriver = OI.wheel.getRawButton(3);
+        if(currentAntiDriver && !oldAntiDriver){
+            toggleAntiTilt = !toggleAntiTilt;
+        }
+        oldAntiDriver = currentAntiDriver;
+
+        if(!toggleAntiTilt || !OI.ControlPanel.getRawButton(14)){
             antiTilt = false;
+        }else{
+            antiTilt = true;
         }
 
         if(antiTilt){
@@ -586,14 +601,16 @@ public class Robot extends TimedRobot {
         if(OI.ControlPanel.getRawButton(8)){ // outtake
             intakeSubsystem.runIntake(-0.50);
         }else if(OI.ControlPanel.getRawButton(7)){ // intake
-            intakeSubsystem.intakeSol.set(true);
             intakeSubsystem.runIntake(0.60);
         }else{
-            intakeSubsystem.toggleIntake(OI.ControlPanel.getRawButton(constants.intakeSol));
             intakeSubsystem.runIntake(0);
         }
 
+        /**
+         * Open/Close Intake
+         */
 
+        intakeSubsystem.toggleIntake(toggleIntake);
 
 
 
@@ -664,7 +681,7 @@ public class Robot extends TimedRobot {
 //        System.out.println(elevatorSubsystem.elevator.getSelectedSensorPosition(0));
 //        System.out.println(controlMode + " " + moveSwitch +  "   " + moveClimb + " " + elevatorSubsystem.elevator.getClosedLoopError(0) + " " + elevatorSubsystem.elevatorTarget);
 
-        System.out.println(navX.getYaw());
+        System.out.println(OI.ControlPanel.getRawButton(14) + "        " + toggleAntiTilt + "     " + antiTilt);
 
 
     }

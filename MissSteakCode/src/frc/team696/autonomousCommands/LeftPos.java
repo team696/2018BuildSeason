@@ -26,8 +26,8 @@ public class LeftPos extends CommandGroup {
                 addSequential(new Outtake(0.65));
 
 
+                addParallel(new MoveToPos("intake"));
                 addSequential(new DriveCommand(240, 45, 0.5, 0.1), 1);
-                addSequential(new MoveToPos("intake"));
                 addSequential(new DriveCommand(240, 125, 0.7, 0.6), 4);
                 addSequential(new OpenIntake());
                 addSequential(new DriveCommand(290, 125, 0.6, 0.1), 2);
@@ -65,8 +65,8 @@ public class LeftPos extends CommandGroup {
                 addSequential(new DriveCommand(290, 125, 0.6, 0.1), 2);
                 addSequential(new DriveCommand(290, 155, 0.5, 0.35), 3);
                 addParallel(new Intake());
-                addParallel(new DriveCommand(330, 162, 0.6, 0.1 ), 3);
-                addSequential(new Wait(2));
+                addSequential(new DriveCommand(330, 162, 0.6, 0.1 ), 3);
+                addSequential(new Wait(0.5));
                 addSequential(new DriveCommand(330, 30, 0.4, 0.6));
 
             }
@@ -83,9 +83,9 @@ public class LeftPos extends CommandGroup {
                 addSequential(new DriveCommand(420, -15, 0.4, 0.6), 3);
                 addSequential(new MoveToPos("high"), 2);
                 addSequential(new DriveCommand(470, -15, 0.5, 0.1));
-                addSequential(new Outtake(-0.4));
-                addSequential(new DriveCommand(440, 0, 0.4, 0.1), 3);
-                addSequential(new MoveToPos("intake"));
+                addSequential(new Outtake(0.4));
+                addParallel(new MoveToPos("intake"));
+                addSequential(new DriveCommand(440, -15, 0.5, 0.1), 3);
 
 
             }
