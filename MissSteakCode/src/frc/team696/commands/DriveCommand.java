@@ -53,9 +53,9 @@ public class DriveCommand extends Command {
 
     // Direction PID Values
 
-    private double kPB = 0.06; //0.05
+    private double kPB = 0.05; //0.05
     private double kIB = 0.001;
-    private double kDB = 0;
+    private double kDB = 0.000001;
     private double kAlphaB = 0;
 
     PIDController distancePID;
