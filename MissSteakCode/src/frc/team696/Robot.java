@@ -586,13 +586,14 @@ public class Robot extends TimedRobot {
         if(OI.ControlPanel.getRawButton(8)){ // outtake
             intakeSubsystem.runIntake(-0.50);
         }else if(OI.ControlPanel.getRawButton(7)){ // intake
-            intakeSubsystem.intakeSol.set(true);
             intakeSubsystem.runIntake(0.60);
         }else{
-            intakeSubsystem.toggleIntake(OI.ControlPanel.getRawButton(constants.intakeSol));
             intakeSubsystem.runIntake(0);
         }
 
+
+
+        intakeSubsystem.toggleIntake(toggleIntake);
 
 
 
