@@ -170,7 +170,8 @@ public class DriveCommand extends Command {
             Output to DriverStation
          */
 
-        System.out.println(directionError + "             " + currentDistance + "    " + wheel);
+        
+        System.out.println("Errors: "+ directionError + "      " + distanceError + "    Current: " + currentDirection + "   " + currentDistance);
 
     }
 
