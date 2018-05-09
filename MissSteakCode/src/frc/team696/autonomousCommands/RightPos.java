@@ -37,21 +37,21 @@ public class RightPos extends CommandGroup {
                 addSequential(new ZeroEncoders());
                 addSequential(new ZeroYaw());
                 addParallel(new Rise());
-                addSequential(new DriveCommand(250 ,0, 0.90, 0.1)); // 3.5
+                addSequential(new DriveCommand(240,0, 0.90, 0.1), 3.5); // 3.5
                 addSequential(new Tilt());
-                addSequential(new DriveCommand(250, -45, 0.4, 0.6));
+                addSequential(new DriveCommand(240, -45, 0.4, 0.6));
                 addSequential(new MoveToPos("high"), 1.5);
-                addSequential(new DriveCommand( 270, -45, 0.6, 0.1)); //2
+                addSequential(new DriveCommand( 270, -45, 0.6, 0.1), 2); //2
                 addSequential(new Outtake(0.5));
 
-                addSequential(new DriveCommand(240, -45, 0.5, 0.1)); // 1
+                addSequential(new DriveCommand(240, -45, 0.5, 0.1), 1); // 1
                 addSequential(new MoveToPos("intake"));
-                addSequential(new DriveCommand(240, -125, 0.7, 0.6)); // 2
+                addSequential(new DriveCommand(240, -125, 0.7, 0.6), 2); // 2
                 addSequential(new OpenIntake());
-                addSequential(new DriveCommand(290, -125, 0.6, 0.1)); // 2
-                addSequential(new DriveCommand(290, -155, 0.5, 0.35)); // 3
+                addSequential(new DriveCommand(290, -125, 0.6, 0.1), 2); // 2
+                addSequential(new DriveCommand(290, -155, 0.5, 0.35), 3); // 3
                 addParallel(new Intake());
-                addParallel(new DriveCommand(330, -162, 0.5, 0.1 )); // 3
+                addParallel(new DriveCommand(330, -162, 0.5, 0.1 ), 3); // 3
                 addSequential(new Wait(1));
                 addParallel(new DriveCommand(325, -162, 0.5, 0.1), 0.5);
                 addSequential(new MoveToPos("switch"));
@@ -65,16 +65,31 @@ public class RightPos extends CommandGroup {
                 addSequential(new ZeroElevator());
                 addSequential(new ZeroEncoders());
                 addSequential(new ZeroYaw());
-                addSequential(new DriveCommand(210, 0, 0.90, 0.1), 3);
-                addSequential(new DriveCommand(210, -90, 0.4, 0.5), 3);
-                addSequential(new DriveCommand ( 436, -90, 0.9, 0.1));
+                addSequential(new DriveCommand(172, 0, 0.90, 0.1), 3);
+                addSequential(new DriveCommand(172, -90, 0.4, 0.5), 3);
+                addSequential(new DriveCommand (402, -90, 0.9, 0.1));
                 addSequential(new Tilt());
-                addSequential(new DriveCommand(436, 20, 0.4, 0.6));
+                addSequential(new DriveCommand(402, 20, 0.4, 0.6));
                 addSequential(new MoveToPos("high"), 2);
-                addSequential(new DriveCommand(480, 20, 0.5, 0.1), 2);
+                addSequential(new DriveCommand(446, 20, 0.5, 0.1), 2);
                 addSequential(new Outtake(0.4));
-                addSequential(new DriveCommand(440, 0, 0.4, 0.1), 3);
+                addSequential(new DriveCommand(406, 0, 0.4, 0.1), 3);
                 addSequential(new MoveToPos("intake"));
+
+            }
+
+            if(gameData.charAt(1) == 'R') {
+
+                addSequential(new ZeroElevator());
+                addSequential(new ZeroEncoders());
+                addSequential(new ZeroYaw());
+                addParallel(new Rise());
+                addSequential(new DriveCommand(240,0, 0.90, 0.1), 3.5); // 3.5
+                addSequential(new Tilt());
+                addSequential(new DriveCommand(240, -45, 0.4, 0.6));
+                addSequential(new MoveToPos("high"), 1.5);
+                addSequential(new DriveCommand( 270, -45, 0.6, 0.1), 2); //2
+                addSequential(new Outtake(0.5));
 
             }
         }

@@ -44,7 +44,7 @@ public class ElevatorSubsystem extends Subsystem {
     public double midPosition = 23970;
     public double highPosition = 29000;
     public double highTiltPosition = 26000;
-    public double climbPosition = 21420;
+    public double climbPosition = 19500;
     public double homePosition = 0;
 
     String currentMovePos;
