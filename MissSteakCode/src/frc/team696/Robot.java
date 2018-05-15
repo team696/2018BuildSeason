@@ -364,11 +364,11 @@ public class    Robot extends TimedRobot{
 
                 if(antiTilt){
                     antiTiltSubsystem.antiTilt();
-                    speed = antiTiltSubsystem.speed;
-                    wheel = ((antiTiltSubsystem.wheel * speedTurnScale) - wheelDeadZoneMax);
+                    speed = antiTiltSubsystem.speed*.75;
+                    wheel = ((antiTiltSubsystem.wheel * speedTurnScale) - wheelDeadZoneMax)*.75;
                 }else{
-                    speed = -OI.Stick.getRawAxis(1);
-                    wheel = ((OI.wheel.getRawAxis(constants.wheelDriveAxis) * speedTurnScale) - wheelDeadZoneMax);
+                    speed = -OI.Stick.getRawAxis(1)*.75;
+                    wheel = ((OI.wheel.getRawAxis(constants.wheelDriveAxis) * speedTurnScale) - wheelDeadZoneMax)*.75;
                 }
 
                 speedTurnScale = a*(1/((speed*speed)-h))+k;
@@ -644,8 +644,8 @@ public class    Robot extends TimedRobot{
                     intakeSubsystem.runIntake(0);
                 }
 
-                intakeSubsystem.toggleIntake(toggleIntake);
 
+        intakeSubsystem.toggleIntake(toggleIntake);
 
 
 
