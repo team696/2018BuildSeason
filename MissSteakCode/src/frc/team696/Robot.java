@@ -78,6 +78,8 @@ public class    Robot extends TimedRobot{
     double leftDrive;
     double rightDrive;
 
+    public double speedFactor;
+
 
     boolean startThread;
 
@@ -159,6 +161,7 @@ public class    Robot extends TimedRobot{
     public boolean homeState;
     public boolean oldHomeState;
 
+
     /*
         Threads
      */
@@ -190,6 +193,34 @@ public class    Robot extends TimedRobot{
      */
 
     public boolean antiTilt = false;
+
+
+    public boolean currentSpeedState;
+    public boolean oldSpeedState;
+    public boolean speedIsLimited = false;
+
+
+    /* SpeedLimiter Array
+
+     */
+
+    public double[] speeds =  new double[]{
+      1, 0.75, 0.5
+    };
+
+    public int buttonCounter = 1;
+
+    public int forCounter = 0;
+
+
+
+    public double speedLow = 0.75;
+
+
+
+
+
+
 
     @Override
     public void robotInit() {
@@ -392,7 +423,29 @@ public class    Robot extends TimedRobot{
 
 
 
-                /** RGB Sensor **/
+                /** Speed Changer **/
+
+
+                currentSpeedState = OI.wheel.getRawButton(1);
+
+                 if(currentSpeedState && !oldSpeedState){
+
+                     speedIsLimited = !speedIsLimited;
+                 }
+
+                 currentSpeedState = oldSpeedState;
+
+
+
+                if(speedIsLimited){
+                    speedFactor = speedLow;
+                }else{
+                    speedFactor = 1;
+                }
+
+
+
+
 
 //        rgbSensorSubsystem.rgbGetLux();
 
@@ -691,7 +744,7 @@ public class    Robot extends TimedRobot{
                 leftDrive = speed + wheel;
                 rightDrive = speed - wheel;
 
-                driveTrainSubsystem.tankDrive(leftDrive, rightDrive);
+                driveTrainSubsystem.tankDrive(leftDrive * speedFactor, rightDrive * speedFactor);
 
                 /** Outputs to Console **/
 
@@ -717,7 +770,7 @@ public class    Robot extends TimedRobot{
 //        System.out.println(elevatorSubsystem.elevator.getSelectedSensorPosition(0));
 //        System.out.println(controlMode + " " + moveSwitch +  "   " + moveClimb + " " + elevatorSubsystem.elevator.getClosedLoopError(0) + " " + elevatorSubsystem.elevatorTarget);
 
-                System.out.println(elevatorSubsystem.elevator.getSelectedSensorPosition(0));
+                System.out.println("speedFactor"    + speedFactor + "     " + speedIsLimited   );
 
 
 
