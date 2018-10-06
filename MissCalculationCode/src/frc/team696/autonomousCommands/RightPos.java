@@ -18,11 +18,11 @@ public class RightPos extends CommandGroup {
                 addSequential(new ZeroEncoders());
                 addSequential(new ZeroYaw());
                 addParallel(new Rise());
-                addSequential(new DriveCommand(135, 0, 0.75, 0.05));
+                addSequential(new DriveCommand(135, 0, 0.75, 0.1));
                 addSequential(new Wait(1));
-                addSequential(new DriveCommand(135, -45, 0.25, 0.45));
+                addSequential(new DriveCommand(135, -45, 0.25, 0.45), 1);
                 addSequential(new Wait(1));
-                addSequential(new DriveCommand(140, -45, 0.35, 0.35));
+                addSequential(new DriveCommand(140, -45, 0.35, 0.35), 1);
                 addSequential(new Tilt());
 //            addSequential(new Wait(-1));
                 addSequential(new MoveToPos("high"));
@@ -41,7 +41,7 @@ public class RightPos extends CommandGroup {
                 addSequential(new ZeroEncoders());
                 addSequential(new ZeroYaw());
                 addSequential(new Rise());
-                addSequential(new DriveCommand(80, 0, 1, 0.05));
+                addSequential(new DriveCommand(135, 0, 1, 0.1));
 
             }
         }

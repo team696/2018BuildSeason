@@ -7,6 +7,7 @@
 
 package frc.team696;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.kauailabs.nav6.frc.IMU;
 import com.kauailabs.nav6.frc.IMUAdvanced;
 import edu.wpi.first.wpilibj.*;
@@ -46,6 +47,10 @@ public class Robot extends TimedRobot {
     public static ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(RobotMap.elevator, RobotMap.elevatorSol, RobotMap.discBrake);
     public static ClimberSubsystem climberSubsystem = new ClimberSubsystem(RobotMap.climberA, RobotMap.climberB, RobotMap.climberSol);
     public static AntiTiltSubsystem antiTiltSubsystem = new AntiTiltSubsystem();
+    public static AnalogInput ultra = new AnalogInput(0);
+
+
+
 
 
     /** Object and Variable Declaration **/
@@ -62,8 +67,8 @@ public class Robot extends TimedRobot {
 
     // Drive Straight and Deadzone variables
 
-    double wheelDeadZoneMin = -0.1;
-    double wheelDeadZoneMax = 0.1;
+    double wheelDeadZoneMin = -0.14;
+    double wheelDeadZoneMax = 0.14;
     double stickDeadZoneMin = -0.25;
     double stickDeadZoneMax = 0.3;
 
@@ -77,7 +82,16 @@ public class Robot extends TimedRobot {
     double leftDrive;
     double rightDrive;
 
+    boolean oldWheelAntiTilt;
+    boolean wheelAntiTilt;
+    boolean toggleWheelAntiTilt = true;
+
     // Speed Turn Scale Variables
+
+    //analog
+
+
+//    double ultrasonicVoltage = ultra.getVoltage();
 
     double a = 0.170641; // 0.286095    0.170641
     double h = -0.258475; // -0.243151  -0.258475
@@ -203,9 +217,7 @@ public class Robot extends TimedRobot {
             Turn on LEDS
          */
 
-        for(int i = 8; i <=13; i++){
-            OI.ControlPanel.setOutput(i, true);
-        }
+
 
 
     }
@@ -265,6 +277,13 @@ public class Robot extends TimedRobot {
         time.start();
         navX.zeroYaw();
 
+        driveTrainSubsystem.leftRear.setNeutralMode(NeutralMode.Coast);
+        driveTrainSubsystem.leftFront.setNeutralMode(NeutralMode.Coast);
+        driveTrainSubsystem.leftMid.setNeutralMode(NeutralMode.Coast);
+        driveTrainSubsystem.rightRear.setNeutralMode(NeutralMode.Coast);
+        driveTrainSubsystem.rightMid.setNeutralMode(NeutralMode.Coast);
+        driveTrainSubsystem.rightFront.setNeutralMode(NeutralMode.Coast);
+
     }
 
     @Override
@@ -306,19 +325,26 @@ public class Robot extends TimedRobot {
             wheel = wheel + wheelDeadZoneMax;
         }
 
-        if(OI.ControlPanel.getRawButton(14)){
+        wheelAntiTilt = OI.wheel.getRawButton(2);
+        if(wheelAntiTilt && !oldWheelAntiTilt){
+            toggleWheelAntiTilt = !toggleWheelAntiTilt;
+        }
+        oldWheelAntiTilt = wheelAntiTilt;
+
+        if(OI.ControlPanel.getRawButton(14) && toggleWheelAntiTilt){
             antiTilt = true;
-        }else{
+        }else {
             antiTilt = false;
         }
+
 
         if(antiTilt){
             antiTiltSubsystem.antiTilt();
             speed = antiTiltSubsystem.speed;
-            wheel = ((antiTiltSubsystem.wheel * speedTurnScale) - wheelDeadZoneMax) * 0.85;
+            wheel = ((antiTiltSubsystem.wheel * speedTurnScale) - wheelDeadZoneMax) ;
         }else{
             speed = -OI.Stick.getRawAxis(1);
-            wheel = ((OI.wheel.getRawAxis(constants.wheelDriveAxis) * speedTurnScale) - wheelDeadZoneMax) * 0.85;
+            wheel = ((OI.wheel.getRawAxis(constants.wheelDriveAxis) * speedTurnScale) - wheelDeadZoneMax);
         }
 
         speedTurnScale = a*(1/((speed*speed)-h))+k;
@@ -383,6 +409,7 @@ public class Robot extends TimedRobot {
         }else if(antiTiltSubsystem.preventForward && antiTilt){
             runElevator = false;
         }else if(currentElevatorState && !oldElevatorState){
+
             runElevator = !runElevator;
         }
         oldElevatorState = currentElevatorState;
@@ -470,7 +497,6 @@ public class Robot extends TimedRobot {
             toggleIntake = !toggleIntake;
         }
         oldIntakeSolButton = intakeSolButton;
-
 
 
 
@@ -641,7 +667,7 @@ public class Robot extends TimedRobot {
         leftDrive = speed + wheel;
         rightDrive = speed - wheel;
 
-        driveTrainSubsystem.tankDrive(leftDrive, rightDrive);
+        driveTrainSubsystem.tankDrive(leftDrive , rightDrive );
 
         /** Outputs to Console **/
 
@@ -667,7 +693,15 @@ public class Robot extends TimedRobot {
 //        System.out.println(elevatorSubsystem.elevator.getSelectedSensorPosition(0));
 //        System.out.println(controlMode + " " + moveSwitch +  "   " + moveClimb + " " + elevatorSubsystem.elevator.getClosedLoopError(0) + " " + elevatorSubsystem.elevatorTarget);
 
-        System.out.println(navX.getYaw());
+//        System.out.println(navX.getYaw());
+        System.out.println(toggleWheelAntiTilt);
+
+
+//        System.out.println("ultra voltage" + ultrasonicVoltage);
+
+//        System.out.println(speed + "    " + wheel);
+
+//        System.out.println(elevatorSubsystem.elevator.getSelectedSensorPosition(0));
 
 
     }

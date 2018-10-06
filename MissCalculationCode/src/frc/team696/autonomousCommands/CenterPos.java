@@ -39,11 +39,11 @@ public class CenterPos extends CommandGroup {
 //                addSequential(new MoveToPos("intake"));
                 addSequential(new DriveCommand(10, 0, 0.9, 0.1));
 //                addSequential(new Wait(0.5));
-                addSequential(new DriveCommand(10, 50, 0.1, 0.7));
+                addSequential(new DriveCommand(10, 50, 0.1, 0.7), 1);
 //                addSequential(new Wait(0.5));
-                addSequential(new DriveCommand(65, 50, 0.9, 0.05));
+                addSequential(new DriveCommand(85, 50, 0.7, 0.05));
 //                addSequential(new Wait(0.5));
-                addSequential(new DriveCommand(65, 0, 0.1, 0.7), 0.5);
+                addSequential(new DriveCommand(85, 0, 0.1, 0.7), 1);
 //                addSequential(new Wait(0.5));
 //                addSequential(new Tilt());
                 addSequential(new MoveToPos("switch"), 1);
@@ -78,19 +78,27 @@ public class CenterPos extends CommandGroup {
 //                addParallel(new MoveToPos("intake"));
                 addSequential(new DriveCommand(10, 0, 0.9, 0.1));
 //                addSequential(new Wait(0.5));
-                addSequential(new DriveCommand(10, -70, 0.1, 0.7));
+                addSequential(new DriveCommand(10, -70, 0.1, 0.7), 1);
 //                addSequential(new Wait(0.5));
-                addSequential(new DriveCommand(80, -70, 0.9, 0.1));
+                addSequential(new DriveCommand(80, -70, 0.7, 0.1), 2);
 //                addSequential(new Wait(0.5));
-                addSequential(new DriveCommand(80, 0, 0.1, 0.5), 0.5);
+                addSequential(new DriveCommand(80, 0, 0.1, 0.4), 0.5);
 //                addSequential(new Wait(0.5));
 //                addSequential(new DriveCommand(70, 0, 0.1, 0.7), 0.5);
 //                addSequential(new Wait(0.5));
-                addSequential(new MoveToPos("switch"));
-                addSequential(new DriveCommand(150, 0, 0.9, 0.2), 1);
+                addSequential(new MoveToPos("switch"), 0.5);
+                addSequential(new DriveCommand(135, 0, 0.7, 0.2), 1);
 //                addSequential(new Wait(0.5));
                 addSequential(new Outtake(0.5));
 
+            }
+
+            if(gameData.equals("Test")){
+                addSequential(new ZeroElevator());
+                addSequential(new ZeroEncoders());
+                addSequential(new ZeroYaw());
+//                addSequential(new Rise());
+                addSequential(new DriveCommand(0, 45, 0, 0.6));
             }
 
 //        addSequential(new DriveCommand( 65, 0, 0.65, 0.4));

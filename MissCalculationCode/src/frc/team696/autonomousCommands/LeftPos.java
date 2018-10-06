@@ -44,7 +44,7 @@ public class LeftPos extends CommandGroup {
                 addSequential(new ZeroEncoders());
                 addSequential(new ZeroYaw());
                 addParallel(new Rise());
-                addSequential(new DriveCommand(50, 0, 0.75, 0.1), 3);
+                addSequential(new DriveCommand(135, 0, 0.75, 0.1), 3);
 
 
 
@@ -56,9 +56,14 @@ public class LeftPos extends CommandGroup {
                 addSequential(new ZeroEncoders());
                 addSequential(new ZeroYaw());
                 addParallel(new Rise());
-                addSequential(new DriveCommand(260, 0,0.80, 0.1));
-                addSequential(new DriveCommand(260, 45, 0.35, 0.35));
-                addSequential(new DriveCommand(295, 45, 0.50, 0.1));
+                addSequential(new DriveCommand(135, 0,0.80, 0.1));
+                addSequential(new DriveCommand(135, 45, 0.35, 0.35), 2);
+                addParallel(new Tilt());
+                addSequential(new DriveCommand(170, 45, 0.50, 0.1));
+                addSequential(new MoveToPos("high"));
+                addSequential(new Outtake(0.5));
+                addSequential(new DriveCommand(135, 45, 0.5, 0.1));
+                addSequential(new MoveToPos("intake"));
 //                addSequential(new DriveCommand(50,0,0.6,0.1), 2);
 //                addSequential(new DriveCommand(50, 90, 0.5, 0.5), 2);
 //                addSequential(new MoveToPos("switch"));

@@ -1,6 +1,8 @@
 package frc.team696.commands;
 
-import edu.wpi.first.wpilibj.DriverStation;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.kauailabs.nav6.frc.IMU;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team696.Robot;
 import frc.team696.utilities.PIDController;
@@ -10,6 +12,8 @@ import frc.team696.utilities.PIDController;
  */
 
 public class DriveCommand extends Command {
+
+    Robot robot = new Robot();
 
     /*
         Declaration of Variables and Objects
@@ -22,6 +26,7 @@ public class DriveCommand extends Command {
     public double maxSpeed;
     public double maxTurn;
 
+    int counter = 0;
     // Execution Variables
 
     public double currentDistance;
@@ -44,7 +49,7 @@ public class DriveCommand extends Command {
 
     // Distance PID Values
 
-    private double kPA = 0.07;
+    private double kPA = 0.06;
     private double kIA = 0.0001;
     private double kDA = 0;
     private double kAlphaA = 0.5;
@@ -53,9 +58,9 @@ public class DriveCommand extends Command {
 
     // Direction PID Values
 
-    private double kPB = 0.025; //0.05
+    private double kPB = 0.016; //0.025
     private double kIB = 0.001;
-    private double kDB = 0;
+    private double kDB = 0.01;
     private double kAlphaB = 0;
 
     PIDController distancePID;
@@ -75,9 +80,18 @@ public class DriveCommand extends Command {
     @Override
     protected void initialize() {
 
+        robot.driveTrainSubsystem.leftRear.setNeutralMode(NeutralMode.Brake);
+        robot.driveTrainSubsystem.leftFront.setNeutralMode(NeutralMode.Brake);
+        robot.driveTrainSubsystem.leftMid.setNeutralMode(NeutralMode.Brake);
+        robot.driveTrainSubsystem.rightRear.setNeutralMode(NeutralMode.Brake);
+        robot.driveTrainSubsystem.rightMid.setNeutralMode(NeutralMode.Brake);
+        robot.driveTrainSubsystem.rightFront.setNeutralMode(NeutralMode.Brake);
+
         /*
             Set PID Values for Direction and Distance
          */
+
+
 
         distancePID = new PIDController(kPA, kIA, kDA, kAlphaA);
         directionPID = new PIDController(kPB, kIB, kDB, kAlphaB);
@@ -170,7 +184,7 @@ public class DriveCommand extends Command {
             Output to DriverStation
          */
 
-        System.out.println(directionError + "             " + currentDistance + "    " + wheel);
+        System.out.println(directionError + "             " + wheel);
 
     }
 
@@ -183,7 +197,11 @@ public class DriveCommand extends Command {
         // Can only finish the command if the error for both distance and direction are less than 2
 
         if(Math.abs(distanceError) < 5 && Math.abs(directionError) < 5){
-            return true;
+            counter++;
+            System.out.println(counter);
+            if(counter > 15){
+                return true;
+            }
         }
         return false;
     }

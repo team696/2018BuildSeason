@@ -73,5 +73,9 @@ public class RobotMap {
     public static int climberB = 4; // Negative output works
     public static int climberSol = 2;
 
+
+    public static int ultraSonic = 1;
+
+
 }
 

@@ -16,6 +16,7 @@ public class OpenIntake extends Command {
 
     @Override
     public void execute() {
+
         Robot.intakeSubsystem.intakeSol.set(true);
     }
 
