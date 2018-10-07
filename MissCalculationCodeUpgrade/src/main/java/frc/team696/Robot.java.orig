@@ -7,7 +7,6 @@
 
 package frc.team696;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.kauailabs.nav6.frc.IMU;
 import com.kauailabs.nav6.frc.IMUAdvanced;
 import edu.wpi.first.wpilibj.*;
@@ -47,17 +46,13 @@ public class Robot extends TimedRobot {
     public static ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(RobotMap.elevator, RobotMap.elevatorSol, RobotMap.discBrake);
     public static ClimberSubsystem climberSubsystem = new ClimberSubsystem(RobotMap.climberA, RobotMap.climberB, RobotMap.climberSol);
     public static AntiTiltSubsystem antiTiltSubsystem = new AntiTiltSubsystem();
-    public static AnalogInput ultra = new AnalogInput(0);
-
-
-
 
 
     /** Object and Variable Declaration **/
 
     public static OI oi;
-    private String autonomousCommand;
-    private SendableChooser<String> chooser = new SendableChooser<>();
+    private Command autonomousCommand;
+    private SendableChooser<Command> chooser = new SendableChooser<>();
     public static IMU navX;
     SerialPort port;
     public Timer time = new Timer();
@@ -67,8 +62,8 @@ public class Robot extends TimedRobot {
 
     // Drive Straight and Deadzone variables
 
-    double wheelDeadZoneMin = -0.14;
-    double wheelDeadZoneMax = 0.14;
+    double wheelDeadZoneMin = -0.1;
+    double wheelDeadZoneMax = 0.1;
     double stickDeadZoneMin = -0.25;
     double stickDeadZoneMax = 0.3;
 
@@ -82,16 +77,7 @@ public class Robot extends TimedRobot {
     double leftDrive;
     double rightDrive;
 
-    boolean oldWheelAntiTilt;
-    boolean wheelAntiTilt;
-    boolean toggleWheelAntiTilt = true;
-
     // Speed Turn Scale Variables
-
-    //analog
-
-
-//    double ultrasonicVoltage = ultra.getVoltage();
 
     double a = 0.170641; // 0.286095    0.170641
     double h = -0.258475; // -0.243151  -0.258475
@@ -122,8 +108,8 @@ public class Robot extends TimedRobot {
     public boolean highButtonOld;
     public boolean switchButton;
     public boolean switchButtonOld;
-    public boolean intakeButton;
-    public boolean intakeButtonOld;
+    public boolean intakeSolButton;
+    public boolean intakeSolButtonOld;
     public boolean climbButton;
     public boolean climbButtonOld;
     public boolean moveLow;
@@ -148,27 +134,26 @@ public class Robot extends TimedRobot {
     boolean elevatorSolState;
     double maxForwardSpeed = 0.5;
     double maxActuatingSpeed = 0.8;
-    public boolean isHomed = true;
+    public boolean isHomed = false;
     String controlMode;
     int homeLoopNumber;
 
+    public boolean currentHome;
+    public boolean oldHome;
     public boolean runElevator;
     public boolean currentElevatorState;
     public boolean oldElevatorState;
 
-    public boolean homeState;
-    public boolean oldHomeState;
-
+    private String movePos = "home";
 
 
     /*
         Intake Variables
      */
 
-    boolean intakeSolButton;
-    boolean oldIntakeSolButton;
-    boolean toggleIntake;
-    double intakeSpeed = 0.7;
+    public boolean runIntake = false;
+    public boolean oldIntakeState;
+    public boolean currentIntakeState;
     double intakeOutputValue;
 
     /*
@@ -187,10 +172,13 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         oi = new OI();
 
-        chooser.addObject("Left Position","LeftPos");
-        chooser.addObject("Center Position", "CenterPos");
-        chooser.addObject("Right Position", "RightPos");
-        chooser.addDefault("Center Position", "CenterPos");
+        chooser.addObject("Left Position", new LeftPos());
+        chooser.addObject("Center Position", new CenterPos());
+        chooser.addObject("Right Position", new RightPos());
+        chooser.addObject("Test Taper", new RGBSensorTest());
+        chooser.addObject("Center Position", new CenterPos());
+        chooser.addObject("Center Right", new CenterPosRight());
+        chooser.addDefault("LeftScale", new LeftScale());
         SmartDashboard.putData("Auto mode", chooser);
 
         /*
@@ -217,7 +205,9 @@ public class Robot extends TimedRobot {
             Turn on LEDS
          */
 
-
+        for(int i = 8; i <=13; i++){
+            OI.ControlPanel.setOutput(i, true);
+        }
 
 
     }
@@ -229,29 +219,16 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
-
         Scheduler.getInstance().run();
-        SmartDashboard.putString("Selected Auto", chooser.getSelected());
     }
 
     @Override
     public void autonomousInit() {
         autonomousCommand = chooser.getSelected();
-        if(autonomousCommand.equals("LeftPos")){
-            new LeftPos().start();
-        }
 
-        if(autonomousCommand.equals("CenterPos")){
-            new CenterPos().start();
+        if (autonomousCommand != null) {
+            autonomousCommand.start();
         }
-
-        if(autonomousCommand.equals("RightPos")){
-            new RightPos().start();
-        }
-
-//        if (autonomousCommand != null) {
-//            autonomousCommand.start();
-//        }
     }
 
     @Override
@@ -262,9 +239,9 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
 
-//        if (autonomousCommand != null) {
-//            autonomousCommand.cancel();
-//        }
+        if (autonomousCommand != null) {
+            autonomousCommand.cancel();
+        }
 
         rgbSensorSubsystem.rgbSensor.write(0xC0, 1); // set Integration Time
         rgbSensorSubsystem.rgbSensor.write(0x02, 1); // set Gain
@@ -275,14 +252,6 @@ public class Robot extends TimedRobot {
 
         compressor.start();
         time.start();
-        navX.zeroYaw();
-
-        driveTrainSubsystem.leftRear.setNeutralMode(NeutralMode.Coast);
-        driveTrainSubsystem.leftFront.setNeutralMode(NeutralMode.Coast);
-        driveTrainSubsystem.leftMid.setNeutralMode(NeutralMode.Coast);
-        driveTrainSubsystem.rightRear.setNeutralMode(NeutralMode.Coast);
-        driveTrainSubsystem.rightMid.setNeutralMode(NeutralMode.Coast);
-        driveTrainSubsystem.rightFront.setNeutralMode(NeutralMode.Coast);
 
     }
 
@@ -325,45 +294,35 @@ public class Robot extends TimedRobot {
             wheel = wheel + wheelDeadZoneMax;
         }
 
-        wheelAntiTilt = OI.wheel.getRawButton(2);
-        if(wheelAntiTilt && !oldWheelAntiTilt){
-            toggleWheelAntiTilt = !toggleWheelAntiTilt;
-        }
-        oldWheelAntiTilt = wheelAntiTilt;
-
-        if(OI.ControlPanel.getRawButton(14) && toggleWheelAntiTilt){
-            antiTilt = true;
-        }else {
+        if(OI.Psoc.getRawButton(2)){
             antiTilt = false;
+        }else{
+            antiTilt = true;
         }
-
 
         if(antiTilt){
             antiTiltSubsystem.antiTilt();
-            speed = antiTiltSubsystem.speed;
-            wheel = ((antiTiltSubsystem.wheel * speedTurnScale) - wheelDeadZoneMax) ;
-        }else{
-            speed = -OI.Stick.getRawAxis(1);
-            wheel = ((OI.wheel.getRawAxis(constants.wheelDriveAxis) * speedTurnScale) - wheelDeadZoneMax);
         }
 
         speedTurnScale = a*(1/((speed*speed)-h))+k;
+        speed = antiTiltSubsystem.speed;
+        wheel = (antiTiltSubsystem.wheel * speedTurnScale) - wheelDeadZoneMax;
 
 
         /**
             Climber Functions
          */
 
-//        if(OI.Psoc.getRawButton(16)) {
-//            climberSubsystem.setClimberSpeed(1);
-//        }
-//        else if(OI.wheel.getRawButton(2)){
-//            climberSubsystem.setClimberSpeed(-0.25);
-//        }
-//        else{
-//
-////            climberSubsystem.deployHook(true);
-//        }
+        if(OI.Psoc.getRawButton(16)) {
+            climberSubsystem.setClimberSpeed(1);
+        }
+        else if(OI.wheel.getRawButton(2)){
+            climberSubsystem.setClimberSpeed(-0.25);
+        }
+        else{
+
+//            climberSubsystem.deployHook(true);
+        }
 
 
 
@@ -373,11 +332,11 @@ public class Robot extends TimedRobot {
 
 
         /** Climber Functions **/
-//        if(OI.Psoc.getRawButton(16)){
-//            climberSubsystem.setClimberSpeed(1);
-//        }else{
-//            climberSubsystem.setClimberSpeed(0);
-//        }
+        if(OI.Psoc.getRawButton(16)){
+            climberSubsystem.setClimberSpeed(1);
+        }else{
+            climberSubsystem.setClimberSpeed(0);
+        }
 
 
 
@@ -395,21 +354,12 @@ public class Robot extends TimedRobot {
          * and to be able to check again in the future.
          */
 
-        // Homing of the elevator
-
-        homeState = OI.ControlPanel.getRawButton(constants.elevatorHome);
-        if(homeState && !oldHomeState){
-            isHomed = !isHomed;
-        }
-        oldHomeState = homeState;
-
         currentElevatorState = OI.ControlPanel.getRawButton(6);
-        if(antiTiltSubsystem.preventBack && antiTilt) {
+        if(antiTiltSubsystem.preventBack) {
             runElevator = true;
-        }else if(antiTiltSubsystem.preventForward && antiTilt){
+        }else if(antiTiltSubsystem.preventForward){
             runElevator = false;
         }else if(currentElevatorState && !oldElevatorState){
-
             runElevator = !runElevator;
         }
         oldElevatorState = currentElevatorState;
@@ -459,8 +409,8 @@ public class Robot extends TimedRobot {
         }
         climbButtonOld = climbButton;
 //
-        intakeButton = OI.ControlPanel.getRawButton(constants.intakePos);
-        if(intakeButton && !intakeButtonOld){
+        intakeSolButton = OI.ControlPanel.getRawButton(constants.intakePos);
+        if(intakeSolButton && !intakeSolButtonOld){
             moveLow = false;
             moveMid = false;
             moveHigh = false;
@@ -468,7 +418,7 @@ public class Robot extends TimedRobot {
             moveSwitch = false;
             moveClimb = false;
         }
-        intakeButtonOld = intakeButton;
+        intakeSolButtonOld = intakeSolButton;
 
         highButton = OI.ControlPanel.getRawButton(constants.scaleHigh);
         if(highButton && !highButtonOld){
@@ -480,25 +430,6 @@ public class Robot extends TimedRobot {
             moveClimb = false;
         }
         highButtonOld = highButton;
-
-        midButton = OI.ControlPanel.getRawButton(constants.scaleMid);
-        if(midButton && !midButtonOld){
-            moveLow = false;
-            moveMid = !moveMid;
-            moveHigh = false;
-            moveIntake = false;
-            moveSwitch = false;
-            moveClimb = false;
-        }
-        midButtonOld = midButton;
-
-        intakeSolButton = OI.ControlPanel.getRawButton(constants.intakeSol);
-        if(intakeSolButton && !oldIntakeSolButton){
-            toggleIntake = !toggleIntake;
-        }
-        oldIntakeSolButton = intakeSolButton;
-
-
 
 //        if(moveLow){
 //            elevatorSubsystem.moveToPos("low");
@@ -534,19 +465,13 @@ public class Robot extends TimedRobot {
             elevatorSubsystem.discBrake.set(true);
             elevatorSubsystem.manualMoveElevator(-0.25);
             System.out.println("Homing...");
-//            elevatorSubsystem.elevator.setSelectedSensorPosition(0, 0, 20);
-            elevatorSubsystem.zeroElevator();
+            elevatorSubsystem.elevator.setSelectedSensorPosition(0, 0, 20);
             if (elevatorSubsystem.elevator.getSensorCollection().isRevLimitSwitchClosed()) {
                 elevatorSubsystem.discBrake.set(false);
                 elevatorSubsystem.manualMoveElevator(0);
                 System.out.println("Homed");
                 isHomed = true;
-                elevatorSubsystem.zeroElevator();
             }
-        }else if(!elevatorSubsystem.elevatorSol.get() && elevatorSubsystem.elevator.getSelectedSensorPosition(0) >= 26000 && OI.ControlPanel.getRawAxis(0) < -0.1){
-            elevatorSubsystem.discBrake.set(false);
-            elevatorSubsystem.manualMoveElevator(0);
-            System.out.println("hi");
         }else if(OI.ControlPanel.getRawAxis(0) < -0.1 && isHomed){
             elevatorLoopNumber++;
             elevatorSubsystem.discBrake.set(true);
@@ -570,7 +495,6 @@ public class Robot extends TimedRobot {
             moveClimb = false;
             if (elevatorLoopNumber > 2) {
                 elevatorSubsystem.manualMoveElevator(-OI.ControlPanel.getRawAxis(0) * 0.5);
-            
             }
         }else if(moveSwitch) {
             elevatorSubsystem.moveToPos("switch");
@@ -580,11 +504,8 @@ public class Robot extends TimedRobot {
             elevatorSubsystem.moveToPos("intake");
         }else if(moveHigh) {
             elevatorSubsystem.moveToPos("high");
-        }else if(moveLow) {
-            elevatorSubsystem.moveToPos("low");
-        }else if(moveMid) {
-            elevatorSubsystem.moveToPos("mid");
         }else if(OI.ControlPanel.getRawButton(1)){
+
             /** Auto Climb and Unwind - Once pressed: Hook will deploy, Elevator will retract, and hold to keep climbing **/
             moveMid = false;
             moveHigh = false;
@@ -593,11 +514,14 @@ public class Robot extends TimedRobot {
             moveClimb = false;
             moveLow = false;
             climberSubsystem.autoClimb(1);
+
         }else if (OI.ControlPanel.getRawButton(15)) {
             climberSubsystem.setClimberSpeed(-0.25);
         }else if (OI.ControlPanel.getRawButton(10)){
 
-        }else{
+        }
+
+        else{
             elevatorLoopNumber = 0;
             climberSubsystem.loopNumber = 0;
             climberSubsystem.setClimberSpeed(0);
@@ -610,20 +534,30 @@ public class Robot extends TimedRobot {
 
         /** Intake Functions **/
 
-        if(OI.ControlPanel.getRawButton(8)){
-            intakeSubsystem.runIntake(-0.35);
-        }else if(OI.ControlPanel.getRawButton(7)){
-            intakeSubsystem.runIntake(0.6);
+        if(OI.ControlPanel.getRawButton(7)){
+            intakeSubsystem.runIntake(0.7);
+            if(PDP.getCurrent(7) > 20){
+                intakeSubsystem.runIntake(0);
+                intakeSubsystem.intakeSol.set(false);
+            }
+        }else if(OI.ControlPanel.getRawButton(8)){
+            intakeSubsystem.runIntake(-0.7);
         }else{
             intakeSubsystem.runIntake(0);
         }
 
+        currentIntakeState = OI.ControlPanel.getRawButton(12);
+        if(currentIntakeState && !intakeSolButtonOld){
+            intakeSolButton = !intakeSolButton;
+        }
+        intakeSolButtonOld = currentIntakeState;
 
-        /**
-         * Intake Solenoid Toggling
-         */
+        if(intakeSolButton){
+            intakeSubsystem.toggleIntake(true);
+        }else{
+            intakeSubsystem.toggleIntake(false);
+        }
 
-       intakeSubsystem.toggleIntake(toggleIntake);
 
 
 
@@ -634,8 +568,8 @@ public class Robot extends TimedRobot {
             Drive-straight and Testing code.
                                                       **/
 
-        if(wheel >= wheelDeadZoneMin && wheel <= wheelDeadZoneMax){
-
+//        if(wheel >= wheelDeadZoneMin && wheel <= wheelDeadZoneMax){
+//
 //            loopNumber++;
 //            currentDirection = navX.getYaw();
 //            if(loopNumber == 1){
@@ -644,11 +578,11 @@ public class Robot extends TimedRobot {
 //            directionError = targetDirection - currentDirection;
 //            driveTrainSubsystem.driveStraightPID.setError(directionError);
 //            wheel = driveTrainSubsystem.driveStraightPID.getValue();
-            wheel = 0;
-
-        }else{
-            loopNumber = 0;
-        }
+//            wheel = 0;
+//
+//        }else{
+//            loopNumber = 0;
+//        }
 
 //        /**
 //         * Speed Deadzone
@@ -668,7 +602,7 @@ public class Robot extends TimedRobot {
         leftDrive = speed + wheel;
         rightDrive = speed - wheel;
 
-        driveTrainSubsystem.tankDrive(leftDrive , rightDrive );
+        driveTrainSubsystem.tankDrive(leftDrive, rightDrive);
 
         /** Outputs to Console **/
 
@@ -689,24 +623,17 @@ public class Robot extends TimedRobot {
 
 //        System.out.println("TARGET" + elevatorSubsystem.elevatorTarget);
 
+<<<<<<< HEAD
+//        System.out.println(movePos + "   " + moveSwitch + "   " + switchButton + "   " + elevatorSubsystem.elevatorSol.get() + "  " + elevatorSubsystem.elevator.getSelectedSensorPosition(0) );
+
+        System.out.println(elevatorSubsystem.elevator.getSelectedSensorPosition(0));
+=======
 //        System.out.println(movePos + "   " + moveClimb + "   " + climbButton + "   " + elevatorSubsystem.elevatorSol.get() + "  " + elevatorSubsystem.elevator.getSelectedSensorPosition(0) +
 //        " " + elevatorSubsystem.elevator.getClosedLoopError(0));
-//        System.out.println(elevatorSubsystem.elevator.getSelectedSensorPosition(0));
-//        System.out.println(controlMode + " " + moveSwitch +  "   " + moveClimb + " " + elevatorSubsystem.elevator.getClosedLoopError(0) + " " + elevatorSubsystem.elevatorTarget);
-
-//        System.out.println(navX.getYaw());
-        System.out.println(toggleWheelAntiTilt);
-
-
-//        System.out.println("ultra voltage" + ultrasonicVoltage);
-
-//        System.out.println(speed + "    " + wheel);
-
-//        System.out.println(elevatorSubsystem.elevator.getSelectedSensorPosition(0));
-
-
+//        System.out.println(controlMode + "  " + movePos + "   " + elevatorSubsystem.elevator.getClosedLoopError(0));
+        System.out.println(controlMode + " " + moveSwitch +  "   " + moveClimb + " " + elevatorSubsystem.elevator.getClosedLoopError(0) + " " + elevatorSubsystem.elevatorTarget);
+>>>>>>> 752f4f027a9e1ffa08a277f87da51c839a9d41f8
     }
-
 
     @Override
     public void testPeriodic() {

@@ -570,7 +570,6 @@ public class Robot extends TimedRobot {
             moveClimb = false;
             if (elevatorLoopNumber > 2) {
                 elevatorSubsystem.manualMoveElevator(-OI.ControlPanel.getRawAxis(0) * 0.5);
-            
             }
         }else if(moveSwitch) {
             elevatorSubsystem.moveToPos("switch");
