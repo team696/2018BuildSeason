@@ -43,7 +43,7 @@ ElevatorSubsystem extends Subsystem {
     public double switchPosition = 9090;
     public double lowPosition = 21068;
     public double midPosition = 23970;
-    public double highPosition = 26000;
+    public double highPosition = 29000;
     public double highTiltPosition = 26000;
     public double climbPosition = 21420;
     public double homePosition = 0;

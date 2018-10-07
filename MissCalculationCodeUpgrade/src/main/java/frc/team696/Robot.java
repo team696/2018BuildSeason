@@ -47,6 +47,7 @@ public class Robot extends TimedRobot {
     public static ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(RobotMap.elevator, RobotMap.elevatorSol, RobotMap.discBrake);
     public static ClimberSubsystem climberSubsystem = new ClimberSubsystem(RobotMap.climberA, RobotMap.climberB, RobotMap.climberSol);
     public static AntiTiltSubsystem antiTiltSubsystem = new AntiTiltSubsystem();
+    public static AutonomousSubsystem autonomousSubsystem = new AutonomousSubsystem(0);
     public static AnalogInput ultra = new AnalogInput(0);
 
 
@@ -190,7 +191,7 @@ public class Robot extends TimedRobot {
         chooser.addObject("Left Position","LeftPos");
         chooser.addObject("Center Position", "CenterPos");
         chooser.addObject("Right Position", "RightPos");
-        chooser.addDefault("Center Position", "CenterPos");
+        chooser.addDefault("Left Position", "LeftPos");
         SmartDashboard.putData("Auto mode", chooser);
 
         /*
@@ -694,7 +695,7 @@ public class Robot extends TimedRobot {
 //        System.out.println(controlMode + " " + moveSwitch +  "   " + moveClimb + " " + elevatorSubsystem.elevator.getClosedLoopError(0) + " " + elevatorSubsystem.elevatorTarget);
 
 //        System.out.println(navX.getYaw());
-        System.out.println(toggleWheelAntiTilt);
+        System.out.println(elevatorSubsystem.elevator.getSelectedSensorPosition(0));
 
 
 //        System.out.println("ultra voltage" + ultrasonicVoltage);

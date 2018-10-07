@@ -101,6 +101,15 @@ public class CenterPos extends CommandGroup {
                 addSequential(new DriveCommand(0, 45, 0, 0.6));
             }
 
+
+            if (gameData.equals("BigYay")) {
+                addSequential(new ZeroElevator());
+                addSequential(new ZeroEncoders());
+                addSequential(new ZeroYaw());
+
+                addSequential(new DriveCommand(5, 90 , 0.8, 0.8));
+            }
+
 //        addSequential(new DriveCommand( 65, 0, 0.65, 0.4));
 //        addSequential(new Wait(2));
 //        addSequential(new Outtake(), 2);

@@ -49,7 +49,7 @@ public class DriveCommand extends Command {
 
     // Distance PID Values
 
-    private double kPA = 0.06;
+    private double kPA = 0.07;
     private double kIA = 0.0001;
     private double kDA = 0;
     private double kAlphaA = 0.5;
