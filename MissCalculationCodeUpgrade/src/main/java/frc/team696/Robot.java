@@ -191,7 +191,7 @@ public class Robot extends TimedRobot {
         chooser.addObject("Left Position","LeftPos");
         chooser.addObject("Center Position", "CenterPos");
         chooser.addObject("Right Position", "RightPos");
-        chooser.addDefault("Left Position", "LeftPos");
+        chooser.addDefault("Center Position", "CenterPos");
         SmartDashboard.putData("Auto mode", chooser);
 
         /*
