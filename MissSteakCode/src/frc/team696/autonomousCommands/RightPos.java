@@ -58,9 +58,10 @@ public class RightPos extends CommandGroup {
                 addSequential(new DriveCommand(340, -162, 0.6, 0.1), 0.5);
                 addSequential(new Outtake(0.6));
 
+
             }
 
-            if (gameData.charAt(1) == 'L') {
+            if (gameData.charAt(1) == 'L' ) {
 
                 addSequential(new ZeroElevator());
                 addSequential(new ZeroEncoders());
@@ -75,6 +76,11 @@ public class RightPos extends CommandGroup {
                 addSequential(new Outtake(0.4));
                 addSequential(new DriveCommand(406, 0, 0.4, 0.1), 3);
                 addSequential(new MoveToPos("intake"));
+
+
+
+
+
 
             }
 

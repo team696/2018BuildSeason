@@ -21,7 +21,7 @@ public class Intake extends Command {
 
         loopNumber++;
 
-        Robot.intakeSubsystem.runIntake(0.7);
+        Robot.intakeSubsystem.runIntake(0.8);
         System.out.println(Robot.PDP.getCurrent(7));
 
 

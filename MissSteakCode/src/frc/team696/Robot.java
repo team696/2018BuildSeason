@@ -697,6 +697,9 @@ public class    Robot extends TimedRobot{
                     intakeSubsystem.runIntake(0);
                 }
 
+        /**
+         * Open/Close Intake
+         */
 
         intakeSubsystem.toggleIntake(toggleIntake);
 

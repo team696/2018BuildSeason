@@ -33,6 +33,8 @@ public class CenterPos extends CommandGroup {
                 addSequential(new DriveCommand(125, 0, 0.50, 0.1), 2);
                 addSequential(new Wait(0.3));
                 addSequential(new Outtake(0.60));
+                addParallel(new MoveToPos("intake"), 0.5);
+                addSequential(new DriveCommand(115, 0, 0.6 ,0.1), 0.5);
 
                 /*
              2nd cube
@@ -86,19 +88,19 @@ public class CenterPos extends CommandGroup {
                 addSequential(new DriveCommand(135, 0, 0.50, 0.1), 2);
 //                addSequential(new Wait(0.3));
                 addSequential(new Outtake(0.75));
+                addSequential(new DriveCommand(130, 0, 0.3, 0.1), 0.3);
+
 
                 /*
                2nd Cube
                  */
-
-
 
                 addParallel(new MoveToPos("intake"), 0.5);
                 addSequential(new DriveCommand(135, -45, 0.5, 0.7), 2);
                 addParallel(new Tilt());
                 addSequential(new DriveCommand(60, -45,  0.75, 0.1), 2);
                 addParallel(new OpenIntake());
-                addSequential(new DriveCommand(60, 0, 0.5, 0.5), 2);
+                addSequential(new DriveCommand(50, 0, 0.5, 0.5), 2);
                 addSequential(new DriveCommand(90, 0, 0.5, 0.6), 2);
                 addParallel(new Intake());
                 addSequential(new Intake(), 0.5);
@@ -112,9 +114,6 @@ public class CenterPos extends CommandGroup {
                 addSequential(new Wait(0.75));
                 addSequential(new DriveCommand(125, -23, 0.5, 0.1));
                 addSequential(new DriveCommand(125, 23, 0.5, 0.5));
-
-
-
 
 
             }
