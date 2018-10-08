@@ -3,7 +3,6 @@ package frc.team696.subsystems;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.team696.Robot;
 
 public class RGBSensorSubsystem extends Subsystem {
 

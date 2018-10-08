@@ -27,7 +27,7 @@ public class IntakeSubsystem extends Subsystem {
         Current Minimum and Average
      */
 
-    public int currentMin = 50; // TODO Check for actual value and adjust correspondingly.
+    public int currentMin = 50;
     public double currentAverage;
 
     public IntakeSubsystem(int intakeA, int intakeB, int intakeSol) {
@@ -58,11 +58,11 @@ public class IntakeSubsystem extends Subsystem {
     }
 
     public double intakeACurrent() {
-        return robot.PDP.getCurrent(RobotMap.intakeAChannel);
+        return Robot.PDP.getCurrent(RobotMap.intakeAChannel);
     }
 
     public double intakeBCurrent() {
-        return robot.PDP.getCurrent(RobotMap.intakeBChannel);
+        return Robot.PDP.getCurrent(RobotMap.intakeBChannel);
     }
 
     public void toggleIntake(boolean bool) {

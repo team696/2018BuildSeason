@@ -1,15 +1,10 @@
 package frc.team696.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.team696.RobotMap;
 
 import static frc.team696.Robot.elevatorSubsystem;
-import static frc.team696.RobotMap.elevator;
-
 
 public class ClimberSubsystem extends Subsystem {
 

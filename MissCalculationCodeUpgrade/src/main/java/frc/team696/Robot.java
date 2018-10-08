@@ -1,17 +1,9 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.team696;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.kauailabs.nav6.frc.IMU;
 import com.kauailabs.nav6.frc.IMUAdvanced;
 import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -37,8 +29,6 @@ public class Robot extends TimedRobot {
         Creation of Class Objects
      */
 
-    // TODO Make class object(s) for the LEDSubsystem, finish DriveStraight code, and tune PID.
-
     public static DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem(RobotMap.leftRear, RobotMap.leftMid, RobotMap.leftFront,
                                                                                     RobotMap.rightRear, RobotMap.rightMid, RobotMap.rightFront);
     public static Constants constants = new Constants();
@@ -47,7 +37,6 @@ public class Robot extends TimedRobot {
     public static ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(RobotMap.elevator, RobotMap.elevatorSol, RobotMap.discBrake);
     public static ClimberSubsystem climberSubsystem = new ClimberSubsystem(RobotMap.climberA, RobotMap.climberB, RobotMap.climberSol);
     public static AntiTiltSubsystem antiTiltSubsystem = new AntiTiltSubsystem();
-    public static AutonomousSubsystem autonomousSubsystem = new AutonomousSubsystem(0);
     public static AnalogInput ultra = new AnalogInput(0);
 
 

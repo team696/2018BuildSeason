@@ -4,12 +4,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team696.commands.*;
 
-import java.sql.Driver;
-
-import static frc.team696.Robot.elevatorSubsystem;
-
 public class CenterPos extends CommandGroup {
-
+    
     String gameData;
 
     public CenterPos() {

@@ -1,7 +1,6 @@
 package frc.team696.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.team696.Robot;
 
 import static frc.team696.Robot.elevatorSubsystem;
 

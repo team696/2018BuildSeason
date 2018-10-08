@@ -1,8 +1,6 @@
 package frc.team696.commands;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.kauailabs.nav6.frc.IMU;
-import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team696.Robot;
 import frc.team696.utilities.PIDController;
@@ -80,12 +78,12 @@ public class DriveCommand extends Command {
     @Override
     protected void initialize() {
 
-        robot.driveTrainSubsystem.leftRear.setNeutralMode(NeutralMode.Brake);
-        robot.driveTrainSubsystem.leftFront.setNeutralMode(NeutralMode.Brake);
-        robot.driveTrainSubsystem.leftMid.setNeutralMode(NeutralMode.Brake);
-        robot.driveTrainSubsystem.rightRear.setNeutralMode(NeutralMode.Brake);
-        robot.driveTrainSubsystem.rightMid.setNeutralMode(NeutralMode.Brake);
-        robot.driveTrainSubsystem.rightFront.setNeutralMode(NeutralMode.Brake);
+        Robot.driveTrainSubsystem.leftRear.setNeutralMode(NeutralMode.Brake);
+        Robot.driveTrainSubsystem.leftFront.setNeutralMode(NeutralMode.Brake);
+        Robot.driveTrainSubsystem.leftMid.setNeutralMode(NeutralMode.Brake);
+        Robot.driveTrainSubsystem.rightRear.setNeutralMode(NeutralMode.Brake);
+        Robot.driveTrainSubsystem.rightMid.setNeutralMode(NeutralMode.Brake);
+        Robot.driveTrainSubsystem.rightFront.setNeutralMode(NeutralMode.Brake);
 
         /*
             Set PID Values for Direction and Distance

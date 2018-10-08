@@ -1,8 +1,6 @@
 package frc.team696.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.team696.Robot;
-
 import static frc.team696.Robot.elevatorSubsystem;
 
 
@@ -45,7 +43,6 @@ public class MoveToPos extends Command {
 
     @Override
     protected boolean isFinished() {
-        // TODO: Make this return true when this Command no longer needs to run execute()
         if(loopNumber > 50){
             return true;
         }

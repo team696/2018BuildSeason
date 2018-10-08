@@ -1,10 +1,8 @@
 package frc.team696.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.team696.Constants;
 import frc.team696.OI;
 import frc.team696.Robot;
-import frc.team696.RobotMap;
 
 public class AntiTiltSubsystem extends Subsystem {
 
